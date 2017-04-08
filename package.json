@@ -10,7 +10,7 @@
     "eslint": "eslint .",
     "prebuild": "eslint .",
     "build": "webpack",
-    "start": "node ./server/app.js"
+    "start": "nodemon ./server/app.js"
   },
   "author": "",
   "license": "ISC",

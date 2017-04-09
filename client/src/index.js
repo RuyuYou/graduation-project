@@ -1,8 +1,44 @@
-import React from 'react';
-import ReactDom from 'react-dom';
-import '../style/index.less';
+import {Component} from 'react';
+import {render} from 'react-dom';
+import {Router, Route, browserHistory, IndexRoute, withRouter} from 'react-router';
+import {createStore, applyMiddleware} from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import {Provider, connect} from 'react-redux';
+import createLogger from 'redux-logger';
+import {cookie} from 'react-cookie-banner';
+import rootReducer from './reducers/index.js';
+import Login from './component/Login';
 
-ReactDom.render(
-    <h1>Hello,World!</h1>,
-    document.getElementById('app')
+const store = createStore(
+  rootReducer,
+  applyMiddleware(createLogger(), thunkMiddleware)
 );
+
+class Main extends Component {
+  requireCookie(nextState, replace, next) {
+    let authState = cookie('authState');
+    if (authState !== '200') {
+      replace(URI_PREFIX + '/login');
+      next();
+    }
+    next();
+  }
+
+  render() {
+    return (
+      <Router history={browserHistory}>
+        <Route path='/login' component={Login}/>
+      </Router>
+    );
+  }
+}
+
+const mapStateToProps = (state) => state;
+
+let RootApp = connect(mapStateToProps)(withRouter(Main));
+
+render(
+  <Provider store={store}>
+    <RootApp/>
+  </Provider>,
+  document.getElementById('app'));

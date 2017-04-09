@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import {InputWrapper} from '../common';
 import validate from 'validate.js';
-import request from 'superagent';
+import superagent from 'superagent';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import constant from '../../../../config/constant';
@@ -13,7 +13,6 @@ class LoginForm extends Component {
     this.state = {
       accountError: '',
       passwordError: '',
-      captchaError: '',
       loading: false
     };
   }
@@ -28,19 +27,21 @@ class LoginForm extends Component {
         loading: true,
         accountError: '',
         passwordError: '',
-        captchaError: ''
       }, () => {
         const account = this.account.value;
         const password = this.password.value;
-        const captcha = this.captcha.value;
+        console.log({account, password});
+        superagent.post('/api/login')
+          .send({account, password})
+          .end((err, res) => {
 
-        request.post('/api/login')
-          .send({account, password, captcha})
-          .end((req, res) => {
+            console.log(res.statusCode)
+            if (res.statusCode === 200) {
+              this.props.router.push('/');
+
+            }
             this.setState({loading: false});
-            if (res.body.status === constant.httpCode.FORBIDDEN) {
-              this.setState({captchaError: '验证码错误'});
-            } else if (res.body.status === constant.httpCode.UNAUTHORIZED) {
+            if (res.body.status === constant.httpCode.UNAUTHORIZED) {
               this.setState({
                 accountError: '用户名或密码错误',
                 passwordError: '用户名或密码错误'
@@ -50,7 +51,7 @@ class LoginForm extends Component {
                 type: 'NO_USER',
                 authState: res.body.status
               });
-              this.props.router.push(URI_PREFIX + '/');
+              this.props.router.push('/');
             }
           });
       });
@@ -68,21 +69,12 @@ class LoginForm extends Component {
         presence: {
           message: '^密码不能为空'
         }
-      },
-      captcha: {
-        presence: {
-          message: '^验证码不能为空'
-        },
-        numericality: {
-          message: '^验证码必须是数字'
-        }
       }
     };
 
     const account = this.account.value;
     const password = this.password.value;
-    const captcha = this.captcha.value;
-    const errorInputMessage = validate({account, password, captcha}, constraints);
+    const errorInputMessage = validate({account, password}, constraints);
     const validateResult = {};
 
     for (let key in errorInputMessage) {
@@ -120,23 +112,6 @@ class LoginForm extends Component {
                          placeholder='密码'/>
                 </div>
                 <i className='input-icon fa fa-lock col-xs-1 text-center'> </i>
-              </div>
-            </InputWrapper>
-
-            <InputWrapper warning={this.state.captchaError}>
-              <div
-                className={!this.state.captchaError ? 'input-info col-md-8 col-xs-6' : 'input-info-null col-md-8 col-xs-6'}>
-                <div className='col-xs-11 no-padding'>
-                  <input type='text' className='input-form col-xs-12' ref={(ref) => {
-                    this.captcha = ref;
-                  }}
-                         placeholder='验证码'/>
-                </div>
-                <i className='input-icon fa fa-umbrella col-xs-1 text-center'> </i>
-              </div>
-
-              <div className='col-md-4 col-xs-6 captchar no-padding'>
-                <img className='pull-right' src='/api/captcha.jpg' alt=''/>
               </div>
             </InputWrapper>
 

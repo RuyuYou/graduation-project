@@ -55,6 +55,7 @@
     "superagent-no-cache": "^0.1.0",
     "superagent-rxjs": "^2.2.2",
     "uuid": "^3.0.1",
+    "canvas": "^1.6.3",
     "validate.js": "^0.9.0"
   },
   "devDependencies": {

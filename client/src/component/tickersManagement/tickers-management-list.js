@@ -30,7 +30,7 @@ class TickersManagementList extends Component {
             <th>历时</th>
             <th>硬座</th>
             <th>软座</th>
-            <th>日期</th>
+            <th>发车时间</th>
           </tr>
           </thead>
           {TickerList}

@@ -25,7 +25,7 @@ export default [
     parent: 1,
     level: 2,
     text: '票务管理',
-    uri: '/tickers',
+    uri: '/ticker',
     icon: 'tachometer'
   }, {
     id: 5,

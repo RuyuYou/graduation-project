@@ -19,14 +19,6 @@ const store = createStore(
 );
 
 class Main extends Component {
-  requireCookie(nextState, replace, next) {
-    let authState = cookie('authState');
-    if (authState !== '200') {
-      replace('/login');
-      next();
-    }
-    next();
-  }
 
   render() {
     return (
@@ -36,7 +28,7 @@ class Main extends Component {
           <IndexRoute component={Home}/>
           <Route path='index' component={Home}/>
           <Route path='userCenter' component={UserCenter}/>
-          <Route path='tickers' component={TickersManagement}/>
+          <Route path='ticker' component={TickersManagement}/>
         </Route>
       </Router>
     );

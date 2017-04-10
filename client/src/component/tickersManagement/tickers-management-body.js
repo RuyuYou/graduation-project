@@ -7,7 +7,7 @@ import TickersManagementEditor from './tickers-management-editor';
 class TickersManagementBody extends Component {
   render() {
     return (
-      <div className='row'>
+      <div className='tickers-management-body row'>
         <div className="col-sm-8">
           <TickersManagementList/>
         </div>

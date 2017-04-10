@@ -6,7 +6,7 @@ import {withRouter} from 'react-router';
 class TickersManagementList extends Component {
   render() {
     return (
-      <div>
+      <div className="tickers-management-list">
         <table className='table table-bordered table-striped text-left'>
           <thead>
           <tr>

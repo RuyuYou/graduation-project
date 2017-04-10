@@ -28,9 +28,11 @@ export  default class TickersManagementEditor extends Component {
 
   render() {
     return (
-      <div>
-        <div className='btn-group btn-group-justified tab-padding' role='group'>
-          {this.getTabs()}
+      <div className="tickers-management-editor">
+        <div className='tab-ul'>
+          <div className='btn-group btn-group-justified tab-padding' role='group'>
+            {this.getTabs()}
+          </div>
         </div>
       </div>
     )

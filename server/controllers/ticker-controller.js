@@ -22,9 +22,7 @@ class TickerController {
 
   createTickers(req, res) {
     const createDate = getTimes();
-    console.log(createDate);
     const tickerInfo = Object.assign({}, req.body, {createDate});
-    console.log(tickerInfo);
     Tickers.create(tickerInfo, (err, result) => {
       if (err) {
         throw err;

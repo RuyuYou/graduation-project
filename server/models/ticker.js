@@ -3,12 +3,9 @@ const Schema = mongoose.Schema;
 
 const tickerSchema = new Schema({
   trainId: String,
-  startPlace: String,
-  endPlace: String,
-  lasted: String,
-  hardSeat: Number,
-  softSeat: Number,
-  createDate: String
+  firstSeat: Number,
+  secondSeat: Number,
+  specialSeat: Number
 });
 
 const Ticker = mongoose.model('Ticker', tickerSchema);

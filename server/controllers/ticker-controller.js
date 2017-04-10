@@ -21,9 +21,7 @@ class TickerController {
   }
 
   createTickers(req, res) {
-    const createDate = getTimes();
-    const tickerInfo = Object.assign({}, req.body, {createDate});
-    Tickers.create(tickerInfo, (err, result) => {
+    Tickers.create(req.body, (err, result) => {
       if (err) {
         throw err;
       }
@@ -32,9 +30,7 @@ class TickerController {
   }
 
   updateTickers(req, res) {
-    const createDate = getTimes();
-    const tickerInfo = Object.assign({}, req.body, {createDate});
-    Tickers.findByIdAndUpdate(req.params.id, tickerInfo, (err, result)=> {
+    Tickers.findByIdAndUpdate(req.params.id, req.body, (err, result)=> {
       if (err) {
         throw err;
       }

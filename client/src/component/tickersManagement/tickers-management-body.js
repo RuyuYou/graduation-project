@@ -10,11 +10,12 @@ class TickersManagementBody extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tickerList: []
+      tickerList: [],
+      currentTicker: {}
     }
   }
 
-  componentDidMount() {
+  requestData() {
     superagent.get('/tickers')
       .use(noCache)
       .end((err, res)=> {
@@ -27,12 +28,23 @@ class TickersManagementBody extends Component {
       });
   }
 
+  componentDidMount() {
+    this.requestData();
+  }
+
+  changeTickers(tricker) {
+    this.setState({
+      currentTicker: tricker
+    });
+  }
+
   render() {
     const tickerList = this.state.tickerList || [];
     return (
       <div className='tickers-management-body row'>
         <div className="col-sm-8">
-          <TickersManagementList tickerList={this.state.tickerList}/>
+          <TickersManagementList tickerList={this.state.tickerList}
+                                 changeTickers={this.changeTickers.bind(this)}/>
         </div>
         <div className="col-sm-4">
           <TickersManagementEditor/>

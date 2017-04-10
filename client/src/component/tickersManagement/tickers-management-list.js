@@ -4,11 +4,26 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 
 class TickersManagementList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentTicker: {},
+      activeIndex: -1
+    };
+  }
+
+  clickTickers(index, information) {
+    this.setState({
+      currentTicker: information,
+      activeIndex: index
+    });
+    this.props.changeTickers(information);
+  }
 
   render() {
     const TickerList = this.props.tickerList.map((item, index)=> {
       return <tbody key={index}>
-      <tr>
+      <tr onClick={this.clickTickers.bind(this, index, item)} className={'user-tickers-tab'}>
         <td>{item.trainId}</td>
         <td>{item.startPlace}</td>
         <td>{item.endPlace}</td>

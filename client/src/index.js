@@ -11,6 +11,7 @@ import rootReducer from './reducers/index.js';
 import Login from './component/Login';
 import Home from './component/menu/Home';
 import UserCenter from './component/menu/UserCenter';
+import TickersManagement from './component/tickersManagement';
 
 const store = createStore(
   rootReducer,
@@ -31,10 +32,11 @@ class Main extends Component {
     return (
       <Router history={browserHistory}>
         <Route path='/login' component={Login}/>
-        <Route path='/' component={Layout} >
+        <Route path='/' component={Layout}>
           <IndexRoute component={Home}/>
           <Route path='index' component={Home}/>
           <Route path='userCenter' component={UserCenter}/>
+          <Route path='tickers' component={TickersManagement}/>
         </Route>
       </Router>
     );

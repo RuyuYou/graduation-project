@@ -31,7 +31,7 @@ class LoginForm extends Component {
         const account = this.account.value;
         const password = this.password.value;
         console.log({account, password});
-        superagent.post('/api/login')
+        superagent.post('/login')
           .send({account, password})
           .end((err, res) => {
 

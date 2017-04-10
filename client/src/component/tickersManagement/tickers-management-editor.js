@@ -46,7 +46,7 @@ export  default class TickersManagementEditor extends Component {
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
-                       this.userName = ref;
+                       this.trainId = ref;
                      }}/>
             </div>
           </div>
@@ -56,7 +56,7 @@ export  default class TickersManagementEditor extends Component {
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
-                       this.userName = ref;
+                       this.startPlace = ref;
                      }}/>
             </div>
           </div>
@@ -66,7 +66,7 @@ export  default class TickersManagementEditor extends Component {
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
-                       this.userName = ref;
+                       this.endPlace = ref;
                      }}/>
             </div>
           </div>
@@ -76,7 +76,7 @@ export  default class TickersManagementEditor extends Component {
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
-                       this.userName = ref;
+                       this.lasted = ref;
                      }}/>
             </div>
           </div>
@@ -86,7 +86,7 @@ export  default class TickersManagementEditor extends Component {
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
-                       this.userName = ref;
+                       this.hardSeat = ref;
                      }}/>
             </div>
           </div>
@@ -96,7 +96,7 @@ export  default class TickersManagementEditor extends Component {
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
-                       this.userName = ref;
+                       this.softSeat = ref;
                      }}/>
             </div>
           </div>
@@ -116,6 +116,12 @@ export  default class TickersManagementEditor extends Component {
                 </select>
               </div>
             </div>
+          </div>
+
+          <div className='role-management-form text-center'>
+            <button className='btn btn-primary btn-size'
+                    > 确定
+            </button>
           </div>
         </div>
       </div>

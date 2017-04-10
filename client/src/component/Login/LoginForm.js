@@ -30,7 +30,6 @@ class LoginForm extends Component {
       }, () => {
         const email = this.account.value;
         const password = this.password.value;
-        console.log({email, password});
         superagent.post('/login')
           .send({email, password})
           .end((err, res) => {

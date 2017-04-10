@@ -1,5 +1,7 @@
 import {Component} from 'react';
 import {NavDropdown, MenuItem} from 'react-bootstrap';
+import superagent from 'superagent';
+import noCache from 'superagent-no-cache';
 
 export default class Header extends Component {
   constructor(props) {
@@ -7,6 +9,19 @@ export default class Header extends Component {
     this.state = {
       username: ''
     };
+  }
+
+  componentDidMount() {
+    superagent
+      .get('/users/username')
+      .use(noCache)
+      .end((err, res) => {
+        if (err) {
+          throw err;
+        } else {
+          this.setState({username: res.body.userName});
+        }
+      });
   }
 
   render() {

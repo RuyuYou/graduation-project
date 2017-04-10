@@ -13,7 +13,6 @@ class LoginController {
       if (!doc) {
         return res.sendStatus(constant.httpCode.NOT_FOUND);
       }
-      res.session = doc;
       return res.sendStatus(constant.httpCode.OK);
     });
   }

@@ -28,17 +28,14 @@ class LoginForm extends Component {
         accountError: '',
         passwordError: '',
       }, () => {
-        const account = this.account.value;
+        const email = this.account.value;
         const password = this.password.value;
-        console.log({account, password});
+        console.log({email, password});
         superagent.post('/login')
-          .send({account, password})
+          .send({email, password})
           .end((err, res) => {
-
-            console.log(res.statusCode)
             if (res.statusCode === 200) {
               this.props.router.push('/');
-
             }
             this.setState({loading: false});
             if (res.body.status === constant.httpCode.UNAUTHORIZED) {

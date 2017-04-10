@@ -32,7 +32,7 @@ export  default class TickersManagementEditor extends Component {
       monthOption.push(<option value={i}>{i}</option>);
     }
     const dateOption = [];
-    for (let j = 1; j<= 31; j++) {
+    for (let j = 1; j <= 31; j++) {
       dateOption.push(<option value={j}>{j}</option>)
     }
     return (
@@ -52,7 +52,7 @@ export  default class TickersManagementEditor extends Component {
           </div>
 
           <div className='tickers-management-form'>
-            <label className='col-sm-4'>始发地</label>
+            <label className='col-sm-4'>一等座</label>
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
@@ -62,7 +62,7 @@ export  default class TickersManagementEditor extends Component {
           </div>
 
           <div className='tickers-management-form'>
-            <label className='col-sm-4'>到达地</label>
+            <label className='col-sm-4'>二等座</label>
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
@@ -72,7 +72,7 @@ export  default class TickersManagementEditor extends Component {
           </div>
 
           <div className='tickers-management-form'>
-            <label className='col-sm-4'>历时</label>
+            <label className='col-sm-4'>特等座</label>
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
@@ -81,46 +81,9 @@ export  default class TickersManagementEditor extends Component {
             </div>
           </div>
 
-          <div className='tickers-management-form'>
-            <label className='col-sm-4'>硬座</label>
-            <div className='col-sm-8'>
-              <input type='text' className='form-control'
-                     ref={(ref) => {
-                       this.hardSeat = ref;
-                     }}/>
-            </div>
-          </div>
-
-          <div className='tickers-management-form'>
-            <label className='col-sm-4'>软座</label>
-            <div className='col-sm-8'>
-              <input type='text' className='form-control'
-                     ref={(ref) => {
-                       this.softSeat = ref;
-                     }}/>
-            </div>
-          </div>
-
-          <div className='tickers-management-form'>
-            <label className='col-sm-4'>发车时间</label>
-            <div className='col-sm-8'>
-              <div className="form-group">
-                <select id="year">
-                  <option value=''>2017</option>
-                </select>
-                <select id="month">
-                  {monthOption}
-                </select>
-                <select id="date">
-                  {dateOption}
-                </select>
-              </div>
-            </div>
-          </div>
-
           <div className='role-management-form text-center'>
             <button className='btn btn-primary btn-size'
-                    > 确定
+            > 确定
             </button>
           </div>
         </div>

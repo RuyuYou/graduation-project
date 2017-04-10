@@ -25,12 +25,9 @@ class TickersManagementList extends Component {
       return <tbody key={index}>
       <tr onClick={this.clickTickers.bind(this, index, item)} className={'user-tickers-tab'}>
         <td>{item.trainId}</td>
-        <td>{item.startPlace}</td>
-        <td>{item.endPlace}</td>
-        <td>{item.lasted}</td>
-        <td>{item.hardSeat}</td>
-        <td>{item.softSeat}</td>
-        <td>{item.createDate}</td>
+        <td>{item.firstSeat}</td>
+        <td>{item.secondSeat}</td>
+        <td>{item.specialSeat}</td>
       </tr>
       </tbody>
     });
@@ -40,12 +37,9 @@ class TickersManagementList extends Component {
           <thead>
           <tr>
             <th>列车号</th>
-            <th>始发地</th>
-            <th>到达地</th>
-            <th>历时</th>
-            <th>硬座</th>
-            <th>软座</th>
-            <th>发车时间</th>
+            <th>一等座</th>
+            <th>二等座</th>
+            <th>特等座</th>
           </tr>
           </thead>
           {TickerList}

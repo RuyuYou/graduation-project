@@ -12,6 +12,7 @@ import Login from './component/Login';
 import Home from './component/menu/Home';
 import UserCenter from './component/menu/UserCenter';
 import TickersManagement from './component/tickersManagement';
+import TrainManagement from './component/trainManagement';
 
 const store = createStore(
   rootReducer,
@@ -29,6 +30,7 @@ class Main extends Component {
           <Route path='index' component={Home}/>
           <Route path='userCenter' component={UserCenter}/>
           <Route path='ticker' component={TickersManagement}/>
+          <Route path='train' component={TrainManagement}/>
         </Route>
       </Router>
     );

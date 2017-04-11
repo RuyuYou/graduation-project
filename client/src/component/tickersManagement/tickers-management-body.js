@@ -28,7 +28,7 @@ class TickersManagementBody extends Component {
       });
   }
 
-  addTickers() {
+  modifyTickers() {
     this.requestData();
   }
 
@@ -43,7 +43,6 @@ class TickersManagementBody extends Component {
   }
 
   render() {
-    const tickerList = this.state.tickerList || [];
     return (
       <div className='tickers-management-body row'>
         <div className="col-sm-8">
@@ -52,7 +51,7 @@ class TickersManagementBody extends Component {
         </div>
         <div className="col-sm-4">
           <TickersManagementEditor currentTicker={this.state.currentTicker}
-                                   addTickers={this.addTickers.bind(this)}/>
+                                   modifyTickers={this.modifyTickers.bind(this)}/>
         </div>
       </div>
     );

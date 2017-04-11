@@ -83,7 +83,7 @@ export  default class TickersManagementEditor extends Component {
           if (err) {
             throw  err;
           }
-          this.props.addTickers();
+          this.props.modifyTickers();
           this.cleanForm();
         });
     }

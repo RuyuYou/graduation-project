@@ -15,26 +15,56 @@ export  default class TickersManagementEditor extends Component {
     }
   }
 
+  handleTabsToggle(index) {
+    if (index === 0) {
+      this.cleanForm();
+      this.setState({
+        updateFormEnable: false,
+        activeIndex: index
+      });
+    }
+  }
+
+  cleanForm() {
+    this.trainId.value = '';
+    this.firstSeat.value = '';
+    this.secondSeat.value = '';
+    this.specialSeat.value = '';
+  }
+
   getTabs() {
     return tabsConfiguration.map((tab, index) => {
       let active = this.state.activeIndex === index ? 'btn-primary' : 'btn-default';
       return (
         <div className='btn-group' role='group' key={index}>
-          <button type='button' className={'btn ' + active}>{tab.value}</button>
+          <button type='button' className={'btn ' + active}
+                  disabled={index === 1 && !this.state.updateFormEnable ? 'disabled' : ''}
+                  onClick={this.handleTabsToggle.bind(this, index)}>
+            {tab.value}
+          </button>
         </div>
       );
     });
   }
 
+  receivePropsData(currentTicker) {
+    this.trainId.value = currentTicker.currentTicker.trainId;
+    this.firstSeat.value = currentTicker.currentTicker.firstSeat;
+    this.secondSeat.value = currentTicker.currentTicker.secondSeat;
+    this.specialSeat.value = currentTicker.currentTicker.specialSeat;
+  }
+
+  componentWillReceiveProps(next) {
+    if (next.currentTicker.trainId) {
+      this.receivePropsData(next);
+      this.setState({
+        activeIndex: 1,
+        updateFormEnable: true
+      });
+    }
+  }
+
   render() {
-    const monthOption = [];
-    for (let i = 1; i <= 12; i++) {
-      monthOption.push(<option value={i}>{i}</option>);
-    }
-    const dateOption = [];
-    for (let j = 1; j <= 31; j++) {
-      dateOption.push(<option value={j}>{j}</option>)
-    }
     return (
       <div className="tickers-management-editor">
         <div className='tab-ul'>
@@ -56,7 +86,7 @@ export  default class TickersManagementEditor extends Component {
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
-                       this.startPlace = ref;
+                       this.firstSeat = ref;
                      }}/>
             </div>
           </div>
@@ -66,7 +96,7 @@ export  default class TickersManagementEditor extends Component {
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
-                       this.endPlace = ref;
+                       this.secondSeat = ref;
                      }}/>
             </div>
           </div>
@@ -76,14 +106,13 @@ export  default class TickersManagementEditor extends Component {
             <div className='col-sm-8'>
               <input type='text' className='form-control'
                      ref={(ref) => {
-                       this.lasted = ref;
+                       this.specialSeat = ref;
                      }}/>
             </div>
           </div>
 
           <div className='role-management-form text-center'>
-            <button className='btn btn-primary btn-size'
-            > 确定
+            <button className='btn btn-primary btn-size'> 确定
             </button>
           </div>
         </div>

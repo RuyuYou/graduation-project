@@ -47,10 +47,10 @@ class TickersManagementBody extends Component {
                                  changeTickers={this.changeTickers.bind(this)}/>
         </div>
         <div className="col-sm-4">
-          <TickersManagementEditor/>
+          <TickersManagementEditor currentTicker={this.state.currentTicker}/>
         </div>
       </div>
-    )
+    );
   }
 }
 

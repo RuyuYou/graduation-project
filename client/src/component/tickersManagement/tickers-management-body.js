@@ -28,6 +28,10 @@ class TickersManagementBody extends Component {
       });
   }
 
+  addTickers() {
+    this.requestData();
+  }
+
   componentDidMount() {
     this.requestData();
   }
@@ -47,7 +51,8 @@ class TickersManagementBody extends Component {
                                  changeTickers={this.changeTickers.bind(this)}/>
         </div>
         <div className="col-sm-4">
-          <TickersManagementEditor currentTicker={this.state.currentTicker}/>
+          <TickersManagementEditor currentTicker={this.state.currentTicker}
+                                   addTickers={this.addTickers.bind(this)}/>
         </div>
       </div>
     );

@@ -1,4 +1,6 @@
 import {Component} from 'react';
+import superagent from 'superagent';
+import noCache from 'superagent-no-cache';
 
 
 const tabsConfiguration = [
@@ -64,6 +66,29 @@ export  default class TickersManagementEditor extends Component {
     }
   }
 
+  submit() {
+    const info = {
+      trainId: this.trainId.value.trim(),
+      firstSeat: this.firstSeat.value.trim(),
+      secondSeat: this.secondSeat.value.trim(),
+      specialSeat: this.specialSeat.value.trim()
+    };
+    if (this.state.activeIndex === 1) {
+      console.log('put');
+    } else {
+      superagent.post('/tickers')
+        .use(noCache)
+        .send(info)
+        .end((err, res)=> {
+          if (err) {
+            throw  err;
+          }
+          this.props.addTickers();
+          this.cleanForm();
+        });
+    }
+  }
+
   render() {
     return (
       <div className="tickers-management-editor">
@@ -112,7 +137,9 @@ export  default class TickersManagementEditor extends Component {
           </div>
 
           <div className='role-management-form text-center'>
-            <button className='btn btn-primary btn-size'> 确定
+            <button className='btn btn-primary btn-size'
+                    onClick={this.submit.bind(this)}>
+              确定
             </button>
           </div>
         </div>

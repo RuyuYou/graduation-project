@@ -74,7 +74,17 @@ export  default class TickersManagementEditor extends Component {
       specialSeat: this.specialSeat.value.trim()
     };
     if (this.state.activeIndex === 1) {
-      console.log('put');
+      const id = this.props.currentTicker._id;
+      superagent.put(`/tickers/${id}`)
+        .use(noCache)
+        .send(info)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          this.props.modifyTickers();
+          this.cleanForm();
+        })
     } else {
       superagent.post('/tickers')
         .use(noCache)

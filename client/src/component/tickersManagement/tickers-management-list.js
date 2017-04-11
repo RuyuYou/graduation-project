@@ -21,9 +21,11 @@ class TickersManagementList extends Component {
   }
 
   render() {
+    console.log(this.state.currentTicker);
     const TickerList = this.props.tickerList.map((item, index)=> {
+      const active = this.state.currentTicker._id === item._id ? 'info' : '';
       return <tbody key={index}>
-      <tr onClick={this.clickTickers.bind(this, index, item)} className={'user-tickers-tab'}>
+      <tr onClick={this.clickTickers.bind(this, index, item)} className={'user-tickers-tab ' + active}>
         <td>{item.trainId}</td>
         <td>{item.firstSeat}</td>
         <td>{item.secondSeat}</td>

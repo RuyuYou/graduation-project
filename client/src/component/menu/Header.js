@@ -33,7 +33,7 @@ export default class Header extends Component {
           <div className='nav-user-info pull-right'>
             <a><font color='white'><i className='fa fa-bell'> </i></font></a>
             <NavDropdown eventKey={1} title={this.state.username} id='basic-nav-dropdown'
-                         className='menu-drop no-padding nav-inline'>
+                         className='menu-drop no-padding nav-inline margin-left'>
               <MenuItem eventKey={1.1}>
                 <button className='btn btn-default'>
                   <i className='fa fa-power-off nav-inline'> </i>

@@ -53,10 +53,14 @@ export  default class TickersManagementEditor extends Component {
   }
 
   receivePropsData(currentTicker) {
-    this.trainId.value = currentTicker.currentTicker.trainId;
-    this.firstSeat.value = currentTicker.currentTicker.firstSeat;
-    this.secondSeat.value = currentTicker.currentTicker.secondSeat;
-    this.specialSeat.value = currentTicker.currentTicker.specialSeat;
+    const item = currentTicker.currentTicker;
+    this.trainId.value = item.trainId;
+    this.firstSeat.value = item.firstInformation.firstSeat;
+    this.firstPrice.value = item.firstInformation.firstPrice;
+    this.secondSeat.value = item.secondInformation.secondSeat;
+    this.secondPrice.value = item.secondInformation.secondPrice;
+    this.specialSeat.value = item.specialInformation.specialSeat;
+    this.specialPrice.value = item.specialInformation.specialPrice;
   }
 
   componentWillReceiveProps(next) {
@@ -132,14 +136,14 @@ export  default class TickersManagementEditor extends Component {
             <label className='col-sm-4'>一等座</label>
             <div className='col-sm-8 form-line'>
               <div className="form-group col-sm-6 no-padding-left">
-                <input type='text' className='form-control'
+                <input type='number' className='form-control'
                        placeholder="个数"
                        ref={(ref) => {
                          this.firstSeat = ref;
                        }}/>
               </div>
               <div className="form-group col-sm-6 no-padding-right">
-                <input type='text' className='form-control'
+                <input type='number' className='form-control'
                        placeholder="价格"
                        ref={(ref) => {
                          this.firstPrice = ref;
@@ -152,14 +156,14 @@ export  default class TickersManagementEditor extends Component {
             <label className='col-sm-4'>二等座</label>
             <div className='col-sm-8 form-line'>
               <div className="form-group col-sm-6 no-padding-left">
-                <input type='text' className='form-control'
+                <input type='number' className='form-control'
                        placeholder="个数"
                        ref={(ref) => {
                          this.secondSeat = ref;
                        }}/>
               </div>
               <div className="form-group col-sm-6 no-padding-right">
-                <input type='text' className='form-control'
+                <input type='number' className='form-control'
                        placeholder="价格"
                        ref={(ref) => {
                          this.secondPrice = ref;
@@ -172,14 +176,14 @@ export  default class TickersManagementEditor extends Component {
             <label className='col-sm-4'>特等座</label>
             <div className='col-sm-8 form-line'>
               <div className="form-group col-sm-6 no-padding-left">
-                <input type='text' className='form-control'
+                <input type='number' className='form-control'
                        placeholder="个数"
                        ref={(ref) => {
                          this.specialSeat = ref;
                        }}/>
               </div>
               <div className="form-group col-sm-6 no-padding-right">
-                <input type='text' className='form-control'
+                <input type='number' className='form-control'
                        placeholder="价格"
                        ref={(ref) => {
                          this.specialPrice = ref;

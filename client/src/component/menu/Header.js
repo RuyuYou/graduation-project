@@ -29,7 +29,7 @@ export default class Header extends Component {
       <div>
         <div className='header' id='header'>
           <i className='fa fa-leaf'> </i>
-          TWARS Admin
+          火车后台管理
           <div className='nav-user-info pull-right'>
             <a><font color='white'><i className='fa fa-bell'> </i></font></a>
             <NavDropdown eventKey={1} title={this.state.username} id='basic-nav-dropdown'

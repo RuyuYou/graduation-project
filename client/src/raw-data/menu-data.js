@@ -39,7 +39,7 @@ export default [
     id: 6,
     parent: 1,
     level: 2,
-    text: '权限管理',
+    text: '用户管理',
     uri: '/roleManagement',
     icon: 'cog'
   }

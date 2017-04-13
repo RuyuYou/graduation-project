@@ -30,8 +30,11 @@ export  default class TickersManagementEditor extends Component {
   cleanForm() {
     this.trainId.value = '';
     this.firstSeat.value = '';
+    this.firstPrice.value = '';
     this.secondSeat.value = '';
+    this.secondPrice.value = '';
     this.specialSeat.value = '';
+    this.specialPrice.value = '';
   }
 
   getTabs() {
@@ -69,9 +72,18 @@ export  default class TickersManagementEditor extends Component {
   submit() {
     const info = {
       trainId: this.trainId.value.trim(),
-      firstSeat: this.firstSeat.value.trim(),
-      secondSeat: this.secondSeat.value.trim(),
-      specialSeat: this.specialSeat.value.trim()
+      firstInformation: {
+        firstSeat: this.firstSeat.value.trim(),
+        firstPrice: this.firstPrice.value.trim()
+      },
+      secondInformation: {
+        secondSeat: this.secondSeat.value.trim(),
+        secondPrice: this.secondPrice.value.trim()
+      },
+      specialInformation: {
+        specialSeat: this.specialSeat.value.trim(),
+        specialPrice: this.specialPrice.value.trim()
+      }
     };
     if (this.state.activeIndex === 1) {
       const id = this.props.currentTicker._id;
@@ -118,31 +130,61 @@ export  default class TickersManagementEditor extends Component {
 
           <div className='tickers-management-form'>
             <label className='col-sm-4'>一等座</label>
-            <div className='col-sm-8'>
-              <input type='text' className='form-control'
-                     ref={(ref) => {
-                       this.firstSeat = ref;
-                     }}/>
+            <div className='col-sm-8 form-line'>
+              <div className="form-group col-sm-6 no-padding-left">
+                <input type='text' className='form-control'
+                       placeholder="个数"
+                       ref={(ref) => {
+                         this.firstSeat = ref;
+                       }}/>
+              </div>
+              <div className="form-group col-sm-6 no-padding-right">
+                <input type='text' className='form-control'
+                       placeholder="价格"
+                       ref={(ref) => {
+                         this.firstPrice = ref;
+                       }}/>
+              </div>
             </div>
           </div>
 
           <div className='tickers-management-form'>
             <label className='col-sm-4'>二等座</label>
-            <div className='col-sm-8'>
-              <input type='text' className='form-control'
-                     ref={(ref) => {
-                       this.secondSeat = ref;
-                     }}/>
+            <div className='col-sm-8 form-line'>
+              <div className="form-group col-sm-6 no-padding-left">
+                <input type='text' className='form-control'
+                       placeholder="个数"
+                       ref={(ref) => {
+                         this.secondSeat = ref;
+                       }}/>
+              </div>
+              <div className="form-group col-sm-6 no-padding-right">
+                <input type='text' className='form-control'
+                       placeholder="价格"
+                       ref={(ref) => {
+                         this.secondPrice = ref;
+                       }}/>
+              </div>
             </div>
           </div>
 
           <div className='tickers-management-form'>
             <label className='col-sm-4'>特等座</label>
-            <div className='col-sm-8'>
-              <input type='text' className='form-control'
-                     ref={(ref) => {
-                       this.specialSeat = ref;
-                     }}/>
+            <div className='col-sm-8 form-line'>
+              <div className="form-group col-sm-6 no-padding-left">
+                <input type='text' className='form-control'
+                       placeholder="个数"
+                       ref={(ref) => {
+                         this.specialSeat = ref;
+                       }}/>
+              </div>
+              <div className="form-group col-sm-6 no-padding-right">
+                <input type='text' className='form-control'
+                       placeholder="价格"
+                       ref={(ref) => {
+                         this.specialPrice = ref;
+                       }}/>
+              </div>
             </div>
           </div>
 

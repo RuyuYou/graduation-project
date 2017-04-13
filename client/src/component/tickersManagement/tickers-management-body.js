@@ -22,9 +22,9 @@ class TickersManagementBody extends Component {
         if (err) {
           throw err;
         }
-        this.setState(({
+        this.setState({
           tickerList: res.body
-        }));
+        });
       });
   }
 

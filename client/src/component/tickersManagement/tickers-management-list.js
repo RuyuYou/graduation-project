@@ -21,15 +21,14 @@ class TickersManagementList extends Component {
   }
 
   render() {
-    console.log(this.state.currentTicker);
     const TickerList = this.props.tickerList.map((item, index)=> {
       const active = this.state.currentTicker._id === item._id ? 'info' : '';
       return <tbody key={index}>
       <tr onClick={this.clickTickers.bind(this, index, item)} className={'user-tickers-tab ' + active}>
         <td>{item.trainId}</td>
-        <td>{item.firstSeat}</td>
-        <td>{item.secondSeat}</td>
-        <td>{item.specialSeat}</td>
+        <td>{`${item.firstInformation.firstSeat}个座位,${item.firstInformation.firstPrice}元`}</td>
+        <td>{`${item.secondInformation.secondSeat}个座位,${item.secondInformation.secondPrice}元`}</td>
+        <td>{`${item.specialInformation.specialSeat}个座位,${item.specialInformation.specialPrice}元`}</td>
       </tr>
       </tbody>
     });

@@ -7,7 +7,7 @@ const tickerSchema = new Schema({
     firstSeat: Number,
     firstPrice: Number
   },
-  secondSInformation: {
+  secondInformation: {
     secondSeat: Number,
     secondPrice: Number
   },

@@ -40,7 +40,7 @@ export default [
     parent: 1,
     level: 2,
     text: '用户管理',
-    uri: '/roleManagement',
+    uri: '/consumerManagement',
     icon: 'cog'
   }
 ];

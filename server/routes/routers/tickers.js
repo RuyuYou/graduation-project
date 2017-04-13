@@ -5,7 +5,8 @@ const router = Router();
 const tickerCtrl = new TickerController();
 
 router.get('/', tickerCtrl.getTickers);
-router.put('/:id', tickerCtrl.updateTickers);
+router.put('/:tickerId', tickerCtrl.updateTickers);
 router.post('/', tickerCtrl.createTickers);
+router.delete('/:tickerId', tickerCtrl.deleteTickers);
 
 module.exports = router;

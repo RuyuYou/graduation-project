@@ -5,6 +5,7 @@ const constant = require('../../config/constant');
 class UserController {
   getName(req, res) {
     const userInfo = req.session;
+    console.log(userInfo);
     Users.findOne(userInfo, (err, doc)=> {
       if (err) {
         throw err;

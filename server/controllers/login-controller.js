@@ -3,14 +3,14 @@ const Users = require('../models/user');
 const constant = require('../../config/constant');
 
 class LoginController {
-  login(req, res) {
+  login(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
-    Users.findOne({email, password}, (err, doc)=> {
+    Users.findOne({email, password}, (err, result)=> {
       if (err) {
-        throw err;
+        return next(err);
       }
-      if (!doc) {
+      if (!result) {
         return res.sendStatus(constant.httpCode.NOT_FOUND);
       }
       return res.sendStatus(constant.httpCode.OK);

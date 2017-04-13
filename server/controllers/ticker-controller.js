@@ -11,28 +11,41 @@ function getTimes() {
 }
 
 class TickerController {
-  getTickers(req, res) {
+  getTickers(req, res, next) {
     Tickers.find({}, (err, result) => {
       if (err) {
-        throw err;
+        return next(err);
       }
       return res.status(constant.httpCode.OK).send(result);
     });
   }
 
-  createTickers(req, res) {
+  createTickers(req, res, next) {
     Tickers.create(req.body, (err, result) => {
       if (err) {
-        throw err;
+        return next(err);
       }
       return res.sendStatus(constant.httpCode.CREATED);
     });
   }
 
-  updateTickers(req, res) {
-    Tickers.findByIdAndUpdate(req.params.id, req.body, (err, result)=> {
+  deleteTickers(req, res, next) {
+    const tickerId = req.params.tickerId;
+    Tickers.findByIdAndRemove(tickerId, (err, result)=> {
       if (err) {
-        throw err;
+        return next(err);
+      }
+      if (!result) {
+        return res.sendStatus(constant.httpCode.NOT_FOUND);
+      }
+      return res.sendStatus(constant.httpCode.NO_CONTENT);
+    });
+  }
+
+  updateTickers(req, res, next) {
+    Tickers.findByIdAndUpdate(req.params.tickerId, req.body, (err, result)=> {
+      if (err) {
+        return next(err);
       }
       if (!result) {
         return res.sendStatus(constant.httpCode.NOT_FOUND);

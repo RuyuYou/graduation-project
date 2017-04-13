@@ -3,9 +3,18 @@ const Schema = mongoose.Schema;
 
 const tickerSchema = new Schema({
   trainId: String,
-  firstSeat: Number,
-  secondSeat: Number,
-  specialSeat: Number
+  firstInformation: {
+    firstSeat: Number,
+    firstPrice: Number
+  },
+  secondSInformation: {
+    secondSeat: Number,
+    secondPrice: Number
+  },
+  specialInformation: {
+    specialSeat: Number,
+    specialPrice: Number
+  }
 });
 
 const Ticker = mongoose.model('Ticker', tickerSchema);

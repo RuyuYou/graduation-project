@@ -21,12 +21,19 @@ class TickerController {
   }
 
   createTickers(req, res, next) {
-    Tickers.create(req.body, (err, result) => {
-      if (err) {
-        return next(err);
+    Tickers.findOne({trainId: req.body.trainId}, (err, result)=> {
+      if (result) {
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
+      } else {
+        Tickers.create(req.body, (err, result) => {
+          if (err) {
+            return next(err);
+          }
+          return res.sendStatus(constant.httpCode.CREATED);
+        });
       }
-      return res.sendStatus(constant.httpCode.CREATED);
     });
+
   }
 
   deleteTickers(req, res, next) {

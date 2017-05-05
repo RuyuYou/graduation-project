@@ -2,18 +2,26 @@ import {Component} from 'react';
 import superagent from 'superagent';
 import noCache from 'superagent-no-cache';
 
-
 const tabsConfiguration = [
   {value: '新增'},
   {value: '修改'}
 ];
+
+class ErrorTip extends Component {
+  render() {
+    return (
+      <span className="error-tip">{this.props.error}</span>
+    )
+  }
+}
 
 export  default class TickersManagementEditor extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      activeIndex: 0
+      activeIndex: 0,
+      trainIdError: ''
     }
   }
 
@@ -109,10 +117,20 @@ export  default class TickersManagementEditor extends Component {
           if (err) {
             throw  err;
           }
-          this.props.modifyTickers();
-          this.cleanForm();
+          if (res.status === 204) {
+            this.setState({trainIdError: '该车次已存在'});
+          } else {
+            this.props.modifyTickers();
+            this.cleanForm();
+          }
         });
     }
+  }
+
+  hidderTrainId() {
+    this.setState({
+      trainIdError: ''
+    });
   }
 
   render() {
@@ -128,7 +146,8 @@ export  default class TickersManagementEditor extends Component {
               <input type='text' className='form-control'
                      ref={(ref) => {
                        this.trainId = ref;
-                     }}/>
+                     }} onFocus={this.hidderTrainId.bind(this)}/>
+              <ErrorTip error={this.state.trainIdError}/>
             </div>
           </div>
 

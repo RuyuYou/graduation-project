@@ -106,8 +106,12 @@ export  default class TickersManagementEditor extends Component {
           if (err) {
             throw err;
           }
-          this.props.modifyTickers();
-          this.cleanForm();
+          if (res.status === 204) {
+            this.setState({trainIdError: '该车次已存在,不可修改'});
+          } else {
+            this.props.modifyTickers();
+            this.cleanForm();
+          }
         })
     } else {
       superagent.post('/tickers')

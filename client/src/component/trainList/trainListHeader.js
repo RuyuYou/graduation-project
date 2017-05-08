@@ -1,6 +1,14 @@
 import {Component} from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router';
 
-export default class TickerListHeader extends Component {
+class TrainListHeader extends Component {
+
+  addTrain() {
+    const pathName = window.location.pathname;
+    this.props.router.push(pathName + '/new');
+  }
+
   render() {
     return (
       <div>
@@ -9,7 +17,8 @@ export default class TickerListHeader extends Component {
         </div>
 
         <div className='trainList-title'>
-          <button className='btn btn-default'>
+          <button className='btn btn-default'
+                  onClick={this.addTrain.bind(this)}>
             <i className='fa fa-plus blue'> </i>
             <span className='text'>新增车次 </span>
           </button>
@@ -22,3 +31,7 @@ export default class TickerListHeader extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => state;
+
+export default connect(mapStateToProps)(withRouter(TrainListHeader));

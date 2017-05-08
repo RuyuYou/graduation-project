@@ -13,6 +13,7 @@ import Home from './component/menu/Home';
 import UserCenter from './component/menu/UserCenter';
 import TickersManagement from './component/tickersManagement';
 import TrainList from './component/trainList';
+import TrainEditor from './component/trainEditor';
 
 const store = createStore(
   rootReducer,
@@ -30,7 +31,10 @@ class Main extends Component {
           <Route path='index' component={Home}/>
           <Route path='userCenter' component={UserCenter}/>
           <Route path='ticker' component={TickersManagement}/>
-          <Route path='train' component={TrainList}/>
+          <Route path='train'>
+            <IndexRoute component={TrainList}/>
+            <Router path='new' component={TrainEditor}/>
+          </Route>
         </Route>
       </Router>
     );

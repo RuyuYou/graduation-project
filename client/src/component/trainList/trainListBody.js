@@ -1,5 +1,6 @@
 import {Component} from 'react';
 import superagent from 'superagent';
+import {Link} from 'react-router';
 import noCache from 'superagent-no-cache';
 
 const header = ['列车号', '总时长', '发车时间', '始发地', '终点站', '中间站', '操作'];
@@ -43,6 +44,7 @@ export default class TrainListBody extends Component {
   render() {
     const trainList = this.state.trainList || [];
     const listHTML = trainList.map((item, index)=> {
+      const updatePath = window.location.pathname + '/edit';
       return (
         <tr key={index}>
           <td><input type="checkbox"/></td>
@@ -54,7 +56,9 @@ export default class TrainListBody extends Component {
           <td>{item.middlePlace}</td>
           <td>
             <div className='action-buttons'>
-              <i className={'fa fa-pencil bigger pencil-green'}> </i>
+              <Link to={updatePath}>
+                <i className={'fa fa-pencil bigger pencil-green'}> </i>
+              </Link>
               <i className='fa fa-trash-o bigger'> </i>
             </div>
           </td>

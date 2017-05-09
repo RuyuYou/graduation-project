@@ -1,12 +1,5 @@
 import {Component} from 'react';
 
-const labels = [
-  {
-    text: '小时',
-
-  }
-]
-
 export default class TrainEditorBody extends Component {
   render() {
     return (<div className="train-editor-body">
@@ -23,7 +16,7 @@ export default class TrainEditorBody extends Component {
       <div className='form-group row'>
         <label className='col-sm-4 control-label'> 总时长 </label>
         <div className='col-sm-6'>
-          <div className='col-sm-3 no-padding form-group'>
+          <div className='col-sm-4 no-padding form-group'>
             <input type="number" className="level-input form-control"
                    ref={(ref)=> {
                      this.hours = ref;
@@ -31,7 +24,7 @@ export default class TrainEditorBody extends Component {
             <label>小时</label>
           </div>
 
-          <div className='col-sm-3 no-padding form-group'>
+          <div className='col-sm-4 no-padding form-group'>
             <input type="number" className="level-input form-control"
                    ref={(ref)=> {
                      this.minutes = ref;
@@ -40,6 +33,8 @@ export default class TrainEditorBody extends Component {
           </div>
         </div>
       </div>
+
+      
     </div>);
   }
 }

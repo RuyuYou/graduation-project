@@ -34,7 +34,7 @@ class Main extends Component {
           <Route path='train'>
             <IndexRoute component={TrainList}/>
             <Router path='new' component={TrainEditor}/>
-            <Router path='edit' component={TrainEditor}/>
+            <Router path=':id/edit' component={TrainEditor}/>
           </Route>
         </Route>
       </Router>

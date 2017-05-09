@@ -77,7 +77,7 @@ export default class TrainListBody extends Component {
   render() {
     const trainList = this.state.trainList || [];
     const listHTML = trainList.map((item, index)=> {
-      const updatePath = window.location.pathname + '/edit';
+      const updatePath = window.location.pathname + `/${item._id}/edit`;
       return (
         <tr key={index}>
           <td><input type="checkbox"/></td>

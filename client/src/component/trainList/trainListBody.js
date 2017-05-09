@@ -26,7 +26,8 @@ export default class TrainListBody extends Component {
     super(props);
     this.state = {
       trainList: [],
-      showModal: false
+      showModal: false,
+      deleteIdArray: []
     };
   }
 
@@ -48,16 +49,12 @@ export default class TrainListBody extends Component {
   }
 
   deleteTrain(id) {
+    const newArray = [];
+    newArray.push(id);
     this.setState({
-      showModal: true
+      showModal: true,
+      deleteIdArray: newArray
     });
-    superagent.delete(`/trains/${id}`)
-      .use(noCache)
-      .end((err, res)=> {
-        if (err) {
-          throw err;
-        }
-      });
   }
 
   cancelButton() {
@@ -70,6 +67,15 @@ export default class TrainListBody extends Component {
     this.setState({
       showModal: false
     }, ()=> {
+      this.state.deleteIdArray.map((id)=> {
+        superagent.delete(`/trains/${id}`)
+          .use(noCache)
+          .end((err, res)=> {
+            if (err) {
+              throw err;
+            }
+          });
+      });
       this.getTrainList();
     });
   }

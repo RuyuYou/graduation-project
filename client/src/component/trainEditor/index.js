@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import TrainEditorHeader from './train-editor-header';
 import '../../../style/train-editor.less';
-import TrainEditorBody from './train-editor-body';
+import TrainEditorInfo from './train-editor-info';
 import TrainEditorStartTime from './train-editor-startTime';
 
 export default class TrainEditor extends Component {
@@ -9,7 +9,7 @@ export default class TrainEditor extends Component {
     return (<div id="train-editor">
       <TrainEditorHeader/>
       <div className="train-editor-body">
-        <TrainEditorBody/>
+        <TrainEditorInfo/>
         <TrainEditorStartTime/>
       </div>
     </div>);

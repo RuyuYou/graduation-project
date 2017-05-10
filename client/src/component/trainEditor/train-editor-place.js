@@ -1,12 +1,15 @@
 import {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 
+const middlePlace = [];
+
 export default class TrainEditorPlace extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal: false,
-      middlePlace: []
+      middlePlace: [],
+      middlePlaceError: ''
     }
   }
 
@@ -18,12 +21,34 @@ export default class TrainEditorPlace extends Component {
 
   cancelButton() {
     this.setState({
-      showModal: false
+      showModal: false,
+      middlePlaceError: ''
+    }, ()=> {
+      this.middle.value = '';
     });
   }
 
   makeSureAdd() {
+    if (this.middle.value != '') {
+      const value = this.middle.value;
+      middlePlace.push(value);
+      this.setState({
+        showModal: false,
+        middlePlace: middlePlace
+      }, ()=> {
+        this.middle.value = '';
+      });
+    } else {
+      this.setState({
+        middlePlaceError: '中间站不能为空'
+      });
+    }
+  }
 
+  hiddenErrorMessage() {
+    this.setState({
+      middlePlaceError: ''
+    });
   }
 
   render() {
@@ -63,9 +88,13 @@ export default class TrainEditorPlace extends Component {
             </Modal.Header>
 
             <Modal.Body>
-              <div className="form-group text-center margin-modal">
-                <input type="text" className="form-control" placeholder="请输入中间站"/>
+              <div className="form-group text-center margin-modal no-margin-bottom">
+                <input type="text" className="form-control" placeholder="请输入中间站"
+                       ref={(ref)=> {
+                         this.middle = ref;
+                       }} onFocus={this.hiddenErrorMessage.bind(this)}/>
               </div>
+              <span className="error-tip text-center">{this.state.middlePlaceError}</span>
             </Modal.Body>
 
             <Modal.Footer>

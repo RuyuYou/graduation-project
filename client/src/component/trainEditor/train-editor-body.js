@@ -2,7 +2,7 @@ import {Component} from 'react';
 
 export default class TrainEditorBody extends Component {
   render() {
-    return (<div className="train-editor-body">
+    return (<div>
       <div className='form-group row'>
         <label className='col-sm-4 control-label'> 列车号 </label>
         <div className='col-sm-6'>
@@ -34,7 +34,7 @@ export default class TrainEditorBody extends Component {
         </div>
       </div>
 
-      
+
     </div>);
   }
 }

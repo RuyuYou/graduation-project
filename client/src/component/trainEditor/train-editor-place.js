@@ -91,7 +91,7 @@ export default class TrainEditorPlace extends Component {
         {middlePlaceHTML}
       </div>
 
-      <div className="text-center margin-top">
+      <div className="btn-left margin-top">
         <button className="btn btn-primary"
                 onClick={this.addMiddlePlace.bind(this)}>
           点击添加中间站

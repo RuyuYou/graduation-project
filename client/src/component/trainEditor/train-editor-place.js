@@ -52,6 +52,15 @@ export default class TrainEditorPlace extends Component {
   }
 
   render() {
+    const middlePlaceList = this.state.middlePlace || [];
+    const middlePlaceHTML = middlePlaceList.map((item, index)=> {
+      return <div className='col-sm-5' key={index}>
+        <input type='text' value={item} className="form-control read-only"
+               disabled={item}/>
+        <i className='fa fa-cog'></i>
+        <i className='fa fa-trash-o'> </i>
+      </div>
+    });
     return (<div>
       <div className="form-group row margin-top">
         <label className='col-sm-4 control-label'> 始发站 </label>
@@ -71,6 +80,11 @@ export default class TrainEditorPlace extends Component {
                    this.endPlace = ref;
                  }}/>
         </div>
+      </div>
+
+      <div className="row">
+        <label className='col-sm-4 control-label'> 始发站 </label>
+        {middlePlaceHTML}
       </div>
 
       <div className="text-center margin-top">

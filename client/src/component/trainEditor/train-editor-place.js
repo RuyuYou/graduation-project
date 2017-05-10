@@ -9,7 +9,8 @@ export default class TrainEditorPlace extends Component {
     this.state = {
       showModal: false,
       middlePlace: [],
-      middlePlaceError: ''
+      middlePlaceError: '',
+      showMiddlePlace: false
     }
   }
 
@@ -34,7 +35,8 @@ export default class TrainEditorPlace extends Component {
       middlePlace.push(value);
       this.setState({
         showModal: false,
-        middlePlace: middlePlace
+        middlePlace: middlePlace,
+        showMiddlePlace: true
       }, ()=> {
         this.middle.value = '';
       });
@@ -54,11 +56,12 @@ export default class TrainEditorPlace extends Component {
   render() {
     const middlePlaceList = this.state.middlePlace || [];
     const middlePlaceHTML = middlePlaceList.map((item, index)=> {
-      return <div className='col-sm-5' key={index}>
-        <input type='text' value={item} className="form-control read-only"
-               disabled={item}/>
-        <i className='fa fa-cog'></i>
-        <i className='fa fa-trash-o'> </i>
+      return <div className="row no-margin-left">
+        <div className='col-sm-offset-4' key={index}>
+          <span className="read-only">{item}</span>
+          <i className='fa fa-cog'></i>
+          <i className='fa fa-trash-o'> </i>
+        </div>
       </div>
     });
     return (<div>
@@ -83,7 +86,8 @@ export default class TrainEditorPlace extends Component {
       </div>
 
       <div className="row">
-        <label className='col-sm-4 control-label'> 始发站 </label>
+        <label className={this.state.showMiddlePlace ? 'col-sm-4 control-label' : 'col-sm-4 control-label  hidden'}>
+          始发站 </label>
         {middlePlaceHTML}
       </div>
 

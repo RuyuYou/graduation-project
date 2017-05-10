@@ -87,9 +87,6 @@ export default class TrainEditorStartTime extends Component {
           </div>
         </div>
       </div>
-      <div className="train-editor-body ">
-
-      </div>
     </div>);
   }
 }

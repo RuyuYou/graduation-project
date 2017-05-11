@@ -4,7 +4,7 @@ export default class TrainEditorHeader extends Component {
 
   render() {
     return (<div className="train-editor-header">
-      {this.props.title}
+      {`${this.props.title}车次`}
     </div>);
   }
 }

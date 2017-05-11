@@ -15,11 +15,11 @@ export default class TrainEditor extends Component {
     const pathNameArray = window.location.pathname.split('/');
     if (pathNameArray[pathNameArray.length - 1] === 'edit') {
       this.setState({
-        title: '修改车次'
+        title: '修改'
       });
     } else {
       this.setState({
-        title: '新增车次'
+        title: '新增'
       })
     }
   }
@@ -28,7 +28,7 @@ export default class TrainEditor extends Component {
     return (<div id="train-editor">
       <TrainEditorHeader title={this.state.title}/>
       <div className="train-editor-body">
-        <TrainEditorBody/>
+        <TrainEditorBody title={this.state.title}/>
       </div>
     </div>);
   }

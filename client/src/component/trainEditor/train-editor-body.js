@@ -325,12 +325,12 @@ export default class TrainEditorPlace extends Component {
           <div className='alert alert-block alert-success col-sm-6 col-sm-offset-3 no-margin-bottom text-center'>
             <p className='message-hint'>
               <i className='ace-icon fa fa-check-circle icon-space'> </i>
-              {`车次成功,请选择查看车次列表还是继续车次?`}
+              {`车次${this.props.title}成功,请选择查看车次列表还是继续新增车次?`}
             </p>
             <button className='btn btn-sm btn-success icon-space'>查看试卷列表
             </button>
             <button className='btn btn-sm btn-default col-sm-offset-2'
-            >{`继续试卷`}</button>
+            >{`继续新增车次`}</button>
           </div>
         </div>
 

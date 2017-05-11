@@ -7,7 +7,7 @@ export default class TrainEditorHeader extends Component {
     if (pathNameArray[pathNameArray.length - 1] === 'edit') {
       return '修改车次';
     } else {
-      return '新建车次';
+      return '新增车次';
     }
   }
 

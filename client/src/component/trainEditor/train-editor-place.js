@@ -10,7 +10,8 @@ export default class TrainEditorPlace extends Component {
       showModal: false,
       middlePlace: [],
       middlePlaceError: '',
-      showMiddlePlace: false
+      showMiddlePlace: false,
+      activeIndex: -1
     }
   }
 
@@ -30,20 +31,39 @@ export default class TrainEditorPlace extends Component {
   }
 
   makeSureAdd() {
-    if (this.middle.value != '') {
-      const value = this.middle.value;
-      middlePlace.push(value);
-      this.setState({
-        showModal: false,
-        middlePlace: middlePlace,
-        showMiddlePlace: true
-      }, ()=> {
-        this.middle.value = '';
-      });
+    if (this.state.activeIndex === -1) {
+      if (this.middle.value != '') {
+        const value = this.middle.value;
+        middlePlace.push(value);
+        this.setState({
+          showModal: false,
+          middlePlace: middlePlace,
+          showMiddlePlace: true
+        }, ()=> {
+          this.middle.value = '';
+        });
+      } else {
+        this.setState({
+          middlePlaceError: '中间站不能为空'
+        });
+      }
     } else {
-      this.setState({
-        middlePlaceError: '中间站不能为空'
-      });
+      if (this.middle.value != '') {
+        const value = this.middle.value;
+        middlePlace.splice(this.state.activeIndex, 1, value);
+        this.setState({
+          showModal: false,
+          middlePlace: middlePlace,
+          showMiddlePlace: true,
+          activeIndex: -1
+        }, ()=> {
+          this.middle.value = '';
+        });
+      } else {
+        this.setState({
+          middlePlaceError: '中间站不能为空'
+        });
+      }
     }
   }
 
@@ -53,13 +73,22 @@ export default class TrainEditorPlace extends Component {
     });
   }
 
+  modifyMiddlePlace(item, index) {
+    this.setState({
+      showModal: true,
+      activeIndex: index
+    }, ()=> {
+      this.middle.value = item;
+    });
+  }
+
   render() {
     const middlePlaceList = this.state.middlePlace || [];
     const middlePlaceHTML = middlePlaceList.map((item, index)=> {
-      return <div className="row no-margin-left">
-        <div className='col-sm-offset-4' key={index}>
+      return <div className="row no-margin-left" key={index}>
+        <div className='col-sm-offset-4'>
           <span className="read-only">{item}</span>
-          <i className='fa fa-cog'></i>
+          <i className='fa fa-cog' onClick={this.modifyMiddlePlace.bind(this, item, index)}></i>
           <i className='fa fa-trash-o'> </i>
         </div>
       </div>
@@ -122,6 +151,10 @@ export default class TrainEditorPlace extends Component {
 
           </Modal.Dialog>
         </div>
+
+      </div>
+
+      <div>
 
       </div>
     </div>);

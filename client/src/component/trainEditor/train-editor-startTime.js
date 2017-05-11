@@ -21,8 +21,6 @@ export default class TrainEditorStartTime extends Component {
     return optionMonth;
   }
 
-  /*5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31*/
-
   getOptionDay() {
     const nowDate = new Date();
     const month = nowDate.getMonth() + 1;

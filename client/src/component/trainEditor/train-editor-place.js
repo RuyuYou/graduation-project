@@ -12,8 +12,56 @@ export default class TrainEditorPlace extends Component {
       middlePlaceError: '',
       showMiddlePlace: false,
       activeIndex: -1,
-      showDeleteModal: false
+      showDeleteModal: false,
+      year: 0,
+      month: 0,
+      day: 0
     }
+  }
+
+  getOptionMonth() {
+    const nowDate = new Date();
+    const month = nowDate.getMonth();
+    const optionMonth = [];
+    for (let i = month; i < 12; i++) {
+      optionMonth.push(<option key={i} value={i + 1}>{i + 1}</option>)
+    }
+    return optionMonth;
+  }
+
+  getOptionDay() {
+    const nowDate = new Date();
+    const month = nowDate.getMonth() + 1;
+    const optionDay = [];
+    if (this.state.month == month) {
+      const date = nowDate.getDate();
+      for (let i = date + 1; i <= 31; i++) {
+        optionDay.push(<option key={i} value={i}>{i}</option>)
+      }
+    } else if (this.state.month == 6 || this.state.month == 9 || this.state.month == 11) {
+      for (let i = 0; i < 30; i++) {
+        optionDay.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
+      }
+    } else {
+      for (let i = 0; i < 31; i++) {
+        optionDay.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
+      }
+    }
+    return optionDay;
+  }
+
+  handleChangeYear(event) {
+    const value = event.target.value;
+    this.setState({
+      year: value
+    });
+  }
+
+  handleChangeMonth(event) {
+    const value = event.target.value;
+    this.setState({
+      month: value
+    });
   }
 
   addMiddlePlace() {
@@ -119,6 +167,36 @@ export default class TrainEditorPlace extends Component {
       </div>
     });
     return (<div>
+      <div className='form-group row'>
+        <label className='col-sm-4 control-label'> 发车时间 </label>
+        <div className="'col-sm-6">
+          <div className='form-group col-sm-2'>
+            <select className="form-control province" name="year"
+                    value={this.state.year}
+                    onChange={this.handleChangeYear.bind(this)}>
+              <option value="year">请选择</option>
+              <option value="2017">2017</option>
+            </select>年
+          </div>
+          <div className="form-group col-sm-2">
+            <select className="form-control city" name="month"
+                    value={this.state.month}
+                    onChange={this.handleChangeMonth.bind(this)}>
+              <option value="">请选择</option>
+              {this.getOptionMonth()}
+            </select>月
+          </div>
+          <div className="form-group col-sm-2">
+            <select className="form-control city" name="day">
+              <option value="">请选择</option>
+              {this.getOptionDay()}
+            </select>日
+          </div>
+        </div>
+      </div>
+
+      <div className="split-border"></div>
+
       <div className="form-group row margin-top">
         <label className='col-sm-4 control-label'> 始发站 </label>
         <div className='col-sm-6'>
@@ -201,7 +279,29 @@ export default class TrainEditorPlace extends Component {
 
       </div>
 
-      <div>
+      <div className="row margin-top">
+        <div className='col-sm-3 width-left text-center'>
+          <button className='btn btn-primary btn-save'
+          >{'保存  '}
+          </button>
+        </div>
+        <div className='col-sm-3 col-sm-offset-1 text-center'>
+          <button className='btn btn-primary btn-release'>{'删除  '}
+          </button>
+        </div>
+
+        <div>
+          <div className='alert alert-block alert-success col-sm-6 col-sm-offset-3 no-margin-bottom text-center'>
+            <p className='message-hint'>
+              <i className='ace-icon fa fa-check-circle icon-space'> </i>
+              {`车次成功,请选择查看车次列表还是继续车次?`}
+            </p>
+            <button className='btn btn-sm btn-success icon-space'>查看试卷列表
+            </button>
+            <button className='btn btn-sm btn-default col-sm-offset-2'
+            >{`继续试卷`}</button>
+          </div>
+        </div>
 
       </div>
     </div>);

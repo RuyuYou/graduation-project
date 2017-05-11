@@ -11,7 +11,8 @@ export default class TrainEditorPlace extends Component {
       middlePlace: [],
       middlePlaceError: '',
       showMiddlePlace: false,
-      activeIndex: -1
+      activeIndex: -1,
+      showDeleteModal: false
     }
   }
 
@@ -82,6 +83,30 @@ export default class TrainEditorPlace extends Component {
     });
   }
 
+  deleteMiddlePlace() {
+    const newMiddlePlace = this.state.middlePlace;
+    newMiddlePlace.splice(this.state.activeIndex, 1);
+    this.setState({
+      middlePlace: newMiddlePlace,
+      activeIndex: -1,
+      showDeleteModal: false
+    });
+  }
+
+  openDeleteModal(index) {
+    this.setState({
+      showDeleteModal: true,
+      activeIndex: index
+    });
+  }
+
+  cancelMiddleButton() {
+    this.setState({
+      showDeleteModal: false,
+      activeIndex: -1
+    });
+  }
+
   render() {
     const middlePlaceList = this.state.middlePlace || [];
     const middlePlaceHTML = middlePlaceList.map((item, index)=> {
@@ -89,7 +114,7 @@ export default class TrainEditorPlace extends Component {
         <div className='col-sm-offset-4'>
           <span className="read-only">{item}</span>
           <i className='fa fa-cog' onClick={this.modifyMiddlePlace.bind(this, item, index)}></i>
-          <i className='fa fa-trash-o'> </i>
+          <i className='fa fa-trash-o' onClick={this.openDeleteModal.bind(this, index)}> </i>
         </div>
       </div>
     });
@@ -147,6 +172,28 @@ export default class TrainEditorPlace extends Component {
             <Modal.Footer>
               <Button onClick={this.cancelButton.bind(this)}>取消</Button>
               <Button bsStyle='primary' onClick={this.makeSureAdd.bind(this)}>确定</Button>
+            </Modal.Footer>
+
+          </Modal.Dialog>
+        </div>
+
+      </div>
+
+      <div className={this.state.showDeleteModal ? '' : 'hidden'}>
+        <div className='static-modal'>
+
+          <Modal.Dialog>
+            <Modal.Header>
+              <Modal.Title>删除提示</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              您确定要删除该中间站吗？
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button onClick={this.cancelMiddleButton.bind(this)}>取消</Button>
+              <Button bsStyle='primary' onClick={this.deleteMiddlePlace.bind(this)}>确定</Button>
             </Modal.Footer>
 
           </Modal.Dialog>

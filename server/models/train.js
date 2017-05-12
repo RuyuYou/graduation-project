@@ -6,8 +6,17 @@ const trainSchema = new Schema({
   startPlace: String,
   endPlace: String,
   middlePlace: Array,
-  lastedTime: String,
-  startTime: String
+  lastedTime: {
+    hour: Number,
+    minutes: Number
+  },
+  startTime: {
+    year: Number,
+    month: Number,
+    day: Number,
+    hour: Number,
+    minutes: Number
+  }
 });
 
 const Train = mongoose.model('Train', trainSchema);

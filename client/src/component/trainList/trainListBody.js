@@ -84,12 +84,15 @@ export default class TrainListBody extends Component {
     const trainList = this.state.trainList || [];
     const listHTML = trainList.map((item, index)=> {
       const updatePath = window.location.pathname + `/${item._id}/edit`;
+      const lastedTime = `${item.lastedTime.hour}小时${item.lastedTime.minutes}分钟`;
+      const startTime = `${item.startTime.year}年${item.startTime.month}月${item.startTime.day}日
+${item.startTime.hour}时${item.startTime.minutes}分`;
       return (
         <tr key={index}>
           <td><input type="checkbox"/></td>
           <td>{item.trainId}</td>
-          <td>{item.lastedTime}</td>
-          <td>{item.startTime}</td>
+          <td>{lastedTime}</td>
+          <td>{startTime}</td>
           <td>{item.startPlace}</td>
           <td>{item.endPlace}</td>
           <td>{item.middlePlace}</td>

@@ -29,7 +29,7 @@ export default class TrainEditor extends Component {
     return (<div id="train-editor">
       <TrainEditorHeader title={this.state.title}/>
       <div className="train-editor-body">
-        <TrainEditorBody title={this.state.title}/>
+        <TrainEditorBody/>
       </div>
     </div>);
   }

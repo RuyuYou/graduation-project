@@ -25,11 +25,13 @@ export default class TrainEditorPlace extends Component {
       showMiddlePlace: false,
       activeIndex: -1,
       showDeleteModal: false,
-      year: 0,
-      month: 0,
-      day: 0,
-      hour: 0,
-      minute: 0,
+      startTime: {
+        year: 0,
+        month: 0,
+        day: 0,
+        hour: 0,
+        minute: 0
+      },
       trainInformation: {},
       messageError: ''
     };
@@ -67,21 +69,25 @@ export default class TrainEditorPlace extends Component {
     const startTime = trainInformation.startTime;
     if (trainInformation.middlePlace.length != 0) {
       this.setState({
-        year: startTime.year,
-        month: startTime.month,
-        day: startTime.day,
-        hour: startTime.hour,
-        minute: startTime.minutes,
+        startTime: {
+          year: startTime.year,
+          month: startTime.month,
+          day: startTime.day,
+          hour: startTime.hour,
+          minute: startTime.minutes
+        },
         middlePlace: trainInformation.middlePlace,
         showMiddlePlace: true
       });
     } else {
       this.setState({
-        year: startTime.year,
-        month: startTime.month,
-        day: startTime.day,
-        hour: startTime.hour,
-        minute: startTime.minutes
+        startTime: {
+          year: startTime.year,
+          month: startTime.month,
+          day: startTime.day,
+          hour: startTime.hour,
+          minute: startTime.minutes
+        }
       });
     }
   }
@@ -325,7 +331,7 @@ export default class TrainEditorPlace extends Component {
         <label className='col-sm-4 control-label'> 发车时间 </label>
         <div className='form-group col-sm-2'>
           <select className="form-control province" name="year"
-                  value={this.state.year}
+                  value={this.state.startTime.year}
                   onChange={this.handleChangeYear.bind(this)}>
             <option value="year">请选择</option>
             <option value="2017">2017</option>
@@ -333,7 +339,7 @@ export default class TrainEditorPlace extends Component {
         </div>
         <div className="form-group col-sm-2">
           <select className="form-control city" name="month"
-                  value={this.state.month}
+                  value={this.state.startTime.month}
                   onChange={this.handleChangeMonth.bind(this)}>
             <option value="">请选择</option>
             {this.getOptionMonth()}
@@ -341,7 +347,7 @@ export default class TrainEditorPlace extends Component {
         </div>
         <div className="form-group col-sm-2">
           <select className="form-control city" name="day"
-                  value={this.state.day}
+                  value={this.state.startTime.day}
                   onChange={this.handleChangeDay.bind(this)}>
             <option value="">请选择</option>
             {this.getOptionDay()}
@@ -353,7 +359,7 @@ export default class TrainEditorPlace extends Component {
         <label className='col-sm-4 control-label'> </label>
         <div className="form-group col-sm-2">
           <select className="form-control city" name="hour"
-                  value={this.state.hour}
+                  value={this.state.startTime.hour}
                   onChange={this.handleChangeHour.bind(this)}>
             <option value="">请选择</option>
             {this.getOptionHour()}
@@ -361,7 +367,7 @@ export default class TrainEditorPlace extends Component {
         </div>
         <div className="form-group col-sm-2">
           <select className="form-control city" name="minute"
-                  value={this.state.minute}
+                  value={this.state.startTime.minute}
                   onChange={this.handleChangeMinute.bind(this)}>
             <option value="">请选择</option>
             {this.getOptionMinute()}
@@ -398,7 +404,7 @@ export default class TrainEditorPlace extends Component {
       </div>
 
       <div className="btn-left margin-top">
-        <button className="btn btn-primary"
+        <button className="btn btn-primary btn-save"
                 onClick={this.addMiddlePlace.bind(this)}>
           点击添加中间站
         </button>
@@ -460,7 +466,7 @@ export default class TrainEditorPlace extends Component {
           </button>
         </div>
         <div className='col-sm-3 col-sm-offset-1 text-center'>
-          <button className='btn btn-primary btn-release'>{'删除  '}
+          <button className='btn btn-primary btn-save'>{'删除  '}
           </button>
         </div>
 

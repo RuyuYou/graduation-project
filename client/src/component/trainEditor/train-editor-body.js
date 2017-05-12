@@ -1,5 +1,7 @@
 import {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
+import superagent from 'superagent';
+import noCache from 'superagent-no-cache';
 
 const middlePlace = [];
 
@@ -15,8 +17,43 @@ export default class TrainEditorPlace extends Component {
       showDeleteModal: false,
       year: 0,
       month: 0,
-      day: 0
+      day: 0,
+      trainInformation: {}
+    };
+  }
+
+  componentDidMount() {
+    const pathNameArray = window.location.pathname.split('/');
+    if (pathNameArray[pathNameArray.length - 1] === 'edit') {
+      superagent
+        .get(`/trains/${pathNameArray[2]}`)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          this.setState({
+            trainInformation: res.body
+          }, ()=> {
+            this.getEditorValue(this.state.trainInformation);
+          });
+        })
+    } else {
+      this.setState({
+        trainInformation: {}
+      });
     }
+  }
+
+  getEditorValue(trainInformation) {
+    this.trainId.value = trainInformation.trainId;
+    this.lastedHour.value = trainInformation.lastedTime.hour;
+    this.lastedMinutes.value = trainInformation.lastedTime.minutes;
+    this.setState({
+      year: trainInformation.startTime.year,
+      month: trainInformation.startTime.month,
+      day: trainInformation.startTime.day
+    });
   }
 
   getOptionMonth() {
@@ -61,6 +98,13 @@ export default class TrainEditorPlace extends Component {
     const value = event.target.value;
     this.setState({
       month: value
+    });
+  }
+
+  handleChangeDay(event) {
+    const value = event.target.value;
+    this.setState({
+      day: value
     });
   }
 
@@ -183,7 +227,7 @@ export default class TrainEditorPlace extends Component {
           <div className='col-sm-4 no-padding form-group'>
             <input type="number" className="level-input form-control"
                    ref={(ref)=> {
-                     this.hours = ref;
+                     this.lastedHour = ref;
                    }}/>
             <label>小时</label>
           </div>
@@ -191,7 +235,7 @@ export default class TrainEditorPlace extends Component {
           <div className='col-sm-4 no-padding form-group'>
             <input type="number" className="level-input form-control"
                    ref={(ref)=> {
-                     this.minutes = ref;
+                     this.lastedMinutes = ref;
                    }}/>
             <label>分钟</label>
           </div>
@@ -218,7 +262,9 @@ export default class TrainEditorPlace extends Component {
             </select>月
           </div>
           <div className="form-group col-sm-2">
-            <select className="form-control city" name="day">
+            <select className="form-control city" name="day"
+                    value={this.state.day}
+                    onChange={this.handleChangeDay.bind(this)}>
               <option value="">请选择</option>
               {this.getOptionDay()}
             </select>日

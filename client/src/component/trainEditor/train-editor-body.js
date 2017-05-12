@@ -26,11 +26,11 @@ export default class TrainEditorPlace extends Component {
       activeIndex: -1,
       showDeleteModal: false,
       startTime: {
-        year: 0,
-        month: 0,
-        day: 0,
-        hour: 0,
-        minute: 0
+        year: -1,
+        month: -1,
+        day: -1,
+        hour: -1,
+        minute: -1
       },
       trainInformation: {},
       trainIdError: '',
@@ -129,15 +129,15 @@ export default class TrainEditorPlace extends Component {
 
   getOptionHour() {
     const optionHour = [];
-    for (let i = 0; i < 24; i++) {
-      optionHour.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
+    for (let i = 0; i <= 24; i++) {
+      optionHour.push(<option key={i} value={i}>{i}</option>)
     }
     return optionHour;
   }
 
   getOptionMinute() {
     const optionMinute = [];
-    for (let i = 0; i < 60; i++) {
+    for (let i = -1; i < 60; i++) {
       optionMinute.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
     }
     return optionMinute;
@@ -146,35 +146,45 @@ export default class TrainEditorPlace extends Component {
   handleChangeYear(event) {
     const value = event.target.value;
     this.setState({
-      year: value
+      startTime: {
+        year: value
+      }
     });
   }
 
   handleChangeMonth(event) {
     const value = event.target.value;
     this.setState({
-      month: value
+      startTime: {
+        month: value
+      }
     });
   }
 
   handleChangeDay(event) {
     const value = event.target.value;
     this.setState({
-      day: value
+      startTime: {
+        day: value
+      }
     });
   }
 
   handleChangeHour(event) {
     const value = event.target.value;
     this.setState({
-      hour: value
+      startTime: {
+        hour: value
+      }
     });
   }
 
   handleChangeMinute(event) {
     const value = event.target.value;
     this.setState({
-      minute: value
+      startTime: {
+        minute: value
+      }
     });
   }
 
@@ -376,7 +386,7 @@ export default class TrainEditorPlace extends Component {
           <select className="form-control city" name="hour"
                   value={this.state.startTime.hour}
                   onChange={this.handleChangeHour.bind(this)}>
-            <option value="">请选择</option>
+            <option value="hour">请选择</option>
             {this.getOptionHour()}
           </select>时
         </div>

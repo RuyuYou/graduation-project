@@ -33,7 +33,11 @@ export default class TrainEditorPlace extends Component {
         minute: 0
       },
       trainInformation: {},
-      messageError: ''
+      trainIdError: '',
+      lastedTimeError: '',
+      startTimeError: '',
+      startPlaceError: '',
+      endPlaceError: ''
     };
   }
 
@@ -268,14 +272,22 @@ export default class TrainEditorPlace extends Component {
   judgeTrainId() {
     if (this.trainId.value == '') {
       this.setState({
-        messageError: '列车号不能为空'
+        trainIdError: '列车号不能为空'
       });
     }
   }
 
-  // submit() {
-  //   this.judgeInformation();
-  // }
+  judgeLastedTime() {
+    console.log(this.lastedHour.value);
+    console.log(this.lastedMinutes.value);
+    if (this.lastedMinutes.value == '') {
+      this.setState({
+        lastedTimeError: '时长不能为空'
+      });
+    } else if (this.lastedHour.value < 0 || this.lastedMinutes.value < 1) {
+      this.setState({lastedTimeError: '时长不能为负数'});
+    }
+  }
 
   hiddenErrorMessage(err) {
     var errObj = {};
@@ -301,15 +313,16 @@ export default class TrainEditorPlace extends Component {
           <input type='text' className='form-control' placeholder='请输入列车号'
                  ref={(ref) => {
                    this.trainId = ref;
-                 }} onBlur={this.judgeTrainId.bind(this)} onFocus={this.hiddenErrorMessage.bind(this, 'messageError')}/>
+                 }} onBlur={this.judgeTrainId.bind(this)} onFocus={this.hiddenErrorMessage.bind(this, 'trainIdError')}/>
         </div>
       </div>
-      <ErrorTip error={this.state.messageError}/>
+      <ErrorTip error={this.state.trainIdError}/>
 
-      <div className='form-group row'>
+      <div className='form-group row  no-margin-form'>
         <label className='col-sm-4 control-label'> 总时长 </label>
-        <div className='col-sm-6'>
-          <div className='col-sm-4 no-padding form-group'>
+        <div className='col-sm-6' onBlur={this.judgeLastedTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'lastedTimeError')}>
+          <div className='col-sm-4 no-padding form-group  no-margin-form'>
             <input type="number" className="level-input form-control"
                    ref={(ref)=> {
                      this.lastedHour = ref;
@@ -317,7 +330,7 @@ export default class TrainEditorPlace extends Component {
             <label>小时</label>
           </div>
 
-          <div className='col-sm-4 no-padding form-group'>
+          <div className='col-sm-4 no-padding form-group  no-margin-form'>
             <input type="number" className="level-input form-control"
                    ref={(ref)=> {
                      this.lastedMinutes = ref;
@@ -326,6 +339,8 @@ export default class TrainEditorPlace extends Component {
           </div>
         </div>
       </div>
+      <ErrorTip error={this.state.lastedTimeError}/>
+
 
       <div className='form-group row'>
         <label className='col-sm-4 control-label'> 发车时间 </label>

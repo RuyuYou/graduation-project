@@ -154,6 +154,12 @@ export  default class TickersManagementEditor extends Component {
     }
   }
 
+  judgeSecondSeat() {
+    if (this.secondPrice.value == '' || this.secondSeat.value == '') {
+      this.setState({secondError: '二等座信息不能为空'});
+    }
+  }
+
   render() {
     return (
       <div className="tickers-management-editor">
@@ -199,21 +205,24 @@ export  default class TickersManagementEditor extends Component {
 
           <div className='tickers-management-form'>
             <label className='col-sm-4'>二等座</label>
-            <div className='col-sm-8 form-line'>
-              <div className="form-group col-sm-6 no-padding-left">
+            <div className='col-sm-8 form-line margin-bottom'
+                 onBlur={this.judgeSecondSeat.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'secondError')}>
+              <div className="form-group col-sm-6 no-padding-left margin-border">
                 <input type='number' className='form-control'
                        placeholder="个数"
                        ref={(ref) => {
                          this.secondSeat = ref;
                        }}/>
               </div>
-              <div className="form-group col-sm-6 no-padding-right">
+              <div className="form-group col-sm-6 no-padding-right margin-border">
                 <input type='number' className='form-control'
                        placeholder="价格"
                        ref={(ref) => {
                          this.secondPrice = ref;
                        }}/>
               </div>
+              <ErrorTip error={this.state.secondError}/>
             </div>
           </div>
 

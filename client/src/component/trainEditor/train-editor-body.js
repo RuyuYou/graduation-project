@@ -25,13 +25,11 @@ export default class TrainEditorPlace extends Component {
       showMiddlePlace: false,
       activeIndex: -1,
       showDeleteModal: false,
-      startTime: {
-        year: -1,
-        month: -1,
-        day: -1,
-        hour: -1,
-        minute: -1
-      },
+      year: -1,
+      month: -1,
+      day: -1,
+      hour: -1,
+      minute: -1,
       trainInformation: {},
       trainIdError: '',
       lastedTimeError: '',
@@ -77,25 +75,21 @@ export default class TrainEditorPlace extends Component {
     const startTime = trainInformation.startTime;
     if (trainInformation.middlePlace.length != 0) {
       this.setState({
-        startTime: {
-          year: startTime.year,
-          month: startTime.month,
-          day: startTime.day,
-          hour: startTime.hour,
-          minute: startTime.minutes
-        },
+        year: startTime.year,
+        month: startTime.month,
+        day: startTime.day,
+        hour: startTime.hour,
+        minute: startTime.minutes,
         middlePlace: trainInformation.middlePlace,
         showMiddlePlace: true
       });
     } else {
       this.setState({
-        startTime: {
-          year: startTime.year,
-          month: startTime.month,
-          day: startTime.day,
-          hour: startTime.hour,
-          minute: startTime.minutes
-        }
+        year: startTime.year,
+        month: startTime.month,
+        day: startTime.day,
+        hour: startTime.hour,
+        minute: startTime.minutes
       });
     }
   }
@@ -114,12 +108,12 @@ export default class TrainEditorPlace extends Component {
     const nowDate = new Date();
     const month = nowDate.getMonth() + 1;
     const optionDay = [];
-    if (this.state.startTime.month == month) {
+    if (this.state.month == month) {
       const date = nowDate.getDate();
       for (let i = date + 1; i <= 31; i++) {
         optionDay.push(<option key={i} value={i}>{i}</option>)
       }
-    } else if (this.state.startTime.month == 6 || this.state.startTime.month == 9 || this.state.startTime.month == 11) {
+    } else if (this.state.month == 6 || this.state.month == 9 || this.state.month == 11) {
       for (let i = 0; i < 30; i++) {
         optionDay.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
       }
@@ -150,45 +144,37 @@ export default class TrainEditorPlace extends Component {
   handleChangeYear(event) {
     const value = event.target.value;
     this.setState({
-      startTime: {
-        year: value
-      }
+      year: value
     });
   }
 
   handleChangeMonth(event) {
     const value = event.target.value;
     this.setState({
-      startTime: {
-        month: value
-      }
+      month: value
     });
   }
 
   handleChangeDay(event) {
     const value = event.target.value;
     this.setState({
-      startTime: {
-        day: value
-      }
+      day: value
     });
   }
 
   handleChangeHour(event) {
     const value = event.target.value;
     this.setState({
-      startTime: {
-        hour: value
-      }
+      hour: value
+    }, ()=> {
+      console.log(this.state.hour);
     });
   }
 
   handleChangeMinute(event) {
     const value = event.target.value;
     this.setState({
-      startTime: {
-        minute: value
-      }
+      minute: value
     });
   }
 
@@ -302,8 +288,7 @@ export default class TrainEditorPlace extends Component {
   }
 
   judgeStartTime() {
-    const startTime = this.state.startTime;
-    if (startTime.year == -1 || startTime.month == -1 || startTime.day == -1 || startTime.hour == -1 || startTime.minute == -1) {
+    if (this.state.year == -1 || this.state.month == -1 || this.state.day == -1 || this.state.hour == -1 || this.state.minute == -1) {
       this.setState({startTimeError: '发车时间不能为空'})
     }
   }
@@ -337,16 +322,19 @@ export default class TrainEditorPlace extends Component {
         minutes: this.lastedMinutes.value
       },
       startTime: {
-        year: this.state.startTime.year,
-        month: this.state.startTime.month,
-        day: this.state.startTime.day,
-        hour: this.state.startTime.hour,
-        minutes: this.state.startTime.minute
+        year: this.state.year,
+        month: this.state.month,
+        day: this.state.day,
+        hour: this.state.hour,
+        minutes: this.state.minute
       }
     };
+    console.log(this.state.startTime);
+    console.log(info);
     if (this.state.editOrNew == 0) {
       superagent
         .post('/trains')
+        .send(info)
         .use(noCache)
         .end((err, res)=> {
           if (err) {
@@ -356,6 +344,20 @@ export default class TrainEditorPlace extends Component {
             this.setState({showSuccess: true});
           }
         });
+    } else {
+      const pathNameArray = window.location.pathname.split('/');
+      superagent
+        .put(`/trains/${pathNameArray[2]}`)
+        .send(info)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status === 204) {
+            this.setState({showSuccess: true});
+          }
+        })
     }
   }
 
@@ -413,7 +415,7 @@ export default class TrainEditorPlace extends Component {
              onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError')}>
           <div className='form-group col-sm-2'>
             <select className="form-control province" name="year"
-                    value={this.state.startTime.year}
+                    value={this.state.year}
                     onChange={this.handleChangeYear.bind(this)}>
               <option value="-1">请选择</option>
               <option value="2017">2017</option>
@@ -421,7 +423,7 @@ export default class TrainEditorPlace extends Component {
           </div>
           <div className="form-group col-sm-2">
             <select className="form-control city" name="month"
-                    value={this.state.startTime.month}
+                    value={this.state.month}
                     onChange={this.handleChangeMonth.bind(this)}>
               <option value="-1">请选择</option>
               {this.getOptionMonth()}
@@ -429,7 +431,7 @@ export default class TrainEditorPlace extends Component {
           </div>
           <div className="form-group col-sm-2">
             <select className="form-control city" name="day"
-                    value={this.state.startTime.day}
+                    value={this.state.day}
                     onChange={this.handleChangeDay.bind(this)}>
               <option value="-1">请选择</option>
               {this.getOptionDay()}
@@ -437,7 +439,7 @@ export default class TrainEditorPlace extends Component {
           </div>
           <div className="form-group col-sm-offset-4 col-sm-2 no-margin-form">
             <select className="form-control city" name="hour"
-                    value={this.state.startTime.hour}
+                    value={this.state.hour}
                     onChange={this.handleChangeHour.bind(this)}>
               <option value="-1">请选择</option>
               {this.getOptionHour()}
@@ -445,7 +447,7 @@ export default class TrainEditorPlace extends Component {
           </div>
           <div className="form-group col-sm-2 no-margin-form">
             <select className="form-control city" name="minute"
-                    value={this.state.startTime.minute}
+                    value={this.state.minute}
                     onChange={this.handleChangeMinute.bind(this)}>
               <option value="-1">请选择</option>
               {this.getOptionMinute()}

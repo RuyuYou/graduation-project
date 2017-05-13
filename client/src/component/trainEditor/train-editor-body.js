@@ -110,12 +110,12 @@ export default class TrainEditorPlace extends Component {
     const nowDate = new Date();
     const month = nowDate.getMonth() + 1;
     const optionDay = [];
-    if (this.state.month == month) {
+    if (this.state.startTime.month == month) {
       const date = nowDate.getDate();
       for (let i = date + 1; i <= 31; i++) {
         optionDay.push(<option key={i} value={i}>{i}</option>)
       }
-    } else if (this.state.month == 6 || this.state.month == 9 || this.state.month == 11) {
+    } else if (this.state.startTime.month == 6 || this.state.startTime.month == 9 || this.state.startTime.month == 11) {
       for (let i = 0; i < 30; i++) {
         optionDay.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
       }
@@ -288,14 +288,19 @@ export default class TrainEditorPlace extends Component {
   }
 
   judgeLastedTime() {
-    console.log(this.lastedHour.value);
-    console.log(this.lastedMinutes.value);
     if (this.lastedMinutes.value == '') {
       this.setState({
         lastedTimeError: '时长不能为空'
       });
     } else if (this.lastedHour.value < 0 || this.lastedMinutes.value < 1) {
       this.setState({lastedTimeError: '时长不能为负数'});
+    }
+  }
+
+  judgeStartTime() {
+    const startTime = this.state.startTime;
+    if (startTime.year == -1 || startTime.month == -1 || startTime.day == -1 || startTime.hour == -1 || startTime.minute == -1) {
+      this.setState({startTimeError: '发车时间不能为空'})
     }
   }
 
@@ -352,53 +357,54 @@ export default class TrainEditorPlace extends Component {
       <ErrorTip error={this.state.lastedTimeError}/>
 
 
-      <div className='form-group row'>
+      <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 发车时间 </label>
-        <div className='form-group col-sm-2'>
-          <select className="form-control province" name="year"
-                  value={this.state.startTime.year}
-                  onChange={this.handleChangeYear.bind(this)}>
-            <option value="year">请选择</option>
-            <option value="2017">2017</option>
-          </select>年
-        </div>
-        <div className="form-group col-sm-2">
-          <select className="form-control city" name="month"
-                  value={this.state.startTime.month}
-                  onChange={this.handleChangeMonth.bind(this)}>
-            <option value="">请选择</option>
-            {this.getOptionMonth()}
-          </select>月
-        </div>
-        <div className="form-group col-sm-2">
-          <select className="form-control city" name="day"
-                  value={this.state.startTime.day}
-                  onChange={this.handleChangeDay.bind(this)}>
-            <option value="">请选择</option>
-            {this.getOptionDay()}
-          </select>日
+        <div onBlur={this.judgeStartTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError')}>
+          <div className='form-group col-sm-2'>
+            <select className="form-control province" name="year"
+                    value={this.state.startTime.year}
+                    onChange={this.handleChangeYear.bind(this)}>
+              <option value="-1">请选择</option>
+              <option value="2017">2017</option>
+            </select>年
+          </div>
+          <div className="form-group col-sm-2">
+            <select className="form-control city" name="month"
+                    value={this.state.startTime.month}
+                    onChange={this.handleChangeMonth.bind(this)}>
+              <option value="-1">请选择</option>
+              {this.getOptionMonth()}
+            </select>月
+          </div>
+          <div className="form-group col-sm-2">
+            <select className="form-control city" name="day"
+                    value={this.state.startTime.day}
+                    onChange={this.handleChangeDay.bind(this)}>
+              <option value="-1">请选择</option>
+              {this.getOptionDay()}
+            </select>日
+          </div>
+          <div className="form-group col-sm-offset-4 col-sm-2 no-margin-form">
+            <select className="form-control city" name="hour"
+                    value={this.state.startTime.hour}
+                    onChange={this.handleChangeHour.bind(this)}>
+              <option value="-1">请选择</option>
+              {this.getOptionHour()}
+            </select>时
+          </div>
+          <div className="form-group col-sm-2 no-margin-form">
+            <select className="form-control city" name="minute"
+                    value={this.state.startTime.minute}
+                    onChange={this.handleChangeMinute.bind(this)}>
+              <option value="-1">请选择</option>
+              {this.getOptionMinute()}
+            </select>分
+          </div>
         </div>
       </div>
+      <ErrorTip error={this.state.startTimeError}/>
 
-      <div className='form-group row'>
-        <label className='col-sm-4 control-label'> </label>
-        <div className="form-group col-sm-2">
-          <select className="form-control city" name="hour"
-                  value={this.state.startTime.hour}
-                  onChange={this.handleChangeHour.bind(this)}>
-            <option value="hour">请选择</option>
-            {this.getOptionHour()}
-          </select>时
-        </div>
-        <div className="form-group col-sm-2">
-          <select className="form-control city" name="minute"
-                  value={this.state.startTime.minute}
-                  onChange={this.handleChangeMinute.bind(this)}>
-            <option value="">请选择</option>
-            {this.getOptionMinute()}
-          </select>分
-        </div>
-      </div>
 
       <div className="split-border"></div>
 

@@ -30,6 +30,9 @@ class TickersManagementBody extends Component {
 
   modifyTickers() {
     this.requestData();
+    this.setState({
+      currentTicker: {}
+    });
   }
 
   componentDidMount() {

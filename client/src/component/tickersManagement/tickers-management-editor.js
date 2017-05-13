@@ -118,7 +118,9 @@ export  default class TickersManagementEditor extends Component {
             throw err;
           }
           if (res.status === 204) {
-            this.setState({trainIdError: '该车次已存在,不可修改'});
+            this.setState({trainIdError: '该列车已存储过票务信息'});
+          } else if (res.status === 202) {
+            this.setState({trainIdError: '不存在该列车,请先创建'});
           } else {
             this.props.modifyTickers();
             this.cleanForm();
@@ -133,7 +135,9 @@ export  default class TickersManagementEditor extends Component {
             throw  err;
           }
           if (res.status === 204) {
-            this.setState({trainIdError: '该车次已存在'});
+            this.setState({trainIdError: '该列车已存储过票务信息'});
+          } else if (res.status === 202) {
+            this.setState({trainIdError: '不存在该列车,请先创建'});
           } else {
             this.props.modifyTickers();
             this.cleanForm();

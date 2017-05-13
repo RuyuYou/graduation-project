@@ -1,4 +1,5 @@
 const Tickers = require('../models/ticker');
+const Train = require('../models/train');
 
 const constant = require('../../config/constant');
 
@@ -21,18 +22,28 @@ class TickerController {
   }
 
   createTickers(req, res, next) {
-    Tickers.findOne({trainId: req.body.trainId}, (err, result)=> {
-      if (result) {
-        return res.sendStatus(constant.httpCode.NO_CONTENT);
-      } else {
-        Tickers.create(req.body, (err, result) => {
-          if (err) {
-            return next(err);
+    Train.findOne({trainId: req.body.trainId}, (err, doc)=> {
+      if (err) {
+        return next(err);
+      }
+      if (!doc) {
+        return res.sendStatus(constant.httpCode.ACCEPTED);
+      }
+      if (doc) {
+        Tickers.findOne({trainId: req.body.trainId}, (err, result)=> {
+          if (result) {
+            return res.sendStatus(constant.httpCode.NO_CONTENT);
+          } else {
+            Tickers.create(req.body, (err, result) => {
+              if (err) {
+                return next(err);
+              }
+              return res.sendStatus(constant.httpCode.CREATED);
+            });
           }
-          return res.sendStatus(constant.httpCode.CREATED);
         });
       }
-    });
+    })
 
   }
 
@@ -50,18 +61,28 @@ class TickerController {
   }
 
   updateTickers(req, res, next) {
-    Tickers.findOne({trainId: req.body.trainId}, (err, result)=> {
-      if (result) {
-        return res.sendStatus(constant.httpCode.NO_CONTENT);
-      } else {
-        Tickers.findByIdAndUpdate(req.params.tickerId, req.body, (err, result)=> {
-          if (err) {
-            return next(err);
+    Train.findOne({trainId: req.body.trainId}, (err, doc)=> {
+      if (err) {
+        return next(err);
+      }
+      if (!doc) {
+        return res.sendStatus(constant.httpCode.ACCEPTED);
+      }
+      if (doc) {
+        Tickers.findOne({trainId: req.body.trainId}, (err, result)=> {
+          if (result) {
+            return res.sendStatus(constant.httpCode.NO_CONTENT);
+          } else {
+            Tickers.findByIdAndUpdate(req.params.tickerId, req.body, (err, result)=> {
+              if (err) {
+                return next(err);
+              }
+              if (!result) {
+                return res.sendStatus(constant.httpCode.NOT_FOUND);
+              }
+              return res.status(constant.httpCode.OK).send(result);
+            });
           }
-          if (!result) {
-            return res.sendStatus(constant.httpCode.NOT_FOUND);
-          }
-          return res.status(constant.httpCode.NO_CONTENT).send(result);
         });
       }
     })

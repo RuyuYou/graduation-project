@@ -304,6 +304,18 @@ export default class TrainEditorPlace extends Component {
     }
   }
 
+  judgeStartPlace() {
+    if (this.startPlace.value == '') {
+      this.setState({startPlaceError: '始发站不能为空'});
+    }
+  }
+
+  judgeEndPlace() {
+    if (this.endPlace.value == '') {
+      this.setState({endPlaceError: '终点站不能为空'});
+    }
+  }
+
   hiddenErrorMessage(err) {
     var errObj = {};
     errObj[err] = '';
@@ -408,25 +420,29 @@ export default class TrainEditorPlace extends Component {
 
       <div className="split-border"></div>
 
-      <div className="form-group row margin-top">
+      <div className="form-group row margin-top no-margin-form">
         <label className='col-sm-4 control-label'> 始发站 </label>
         <div className='col-sm-6'>
           <input type='text' className='form-control' placeholder='请输入始发站'
                  ref={(ref) => {
                    this.startPlace = ref;
-                 }}/>
+                 }} onBlur={this.judgeStartPlace.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'startPlaceError')}/>
         </div>
       </div>
+      <ErrorTip error={this.state.startPlaceError}/>
 
-      <div className="form-group row margin-top">
+      <div className="form-group row">
         <label className='col-sm-4 control-label'> 终点站 </label>
         <div className='col-sm-6'>
           <input type='text' className='form-control' placeholder='请输入终点站'
                  ref={(ref) => {
                    this.endPlace = ref;
-                 }}/>
+                 }} onBlur={this.judgeEndPlace.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'endPlaceError')}/>
         </div>
       </div>
+      <ErrorTip error={this.state.endPlaceError}/>
 
       <div className="row">
         <label className={this.state.showMiddlePlace ? 'col-sm-4 control-label' : 'col-sm-4 control-label  hidden'}>

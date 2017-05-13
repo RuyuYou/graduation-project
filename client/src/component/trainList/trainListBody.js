@@ -74,6 +74,7 @@ export default class TrainListBody extends Component {
             if (err) {
               throw err;
             }
+            this.getTrainList();
           });
       });
       this.getTrainList();

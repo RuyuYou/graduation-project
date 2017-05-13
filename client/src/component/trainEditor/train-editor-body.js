@@ -2,6 +2,8 @@ import {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 import superagent from 'superagent';
 import noCache from 'superagent-no-cache';
+import {connect} from 'react-redux';
+import {Link, withRouter} from 'react-router';
 
 const middlePlace = [];
 
@@ -15,7 +17,7 @@ class ErrorTip extends Component {
   }
 }
 
-export default class TrainEditorPlace extends Component {
+class TrainEditorBody extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +39,8 @@ export default class TrainEditorPlace extends Component {
       startPlaceError: '',
       endPlaceError: '',
       editOrNew: 0,
-      showSuccess: false
+      showSuccess: false,
+      showDeleteTrainModal: false
     };
   }
 
@@ -82,6 +85,10 @@ export default class TrainEditorPlace extends Component {
         minute: startTime.minutes,
         middlePlace: trainInformation.middlePlace,
         showMiddlePlace: true
+      }, ()=> {
+        for (let i = 0; i < this.state.middlePlace.length; i++) {
+          middlePlace.push(this.state.middlePlace[i]);
+        }
       });
     } else {
       this.setState({
@@ -180,7 +187,8 @@ export default class TrainEditorPlace extends Component {
 
   addMiddlePlace() {
     this.setState({
-      showModal: true
+      showModal: true,
+      activeIndex: -1
     });
   }
 
@@ -326,7 +334,7 @@ export default class TrainEditorPlace extends Component {
         month: this.state.month,
         day: this.state.day,
         hour: this.state.hour,
-        minutes: this.state.minute
+        minutes: this.state.minuteshowMiddlePlace
       }
     };
     if (this.state.editOrNew == 0) {
@@ -339,12 +347,15 @@ export default class TrainEditorPlace extends Component {
             throw err;
           }
           if (res.status === 201) {
-            this.setState({showSuccess: true});
+            this.setState({showSuccess: true}, ()=> {
+              this.initInformation();
+            });
           } else if (res.status === 204) {
             this.setState({trainIdError: '该列车号已存在'});
           }
         });
-    } else {
+    }
+    else {
       const pathNameArray = window.location.pathname.split('/');
       superagent
         .put(`/trains/${pathNameArray[2]}`)
@@ -355,10 +366,66 @@ export default class TrainEditorPlace extends Component {
             throw err;
           }
           if (res.status === 204) {
-            this.setState({showSuccess: true});
+            this.setState({showSuccess: true}, ()=> {
+              this.initInformation();
+            });
           }
         })
     }
+  }
+
+  initInformation() {
+    this.trainId.value = '';
+    this.startPlace.value = '';
+    this.endPlace.value = '';
+    this.lastedHour.value = '';
+    this.lastedMinutes.value = '';
+    this.setState({
+      middlePlace: [],
+      year: -1,
+      month: -1,
+      day: -1,
+      hour: -1,
+      minute: -1,
+      showMiddlePlace: false
+    });
+  }
+
+  openDeleteTrain() {
+    this.setState({
+      showDeleteTrainModal: true
+    });
+  }
+
+  cancelDeleteTrain() {
+    this.setState({
+      showDeleteTrainModal: false
+    });
+  }
+
+  deleteTrain() {
+    const pathNameArray = window.location.pathname.split('/');
+    superagent
+      .delete(`/trains/${pathNameArray[2]}`)
+      .use(noCache)
+      .end((err, res)=> {
+        if (err) {
+          throw err;
+        }
+        if (res.status === 204) {
+          this.setState({
+            showDeleteTrainModal: false
+          }, ()=> {
+            this.props.router.push('/train');
+          });
+        }
+      });
+  }
+
+  hiddenSuccess() {
+    this.setState({
+      showSuccess: false
+    });
   }
 
   render() {
@@ -373,6 +440,8 @@ export default class TrainEditorPlace extends Component {
       </div>
     });
     const messageSuccess = this.state.editOrNew == 0 ? `新建` : `修改`;
+    const createNew = `/train/new`;
+    const list = `/train`;
     return (<div>
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 列车号 </label>
@@ -554,7 +623,8 @@ export default class TrainEditorPlace extends Component {
           </button>
         </div>
         <div className='col-sm-3 col-sm-offset-1 text-center'>
-          <button className='btn btn-primary btn-save'>{'删除  '}
+          <button className='btn btn-primary btn-save' disabled={this.state.editOrNew == 0}
+                  onClick={this.openDeleteTrain.bind(this)}>{'删除  '}
           </button>
         </div>
 
@@ -564,14 +634,43 @@ export default class TrainEditorPlace extends Component {
               <i className='ace-icon fa fa-check-circle icon-space'> </i>
               {`车次${messageSuccess}成功,请选择查看车次列表还是继续新增车次?`}
             </p>
-            <button className='btn btn-sm btn-success icon-space'>查看试卷列表
-            </button>
-            <button className='btn btn-sm btn-default col-sm-offset-2'
-            >{`继续新增车次`}</button>
+            <Link to={list}>
+              <button className='btn btn-sm btn-success icon-space'>查看试卷列表
+              </button>
+            </Link>
+            <Link to={createNew}>
+              <button className='btn btn-sm btn-default col-sm-offset-2'
+                      onClick={this.hiddenSuccess.bind(this)}>{`继续新增车次`}</button>
+            </Link>
           </div>
+        </div>
+      </div>
+
+      <div className={this.state.showDeleteTrainModal ? '' : 'hidden'}>
+        <div className='static-modal'>
+          <Modal.Dialog>
+            <Modal.Header>
+              <Modal.Title>删除提示</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              您确定要删除该车次吗？
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button onClick={this.cancelDeleteTrain.bind(this)}>取消</Button>
+              <Button bsStyle='primary' onClick={this.deleteTrain.bind(this)}>确定</Button>
+            </Modal.Footer>
+
+          </Modal.Dialog>
         </div>
 
       </div>
     </div>);
   }
 }
+
+
+const mapStateToProps = (state) => state;
+
+export default connect(mapStateToProps)(withRouter(TrainEditorBody));

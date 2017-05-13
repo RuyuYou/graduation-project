@@ -37,7 +37,9 @@ export default class TrainEditorPlace extends Component {
       lastedTimeError: '',
       startTimeError: '',
       startPlaceError: '',
-      endPlaceError: ''
+      endPlaceError: '',
+      editOrNew: 0,
+      showSuccess: false
     };
   }
 
@@ -52,14 +54,16 @@ export default class TrainEditorPlace extends Component {
             throw err;
           }
           this.setState({
-            trainInformation: res.body
+            trainInformation: res.body,
+            editOrNew: 1
           }, ()=> {
             this.getEditorValue(this.state.trainInformation);
           });
         })
     } else {
       this.setState({
-        trainInformation: {}
+        trainInformation: {},
+        editOrNew: 0
       });
     }
   }
@@ -322,6 +326,39 @@ export default class TrainEditorPlace extends Component {
     this.setState(errObj);
   }
 
+  submit() {
+    const info = {
+      trainId: this.trainId.value,
+      startPlace: this.startPlace.value,
+      endPlace: this.endPlace.value,
+      middlePlace: this.state.middlePlace,
+      lastedTime: {
+        hour: this.lastedHour.value,
+        minutes: this.lastedMinutes.value
+      },
+      startTime: {
+        year: this.state.startTime.year,
+        month: this.state.startTime.month,
+        day: this.state.startTime.day,
+        hour: this.state.startTime.hour,
+        minutes: this.state.startTime.minute
+      }
+    };
+    if (this.state.editOrNew == 0) {
+      superagent
+        .post('/trains')
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status === 201) {
+            this.setState({showSuccess: true});
+          }
+        });
+    }
+  }
+
   render() {
     const middlePlaceList = this.state.middlePlace || [];
     const middlePlaceHTML = middlePlaceList.map((item, index)=> {
@@ -333,6 +370,7 @@ export default class TrainEditorPlace extends Component {
         </div>
       </div>
     });
+    const messageSuccess = this.state.editOrNew == 0 ? `新建` : `修改`;
     return (<div>
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 列车号 </label>
@@ -509,7 +547,8 @@ export default class TrainEditorPlace extends Component {
       <div className="row margin-top">
         <div className='col-sm-3 width-left text-center'>
           <button className='btn btn-primary btn-save'
-          >{'保存  '}
+                  onClick={this.submit.bind(this)}>
+            {'保存  '}
           </button>
         </div>
         <div className='col-sm-3 col-sm-offset-1 text-center'>
@@ -517,11 +556,11 @@ export default class TrainEditorPlace extends Component {
           </button>
         </div>
 
-        <div>
+        <div className={this.state.showSuccess ? '' : 'hidden'}>
           <div className='alert alert-block alert-success col-sm-6 col-sm-offset-3 no-margin-bottom text-center'>
             <p className='message-hint'>
               <i className='ace-icon fa fa-check-circle icon-space'> </i>
-              {`车次成功,请选择查看车次列表还是继续新增车次?`}
+              {`车次${messageSuccess}成功,请选择查看车次列表还是继续新增车次?`}
             </p>
             <button className='btn btn-sm btn-success icon-space'>查看试卷列表
             </button>

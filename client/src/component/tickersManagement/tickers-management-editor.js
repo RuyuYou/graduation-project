@@ -21,8 +21,11 @@ export  default class TickersManagementEditor extends Component {
     super(props);
     this.state = {
       activeIndex: 0,
-      trainIdError: ''
-    }
+      trainIdError: '',
+      firstError: '',
+      secondError: '',
+      specialError: ''
+    };
   }
 
   handleTabsToggle(index) {
@@ -81,6 +84,14 @@ export  default class TickersManagementEditor extends Component {
     }
   }
 
+  judgeTrainId() {
+    if (this.trainId.value == '') {
+      this.setState({
+        trainIdError: '列车号不能为空'
+      });
+    }
+  }
+
   submit() {
     const info = {
       trainId: this.trainId.value.trim(),
@@ -131,10 +142,16 @@ export  default class TickersManagementEditor extends Component {
     }
   }
 
-  hidderTrainId() {
-    this.setState({
-      trainIdError: ''
-    });
+  hiddenErrorMessage(err) {
+    var errObj = {};
+    errObj[err] = '';
+    this.setState(errObj);
+  }
+
+  judgeFirstSeat() {
+    if (this.firstPrice.value == '' || this.firstSeat.value == '') {
+      this.setState({firstError: '一等座信息不能为空'});
+    }
   }
 
   render() {
@@ -144,34 +161,39 @@ export  default class TickersManagementEditor extends Component {
           <div className='btn-group btn-group-justified tab-padding' role='group'>
             {this.getTabs()}
           </div>
+
           <div className='tickers-management-form'>
             <label className='col-sm-4'>列车号</label>
-            <div className='col-sm-8'>
+            <div className='col-sm-8 margin-bottom'>
               <input type='text' className='form-control'
                      ref={(ref) => {
                        this.trainId = ref;
-                     }} onFocus={this.hidderTrainId.bind(this)}/>
+                     }} onBlur={this.judgeTrainId.bind(this)}
+                     onFocus={this.hiddenErrorMessage.bind(this, 'trainIdError')}/>
               <ErrorTip error={this.state.trainIdError}/>
             </div>
           </div>
 
           <div className='tickers-management-form'>
             <label className='col-sm-4'>一等座</label>
-            <div className='col-sm-8 form-line'>
-              <div className="form-group col-sm-6 no-padding-left">
+            <div className='col-sm-8 form-line margin-bottom'
+                 onBlur={this.judgeFirstSeat.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'firstError')}>
+              <div className="form-group col-sm-6 no-padding-left  margin-border">
                 <input type='number' className='form-control'
                        placeholder="个数"
                        ref={(ref) => {
                          this.firstSeat = ref;
                        }}/>
               </div>
-              <div className="form-group col-sm-6 no-padding-right">
+              <div className="form-group col-sm-6 no-padding-right margin-border">
                 <input type='number' className='form-control'
                        placeholder="价格"
                        ref={(ref) => {
                          this.firstPrice = ref;
                        }}/>
               </div>
+              <ErrorTip error={this.state.firstError}/>
             </div>
           </div>
 

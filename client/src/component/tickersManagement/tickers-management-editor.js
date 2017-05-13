@@ -160,6 +160,12 @@ export  default class TickersManagementEditor extends Component {
     }
   }
 
+  judgeSpecialSeat() {
+    if (this.specialPrice.value == '' || this.specialSeat.value == '') {
+      this.setState({specialError: '特等座信息不能为空'});
+    }
+  }
+
   render() {
     return (
       <div className="tickers-management-editor">
@@ -228,21 +234,24 @@ export  default class TickersManagementEditor extends Component {
 
           <div className='tickers-management-form'>
             <label className='col-sm-4'>特等座</label>
-            <div className='col-sm-8 form-line'>
-              <div className="form-group col-sm-6 no-padding-left">
+            <div className='col-sm-8 form-line margin-bottom'
+                 onBlur={this.judgeSpecialSeat.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'specialError')}>
+              <div className="form-group col-sm-6 no-padding-left margin-border">
                 <input type='number' className='form-control'
                        placeholder="个数"
                        ref={(ref) => {
                          this.specialSeat = ref;
                        }}/>
               </div>
-              <div className="form-group col-sm-6 no-padding-right">
+              <div className="form-group col-sm-6 no-padding-right margin-border">
                 <input type='number' className='form-control'
                        placeholder="价格"
                        ref={(ref) => {
                          this.specialPrice = ref;
                        }}/>
               </div>
+              <ErrorTip error={this.state.specialError}/>
             </div>
           </div>
 

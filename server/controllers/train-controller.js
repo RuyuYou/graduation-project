@@ -27,11 +27,21 @@ class TrainController {
   }
 
   create(req, res, next) {
-    Train.create(req.body, (err, result)=> {
+    Train.findOne({trainId: req.body.trainId}, (err, result)=> {
       if (err) {
         return next(err);
       }
-      return res.sendStatus(constant.httpCode.CREATED);
+      if (result) {
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
+      }
+      if (!result) {
+        Train.create(req.body, (err, result)=> {
+          if (err) {
+            return next(err);
+          }
+          return res.sendStatus(constant.httpCode.CREATED);
+        });
+      }
     });
   }
 

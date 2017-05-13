@@ -329,8 +329,6 @@ export default class TrainEditorPlace extends Component {
         minutes: this.state.minute
       }
     };
-    console.log(this.state.startTime);
-    console.log(info);
     if (this.state.editOrNew == 0) {
       superagent
         .post('/trains')
@@ -342,6 +340,8 @@ export default class TrainEditorPlace extends Component {
           }
           if (res.status === 201) {
             this.setState({showSuccess: true});
+          } else if (res.status === 204) {
+            this.setState({trainIdError: '该列车号已存在'});
           }
         });
     } else {

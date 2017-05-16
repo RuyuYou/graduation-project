@@ -13,7 +13,7 @@ export default class Header extends Component {
 
   componentDidMount() {
     superagent
-      .get('/users/username')
+      .get('/login/username')
       .use(noCache)
       .end((err, res) => {
         if (err) {

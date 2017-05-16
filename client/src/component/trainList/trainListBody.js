@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 import noCache from 'superagent-no-cache';
 import {Modal, Button} from 'react-bootstrap';
 
-const header = ['列车号', '总时长', '发车时间', '始发地', '终点站', '中间站', '操作'];
+const header = ['列车号', '总时长', '发车时间', '始发站', '终点站', '中间站', '操作'];
 
 class ListHeader extends Component {
   render() {

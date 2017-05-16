@@ -88,6 +88,14 @@ export default class TrainListBody extends Component {
       const lastedTime = `${item.lastedTime.hour}小时${item.lastedTime.minutes}分钟`;
       const startTime = `${item.startTime.year}年${item.startTime.month}月${item.startTime.day}日
 ${item.startTime.hour}时${item.startTime.minutes}分`;
+      let middleText = '';
+      item.middlePlace.map((doc, index)=> {
+        if (index === 0) {
+          middleText += doc;
+        } else {
+          middleText += `、${doc}`;
+        }
+      });
       return (
         <tr key={index}>
           <td><input type="checkbox"/></td>
@@ -96,7 +104,7 @@ ${item.startTime.hour}时${item.startTime.minutes}分`;
           <td>{startTime}</td>
           <td>{item.startPlace}</td>
           <td>{item.endPlace}</td>
-          <td>{item.middlePlace}</td>
+          <td>{middleText}</td>
           <td>
             <div className='action-buttons'>
               <Link to={updatePath}>

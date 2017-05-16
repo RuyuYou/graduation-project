@@ -334,7 +334,7 @@ class TrainEditorBody extends Component {
         month: this.state.month,
         day: this.state.day,
         hour: this.state.hour,
-        minutes: this.state.minuteshowMiddlePlace
+        minutes: this.state.minute
       }
     };
     if (this.state.editOrNew == 0) {
@@ -635,7 +635,7 @@ class TrainEditorBody extends Component {
               {`车次${messageSuccess}成功,请选择查看车次列表还是继续新增车次?`}
             </p>
             <Link to={list}>
-              <button className='btn btn-sm btn-success icon-space'>查看试卷列表
+              <button className='btn btn-sm btn-success icon-space'>查看车次列表
               </button>
             </Link>
             <Link to={createNew}>

@@ -68,5 +68,43 @@ module.exports = {
       "secondInformation": {"secondPrice": 200, "secondSeat": 300},
       "firstInformation": {"firstPrice": 300, "firstSeat": 200}
     }
+  ],
+  User: [
+    {
+      '_id': '58ea4b9d4fa41b33bb4f07d3',
+      'userId': 10,
+      'userName': '赵思',
+      'password': '12345678',
+      'email': 'admin@10.com',
+      'mobilePhone': '13112345678'
+    }, {
+      '_id': '58ea4b9d4fa44b33bb4f07d3',
+      'userId': 12,
+      'userName': '张三',
+      'password': '12345678',
+      'email': 'admin@12.com',
+      'mobilePhone': '13212345678'
+    }, {
+      '_id': '58ea4b9d4fa41b33bb4e07d3',
+      'userId': 26,
+      'userName': '陈有',
+      'password': '12345678',
+      'email': 'chen@26.com',
+      'mobilePhone': '13312345678'
+    }, {
+      '_id': '58ea4b9d4fa41b33bb4f00d3',
+      'userId': 32,
+      'userName': '孙衵',
+      'password': '12345678',
+      'email': 'sun@32.com',
+      'mobilePhone': '13412345678'
+    }, {
+      '_id': '58ea4b9d4fa41b33bb4f00d3',
+      'userId': 47,
+      'userName': '马红',
+      'password': '12345678',
+      'email': 'ma@47.com',
+      'mobilePhone': '13512345678'
+    }
   ]
 };

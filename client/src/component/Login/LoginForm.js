@@ -28,27 +28,15 @@ class LoginForm extends Component {
         accountError: '',
         passwordError: '',
       }, () => {
-        const email = this.account.value;
+        const userId = this.account.value;
         const password = this.password.value;
         superagent.post('/login')
-          .send({email, password})
+          .send({userId, password})
           .end((err, res) => {
             if (res.statusCode === 200) {
               this.props.router.push('/');
             }
             this.setState({loading: false});
-            if (res.body.status === constant.httpCode.UNAUTHORIZED) {
-              this.setState({
-                accountError: '用户名或密码错误',
-                passwordError: '用户名或密码错误'
-              });
-            } else if (res.body.status === constant.httpCode.OK) {
-              this.props.dispatch({
-                type: 'NO_USER',
-                authState: res.body.status
-              });
-              this.props.router.push('/');
-            }
           });
       });
     }
@@ -94,7 +82,7 @@ class LoginForm extends Component {
                   <input type='text' className='input-form col-xs-12' ref={(ref) => {
                     this.account = ref;
                   }}
-                         placeholder='邮箱'/>
+                         placeholder='工号'/>
                 </div>
                 <i className='input-icon fa fa-user col-xs-1 text-center'> </i>
               </div>

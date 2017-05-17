@@ -13,7 +13,9 @@ class LoginController {
       if (!result) {
         return res.sendStatus(constant.httpCode.NOT_FOUND);
       }
-      return res.sendStatus(constant.httpCode.OK);
+      res.cookie('user', '1111');
+      res.cookie('password', '2222');
+      return res.send({status: constant.httpCode.OK});
     });
   }
 

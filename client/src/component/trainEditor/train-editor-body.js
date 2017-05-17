@@ -173,8 +173,6 @@ class TrainEditorBody extends Component {
     const value = event.target.value;
     this.setState({
       hour: value
-    }, ()=> {
-      console.log(this.state.hour);
     });
   }
 

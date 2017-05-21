@@ -1,13 +1,13 @@
 module.exports = {
-  Admin: [
-    {
-      "_id": "58ea4b9dffa41b33bb4f07d3",
-      "userName": "ADMIN",
-      "password": "12345678",
-      "email": "admin@admin.com",
-      "mobilePhone": "13112345678",
-    }
-  ],
+  // Admin: [
+  //   {
+  //     "_id": "58ea4b9dffa41b33bb4f07d3",
+  //     "userName": "ADMIN",
+  //     "password": "12345678",
+  //     "email": "admin@admin.com",
+  //     "mobilePhone": "13112345678",
+  //   }
+  // ],
   Train: [
     {
       "_id": "591686df707c543076c0eec6",

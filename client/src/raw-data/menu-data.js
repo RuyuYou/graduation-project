@@ -20,7 +20,16 @@ export default [
     text: '车次管理',
     uri: '/train',
     icon: 'book'
-  }, {
+  },
+  {
+    id: 4,
+    parent: 1,
+    level: 2,
+    text: '站点管理',
+    uri: '/station',
+    icon: 'cog'
+  },
+  {
     id: 4,
     parent: 1,
     level: 2,
@@ -39,8 +48,8 @@ export default [
     id: 6,
     parent: 1,
     level: 2,
-    text: '用户管理',
-    uri: '/consumerManagement',
-    icon: 'cog'
+    text: '员工管理',
+    uri: '/usersManagement',
+    icon: 'users'
   }
 ];

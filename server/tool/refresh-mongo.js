@@ -1,12 +1,12 @@
 const mogoose = require('mongoose');
 const rawData = require('./fixture/raw-data');
-const Admin = require('../models/admin');
+// const Admin = require('../models/admin');
 const Ticker = require('../models/ticker');
 const Train = require('../models/train');
 const User = require('../models/user');
 
 const modelMap = {
-  Admin,
+  // Admin,
   Ticker,
   Train,
   User

@@ -36,8 +36,22 @@ export default [
     text: '票务管理',
     uri: '/ticker',
     icon: 'tachometer'
-  }, {
+  },{
     id: 5,
+    parent: 1,
+    level: 2,
+    text: '卧铺管理',
+    uri: '/sleeper',
+    icon: 'flask'
+  },{
+    id: 6,
+    parent: 1,
+    level: 2,
+    text: '硬座管理',
+    uri: '/seat',
+    icon: 'fire'
+  }, {
+    id: 7,
     parent: 1,
     level: 2,
     text: '个人中心',
@@ -45,7 +59,7 @@ export default [
     icon: 'user-circle'
   },
   {
-    id: 6,
+    id: 8,
     parent: 1,
     level: 2,
     text: '员工管理',

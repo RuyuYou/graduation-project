@@ -5,7 +5,7 @@ export default class Home extends Component {
     return (
       <div>
         <h1 className='text-center' style={{color: '#438EB9'}}>
-          管理主页
+          欢迎登录火车在线售票系统管理首页
         </h1>
       </div>
     );

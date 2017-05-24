@@ -7,9 +7,9 @@ const User = require('../models/user');
 
 const modelMap = {
   // Admin,
-  Ticker,
+  // Ticker,
   Train,
-  User
+  // User
 };
 
 let docs = Object.keys(rawData);

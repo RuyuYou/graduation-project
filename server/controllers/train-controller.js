@@ -27,6 +27,7 @@ class TrainController {
   }
 
   create(req, res, next) {
+    console.log(req.cookies);
     Train.findOne({trainId: req.body.trainId}, (err, result)=> {
       if (err) {
         return next(err);
@@ -35,7 +36,8 @@ class TrainController {
         return res.sendStatus(constant.httpCode.NO_CONTENT);
       }
       if (!result) {
-        Train.create(req.body, (err, result)=> {
+        const trainInformation = Object.assign(req.body, {createPeople: req.cookies.userName});
+        Train.create(trainInformation, (err, result)=> {
           if (err) {
             return next(err);
           }

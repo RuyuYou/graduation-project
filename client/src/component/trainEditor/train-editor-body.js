@@ -24,7 +24,15 @@ export default class TrainEditorBody extends Component {
         minute: -1
       },
       startTimeError: '',
-      endPlaceError: ''
+      endPlaceError: '',
+      endTime: {
+        year: -1,
+        month: -1,
+        day: -1,
+        hour: -1,
+        minute: -1
+      },
+      endTimeError: ''
     };
   }
 
@@ -42,9 +50,10 @@ export default class TrainEditorBody extends Component {
     }
   }
 
-  hiddenErrorMessage(err) {
+  hiddenErrorMessage(err1, err2) {
     var errObj = {};
-    errObj[err] = '';
+    errObj[err1] = '';
+    errObj[err2] = '';
     this.setState(errObj);
   }
 
@@ -104,6 +113,15 @@ export default class TrainEditorBody extends Component {
     });
   }
 
+  handleChangeEndTime(i, event) {
+    const value = event.target.value;
+    const valueObj = this.state.endTime;
+    valueObj[i] = value;
+    this.setState({
+      endTime: valueObj
+    });
+  }
+
   judgeStartTime() {
     if (this.state.startTime.year == -1 || this.state.startTime.month == -1 || this.state.startTime.day == -1 || this.state.startTime.hour == -1 || this.state.startTime.minute == -1) {
       this.setState({startTimeError: '发车时间不能为空'})
@@ -113,6 +131,33 @@ export default class TrainEditorBody extends Component {
   judgeEndPlace() {
     if (this.endPlace.value == '') {
       this.setState({endPlaceError: '终点站不能为空'});
+    }
+  }
+
+  judgeEndTime() {
+    if (this.state.endTime.year == -1 || this.state.endTime.month == -1 || this.state.endTime.day == -1 || this.state.endTime.hour == -1 || this.state.endTime.minute == -1) {
+      this.setState({
+        endTimeError: '到达时间不能为空'
+      });
+    }
+    if (this.state.startTime.year == -1 || this.state.startTime.month == -1 || this.state.startTime.day == -1 || this.state.startTime.hour == -1 || this.state.startTime.minute == -1) {
+      this.setState({
+        endTimeError: '请先输入发车时间'
+      });
+    } else {
+      let startTime = this.state.startTime.month * 100000 + this.state.startTime.day * 1000
+        + this.state.startTime.hour * 10 + this.state.startTime.minute;
+      let endTime = this.state.endTime.month * 100000 + this.state.endTime.day * 1000
+        + this.state.endTime.hour * 10 + this.state.endTime.minute;
+      const timer = endTime - startTime;
+      console.log(startTime);
+      console.log(endTime);
+      console.log(timer);
+      if (timer <= 0) {
+        this.setState({
+          endTimeError: '到达时间不能低于发车时间'
+        });
+      }
     }
   }
 
@@ -145,7 +190,7 @@ export default class TrainEditorBody extends Component {
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 发车时间 </label>
         <div onBlur={this.judgeStartTime.bind(this)}
-             onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError')}>
+             onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
           <div className='form-group col-sm-2'>
             <select className="form-control province" name="year"
                     value={this.state.startTime.year}
@@ -207,35 +252,51 @@ export default class TrainEditorBody extends Component {
 
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 到达时间 </label>
-        <div>
+        <div onBlur={this.judgeEndTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'endTimeError')}>
           <div className='form-group col-sm-2'>
-            <select className="form-control province" name="year">
+            <select className="form-control province" name="year"
+                    value={this.state.endTime.year}
+                    onChange={this.handleChangeEndTime.bind(this, 'year')}>
               <option value="-1">请选择</option>
               <option value="2017">2017</option>
             </select>年
           </div>
           <div className="form-group col-sm-2">
-            <select className="form-control city" name="month">
+            <select className="form-control city" name="month"
+                    value={this.state.endTime.month}
+                    onChange={this.handleChangeEndTime.bind(this, 'month')}>
               <option value="-1">请选择</option>
+              {this.getOptionMonth()}
             </select>月
           </div>
           <div className="form-group col-sm-2">
-            <select className="form-control city" name="day">
+            <select className="form-control city" name="day"
+                    value={this.state.endTime.day}
+                    onChange={this.handleChangeEndTime.bind(this, 'day')}>
               <option value="-1">请选择</option>
+              {this.getOptionDay()}
             </select>日
           </div>
           <div className="form-group col-sm-offset-4 col-sm-2 no-margin-form">
-            <select className="form-control city" name="hour">
+            <select className="form-control city" name="hour"
+                    value={this.state.endTime.hour}
+                    onChange={this.handleChangeEndTime.bind(this, 'hour')}>
               <option value="-1">请选择</option>
+              {this.getOptionHour()}
             </select>时
           </div>
           <div className="form-group col-sm-2 no-margin-form">
-            <select className="form-control city" name="minute">
+            <select className="form-control city" name="minute"
+                    value={this.state.endTime.minute}
+                    onChange={this.handleChangeEndTime.bind(this, 'minute')}>
               <option value="-1">请选择</option>
+              {this.getOptionMinute()}
             </select>分
           </div>
         </div>
       </div>
+      <ErrorTip error={this.state.endTimeError}/>
 
       <div className="row margin-top">
         <div className='col-sm-3 width-left text-center'>

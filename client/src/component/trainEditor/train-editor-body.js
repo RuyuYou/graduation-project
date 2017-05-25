@@ -23,7 +23,8 @@ export default class TrainEditorBody extends Component {
         hour: -1,
         minute: -1
       },
-      startTimeError: ''
+      startTimeError: '',
+      endPlaceError: ''
     };
   }
 
@@ -109,6 +110,12 @@ export default class TrainEditorBody extends Component {
     }
   }
 
+  judgeEndPlace() {
+    if (this.endPlace.value == '') {
+      this.setState({endPlaceError: '终点站不能为空'});
+    }
+  }
+
   render() {
 
     return (<div>
@@ -186,15 +193,17 @@ export default class TrainEditorBody extends Component {
 
       <div className="split-border"></div>
 
-      <div className="form-group row">
+      <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 终点站 </label>
         <div className='col-sm-6'>
           <input type='text' className='form-control' placeholder='请输入终点站'
                  ref={(ref) => {
                    this.endPlace = ref;
-                 }}/>
+                 }} onBlur={this.judgeEndPlace.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'endPlaceError')}/>
         </div>
       </div>
+      <ErrorTip error={this.state.endPlaceError}/>
 
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 到达时间 </label>

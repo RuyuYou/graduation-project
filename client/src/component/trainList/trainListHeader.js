@@ -10,7 +10,7 @@ class TrainListHeader extends Component {
   }
 
   render() {
-    const href = `/report`;
+    const href = `/report/train`;
     return (
       <div>
         <div className='trainList-header'>
@@ -24,8 +24,8 @@ class TrainListHeader extends Component {
             <span className='text'>新增车次 </span>
           </button>
           {/*<button className='btn btn-default' disabled="disabled">*/}
-            {/*<i className='fa fa-trash-o red'> </i>*/}
-            {/*<span className='text'>批量删除 </span>*/}
+          {/*<i className='fa fa-trash-o red'> </i>*/}
+          {/*<span className='text'>批量删除 </span>*/}
           {/*</button>*/}
           <button className='btn btn-default pull-right'>
             <a href={href}><i className='fa fa-share'></i>

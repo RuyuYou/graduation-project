@@ -50,7 +50,7 @@ class ReportController {
       var filename = 'tickers.csv';
 
       res.setHeader('Content-disposition', 'attachment; filename=' + filename + '');
-      res.setHeader('Content-Type', 'tieckers/csv');
+      res.setHeader('Content-Type', 'tickers/csv');
 
       res.send(content);
     });

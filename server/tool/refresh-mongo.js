@@ -4,13 +4,15 @@ const Ticker = require('../models/ticker');
 const Train = require('../models/train');
 const User = require('../models/user');
 const Station = require('../models/station');
+const Seat = require('../models/seat');
 
 const modelMap = {
   // Admin,
   Ticker,
   Train,
   // User
-  Station
+  Station,
+  Seat
 };
 
 let docs = Object.keys(rawData);

@@ -4,6 +4,7 @@ const tickers = require('./routers/tickers');
 const trains = require('./routers/trains');
 const report = require('./routers/report');
 const stations = require('./routers/stations');
+const seats = require('./routers/seats');
 
 module.exports = function (app) {
   app.use('/login', login);
@@ -12,4 +13,5 @@ module.exports = function (app) {
   app.use('/trains', trains);
   app.use('/report', report);
   app.use('/stations', stations);
+  app.use('/seats', seats);
 };

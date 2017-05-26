@@ -86,5 +86,28 @@ module.exports = {
       "sleeperNumber": 10,
       "seatNumber": 10
     }
+  ],
+  Seat: [
+    {
+      "_id": "59289ca5a428d11520a0372e",
+      "trainId": "1",
+      "position": "A",
+      "price": 123.4,
+      "createPeople": "admin"
+    },
+    {
+      "_id": "59289ca5af28d11520a0372e",
+      "trainId": "1",
+      "position": "B",
+      "price": 124.4,
+      "createPeople": "admin"
+    },
+    {
+      "_id": "59289fa5a428d11520a0372e",
+      "trainId": "1",
+      "position": "C",
+      "price": 125.4,
+      "createPeople": "admin"
+    }
   ]
 };

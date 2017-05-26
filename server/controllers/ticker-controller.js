@@ -3,14 +3,6 @@ const Train = require('../models/train');
 
 const constant = require('../../config/constant');
 
-
-function getTimes() {
-  const year = new Date().getFullYear();
-  const month = new Date().getMonth();
-  const day = new Date().getDate();
-  return `${year}年${month + 1}月${day}日`;
-}
-
 class TickerController {
   getTickers(req, res, next) {
     Tickers.find({}, (err, result) => {
@@ -22,29 +14,18 @@ class TickerController {
   }
 
   createTickers(req, res, next) {
-    Train.findOne({trainId: req.body.trainId}, (err, doc)=> {
-      if (err) {
-        return next(err);
-      }
-      if (!doc) {
-        return res.sendStatus(constant.httpCode.ACCEPTED);
-      }
-      if (doc) {
-        Tickers.findOne({trainId: req.body.trainId}, (err, result)=> {
-          if (result) {
-            return res.sendStatus(constant.httpCode.NO_CONTENT);
-          } else {
-            Tickers.create(req.body, (err, result) => {
-              if (err) {
-                return next(err);
-              }
-              return res.sendStatus(constant.httpCode.CREATED);
-            });
+    Tickers.findOne({trainId: req.body.trainId}, (err, result)=> {
+      if (result) {
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
+      } else {
+        Tickers.create(req.body, (err, result) => {
+          if (err) {
+            return next(err);
           }
+          return res.sendStatus(constant.httpCode.CREATED);
         });
       }
-    })
-
+    });
   }
 
   deleteTickers(req, res, next) {

@@ -7,7 +7,7 @@ const Station = require('../models/station');
 
 const modelMap = {
   // Admin,
-  // Ticker,
+  Ticker,
   Train,
   // User
   Station

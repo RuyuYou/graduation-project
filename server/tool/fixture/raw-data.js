@@ -71,5 +71,20 @@ module.exports = {
         }
       ],
     }
+  ],
+  Ticker: [
+    {
+      "_id": "5928949ff981700d878017b4",
+      "trainId": "1",
+      "cabinNumber": 18,
+      "sleeperNumber": 10,
+      "seatNumber": 8
+    }, {
+      "_id": "5928949ff981f00d878017b4",
+      "trainId": "2",
+      "cabinNumber": 20,
+      "sleeperNumber": 10,
+      "seatNumber": 10
+    }
   ]
 };

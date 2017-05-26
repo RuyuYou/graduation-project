@@ -26,8 +26,8 @@ class StationController {
   }
 
   createStation(req, res, next) {
-    // const stationInformation = Object.assign(req.body, {createPeople: req.cookies.userName});
-    Station.create(req.body, (err, result)=> {
+    const stationInformation = Object.assign(req.body, {createPeople: req.cookies.userName});
+    Station.create(stationInformation, (err, result)=> {
       if (err) {
         return next(err);
       }

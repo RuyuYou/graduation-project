@@ -27,6 +27,9 @@ export default class StationEditor extends Component {
       <div className='station-header'>
         {`${this.state.title}站点`}
       </div>
+      <div className='station-title'>
+
+      </div>
     </div>);
   }
 }

@@ -24,7 +24,8 @@ export  default class TickersManagementEditor extends Component {
       trainIdError: '',
       cabinError: '',
       sleeperError: '',
-      seatError: ''
+      seatError: '',
+      submitError: ''
     };
   }
 
@@ -40,12 +41,10 @@ export  default class TickersManagementEditor extends Component {
 
   cleanForm() {
     this.trainId.value = '';
-    this.firstSeat.value = '';
-    this.firstPrice.value = '';
-    this.secondSeat.value = '';
-    this.secondPrice.value = '';
-    this.specialSeat.value = '';
-    this.specialPrice.value = '';
+    this.trainId.value = '';
+    this.cabin.value = '';
+    this.sleeper.value = '';
+    this.seat.value = '';
   }
 
   getTabs() {
@@ -116,54 +115,51 @@ export  default class TickersManagementEditor extends Component {
   submit() {
     const info = {
       trainId: this.trainId.value.trim(),
-      firstInformation: {
-        firstSeat: this.firstSeat.value.trim(),
-        firstPrice: this.firstPrice.value.trim()
-      },
-      secondInformation: {
-        secondSeat: this.secondSeat.value.trim(),
-        secondPrice: this.secondPrice.value.trim()
-      },
-      specialInformation: {
-        specialSeat: this.specialSeat.value.trim(),
-        specialPrice: this.specialPrice.value.trim()
-      }
+      cabinNumber: this.cabin.value.trim(),
+      sleeperNumber: this.sleeper.value.trim(),
+      seatNumber: this.seat.value.trim()
     };
-    if (this.state.activeIndex === 1) {
-      const id = this.props.currentTicker._id;
-      superagent.put(`/tickers/${id}`)
-        .use(noCache)
-        .send(info)
-        .end((err, res)=> {
-          if (err) {
-            throw err;
-          }
-          if (res.status === 204) {
-            this.setState({trainIdError: '该列车已存储过票务信息'});
-          } else if (res.status === 202) {
-            this.setState({trainIdError: '不存在该列车,请先创建'});
-          } else {
-            this.props.modifyTickers();
-            this.cleanForm();
-          }
-        })
+    if (parseInt(info.cabinNumber) != parseInt(info.sleeperNumber) + parseInt(info.seatNumber)) {
+      this.setState({
+        submitError: '车厢数不符合要求，请重新输入'
+      });
     } else {
-      superagent.post('/tickers')
-        .use(noCache)
-        .send(info)
-        .end((err, res)=> {
-          if (err) {
-            throw  err;
-          }
-          if (res.status === 204) {
-            this.setState({trainIdError: '该列车已存储过票务信息'});
-          } else if (res.status === 202) {
-            this.setState({trainIdError: '不存在该列车,请先创建'});
-          } else {
-            this.props.modifyTickers();
-            this.cleanForm();
-          }
-        });
+      if (this.state.activeIndex === 1) {
+        const id = this.props.currentTicker._id;
+        superagent.put(`/tickers/${id}`)
+          .use(noCache)
+          .send(info)
+          .end((err, res)=> {
+            if (err) {
+              throw err;
+            }
+            if (res.status === 204) {
+              this.setState({trainIdError: '该列车已存储过票务信息'});
+            } else if (res.status === 202) {
+              this.setState({trainIdError: '不存在该列车,请先创建'});
+            } else {
+              this.props.modifyTickers();
+              this.cleanForm();
+            }
+          })
+      } else {
+        superagent.post('/tickers')
+          .use(noCache)
+          .send(info)
+          .end((err, res)=> {
+            if (err) {
+              throw  err;
+            }
+            if (res.status === 204) {
+              this.setState({trainIdError: '该列车已存储过票务信息'});
+            } else if (res.status === 202) {
+              this.setState({trainIdError: '不存在该列车,请先创建'});
+            } else {
+              this.props.modifyTickers();
+              this.cleanForm();
+            }
+          });
+      }
     }
   }
 
@@ -193,41 +189,44 @@ export  default class TickersManagementEditor extends Component {
             </div>
           </div>
 
-          <div className='tickers-management-form'>
-            <label className='col-sm-4'>车厢个数</label>
-            <div className='col-sm-8 margin-bottom'>
-              <input type='number' className='form-control'
-                     ref={(ref) => {
-                       this.cabin = ref;
-                     }} onBlur={this.judgeCabin.bind(this)}
-                     onFocus={this.hiddenErrorMessage.bind(this, 'cabinError')}/>
-              <ErrorTip error={this.state.cabinError}/>
+          <div onFocus={this.hiddenErrorMessage.bind(this, 'submitError')}>
+            <div className='tickers-management-form'>
+              <label className='col-sm-4'>车厢个数</label>
+              <div className='col-sm-8 margin-bottom'>
+                <input type='number' className='form-control'
+                       ref={(ref) => {
+                         this.cabin = ref;
+                       }} onBlur={this.judgeCabin.bind(this)}
+                       onFocus={this.hiddenErrorMessage.bind(this, 'cabinError')}/>
+                <ErrorTip error={this.state.cabinError}/>
+              </div>
             </div>
-          </div>
 
-          <div className='tickers-management-form'>
-            <label className='col-sm-4'>卧铺个数</label>
-            <div className='col-sm-8 margin-bottom'>
-              <input type='number' className='form-control'
-                     ref={(ref) => {
-                       this.sleeper = ref;
-                     }} onBlur={this.judgeSleeper.bind(this)}
-                     onFocus={this.hiddenErrorMessage.bind(this, 'sleeperError')}/>
-              <ErrorTip error={this.state.sleeperError}/>
+            <div className='tickers-management-form'>
+              <label className='col-sm-4'>卧铺个数</label>
+              <div className='col-sm-8 margin-bottom'>
+                <input type='number' className='form-control'
+                       ref={(ref) => {
+                         this.sleeper = ref;
+                       }} onBlur={this.judgeSleeper.bind(this)}
+                       onFocus={this.hiddenErrorMessage.bind(this, 'sleeperError')}/>
+                <ErrorTip error={this.state.sleeperError}/>
+              </div>
             </div>
-          </div>
 
-          <div className='tickers-management-form'>
-            <label className='col-sm-4'>硬座个数</label>
-            <div className='col-sm-8 margin-bottom'>
-              <input type='number' className='form-control'
-                     ref={(ref) => {
-                       this.seat = ref;
-                     }} onBlur={this.judgeSeat.bind(this)}
-                     onFocus={this.hiddenErrorMessage.bind(this, 'seatError')}/>
-              <ErrorTip error={this.state.seatError}/>
+            <div className='tickers-management-form'>
+              <label className='col-sm-4'>硬座个数</label>
+              <div className='col-sm-8 margin-bottom'>
+                <input type='number' className='form-control'
+                       ref={(ref) => {
+                         this.seat = ref;
+                       }} onBlur={this.judgeSeat.bind(this)}
+                       onFocus={this.hiddenErrorMessage.bind(this, 'seatError')}/>
+                <ErrorTip error={this.state.seatError}/>
+              </div>
             </div>
           </div>
+          <ErrorTip error={this.state.submitError}/>
 
           <div className='role-management-form text-center'>
             <button className='btn btn-primary btn-size'

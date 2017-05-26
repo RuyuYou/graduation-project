@@ -1,5 +1,7 @@
 import {Component} from 'react';
 import {Link, withRouter} from 'react-router';
+import superagent from 'superagent';
+import noCache from 'superagent-no-cache';
 
 class ErrorTip extends Component {
   render() {
@@ -32,7 +34,8 @@ export default class TrainEditorBody extends Component {
         hour: -1,
         minute: -1
       },
-      endTimeError: ''
+      endTimeError: '',
+      showSuccess: false
     };
   }
 
@@ -140,25 +143,68 @@ export default class TrainEditorBody extends Component {
         endTimeError: '到达时间不能为空'
       });
     }
-    if (this.state.startTime.year == -1 || this.state.startTime.month == -1 || this.state.startTime.day == -1 || this.state.startTime.hour == -1 || this.state.startTime.minute == -1) {
+  }
+
+  submit() {
+    let startTime = this.state.startTime.month * 100000 + this.state.startTime.day * 1000
+      + this.state.startTime.hour * 10 + this.state.startTime.minute;
+    let endTime = this.state.endTime.month * 100000 + this.state.endTime.day * 1000
+      + this.state.endTime.hour * 10 + this.state.endTime.minute;
+    const timer = endTime - startTime;
+    console.log(startTime);
+    console.log(endTime);
+    console.log(timer);
+    if (timer <= 0) {
       this.setState({
-        endTimeError: '请先输入发车时间'
+        endTimeError: '到达时间不能低于发车时间'
       });
     } else {
-      let startTime = this.state.startTime.month * 100000 + this.state.startTime.day * 1000
-        + this.state.startTime.hour * 10 + this.state.startTime.minute;
-      let endTime = this.state.endTime.month * 100000 + this.state.endTime.day * 1000
-        + this.state.endTime.hour * 10 + this.state.endTime.minute;
-      const timer = endTime - startTime;
-      console.log(startTime);
-      console.log(endTime);
-      console.log(timer);
-      if (timer <= 0) {
-        this.setState({
-          endTimeError: '到达时间不能低于发车时间'
+      const info = {
+        trainId: this.trainId.value,
+        startPlace: this.startPlace.value,
+        startTime: this.state.startTime,
+        endPlace: this.endPlace.value,
+        endTime: this.state.endTime
+      };
+      superagent
+        .post('/trains')
+        .send(info)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status === 201) {
+            this.setState({showSuccess: true}, ()=> {
+              this.initInformation();
+            });
+          } else if (res.status === 204) {
+            this.setState({trainIdError: '该列车号已存在'});
+          }
         });
-      }
     }
+  }
+
+  initInformation() {
+    this.trainId.value = '';
+    this.startPlace.value = '';
+    this.endPlace.value = '';
+    this.setState({
+      startTime: {
+        year: -1,
+        month: -1,
+        day: -1,
+        hour: -1,
+        minute: -1
+      },
+      endTime: {
+        year: -1,
+        month: -1,
+        day: -1,
+        hour: -1,
+        minute: -1
+      }
+    });
   }
 
   render() {
@@ -300,7 +346,7 @@ export default class TrainEditorBody extends Component {
 
       <div className="row margin-top">
         <div className='col-sm-3 width-left text-center'>
-          <button className='btn btn-primary btn-save'>
+          <button className='btn btn-primary btn-save' onClick={this.submit.bind(this)}>
             {'保存  '}
           </button>
         </div>
@@ -309,7 +355,7 @@ export default class TrainEditorBody extends Component {
           </button>
         </div>
 
-        <div>
+        <div className={this.state.showSuccess ? '' : 'hidden'}>
           <div className='alert alert-block alert-success col-sm-6 col-sm-offset-3 no-margin-bottom text-center'>
             <p className='message-hint'>
               <i className='ace-icon fa fa-check-circle icon-space'> </i>

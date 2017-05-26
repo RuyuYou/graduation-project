@@ -4,7 +4,7 @@ const path = require('path');
 const config = require('config');
 const router = require('./routes');
 const bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
 
 
 mongoose.connect(config.get('mongoUri'));

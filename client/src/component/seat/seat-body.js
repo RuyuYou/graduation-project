@@ -15,7 +15,7 @@ class SeatBody extends Component {
   }
 
   requestData() {
-    superagent.get('/tickers')
+    superagent.get('/seats')
       .use(noCache)
       .end((err, res)=> {
         if (err) {
@@ -35,7 +35,7 @@ class SeatBody extends Component {
     return (
       <div className="seat-body row">
         <div className="col-sm-8">
-          <SeatList/>
+          <SeatList seatList={this.state.seatList}/>
         </div>
         <div className="col-sm-4">
           <SeatEditor/>

@@ -1,5 +1,7 @@
 import {Component} from 'react';
-import '../../../style/station.less';
+import '../../../style/stationEditor.less';
+import StationEditorBody from './stationEditor';
+
 
 export default class StationEditor extends Component {
   constructor(props) {
@@ -23,12 +25,12 @@ export default class StationEditor extends Component {
   }
 
   render() {
-    return (<div id="station">
+    return (<div id="station-editor">
       <div className='station-header'>
-        {`${this.state.title}站点`}
+        {`${this.state.title}中间站点`}
       </div>
-      <div className='station-title'>
-
+      <div className='station-body'>
+        <StationEditorBody/>
       </div>
     </div>);
   }

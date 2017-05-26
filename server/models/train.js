@@ -9,7 +9,7 @@ const trainSchema = new Schema({
     month: Number,
     day: Number,
     hour: Number,
-    minutes: Number
+    minute: Number
   },
   endPlace: String,
   endTime: {
@@ -17,7 +17,7 @@ const trainSchema = new Schema({
     month: Number,
     day: Number,
     hour: Number,
-    minutes: Number
+    minute: Number
   },
   createPeople: String
 });

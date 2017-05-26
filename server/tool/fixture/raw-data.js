@@ -113,25 +113,25 @@ module.exports = {
       "_id": "591686df707c543076c0eec6",
       "trainId": "1",
       "startPlace": "西安",
-      "startTime": {"year": 2017, "month": 5, "day": 20, "hour": 8, "minutes": 25},
+      "startTime": {"year": 2017, "month": 5, "day": 29, "hour": 8, "minute": 25},
       "endPlace": "郑州",
-      "endTime": {"year": 2017, "month": 5, "day": 21, "hour": 8, "minutes": 25},
+      "endTime": {"year": 2017, "month": 5, "day": 30, "hour": 8, "minute": 25},
       "createPeople": "admin1"
     }, {
       "_id": "591686df707c543076c0efc6",
       "trainId": "2",
       "startPlace": "西安",
-      "startTime": {"year": 2017, "month": 5, "day": 23, "hour": 8, "minutes": 25},
+      "startTime": {"year": 2017, "month": 5, "day": 27, "hour": 8, "minute": 25},
       "endPlace": "郑州",
-      "endTime": {"year": 2017, "month": 5, "day": 24, "hour": 8, "minutes": 25},
+      "endTime": {"year": 2017, "month": 5, "day": 28, "hour": 8, "minute": 25},
       "createPeople": "admin2"
     },{
       "_id": "591686df707c543576c0eec6",
       "trainId": "3",
       "startPlace": "西安",
-      "startTime": {"year": 2017, "month": 5, "day": 25, "hour": 8, "minutes": 25},
+      "startTime": {"year": 2017, "month": 5, "day": 27, "hour": 8, "minute": 25},
       "endPlace": "郑州",
-      "endTime": {"year": 2017, "month": 5, "day": 26, "hour": 8, "minutes": 25},
+      "endTime": {"year": 2017, "month": 5, "day": 28, "hour": 8, "minute": 25},
       "createPeople":"admin3"
     }
   ]

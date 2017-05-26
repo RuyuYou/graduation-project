@@ -35,8 +35,45 @@ export default class TrainEditorBody extends Component {
         minute: -1
       },
       endTimeError: '',
-      showSuccess: false
+      showSuccess: false,
+      trainInformation: {}
     };
+  }
+
+  componentDidMount() {
+    const pathNameArray = window.location.pathname.split('/');
+    if (pathNameArray[pathNameArray.length - 1] === 'edit') {
+      superagent
+        .get(`/trains/${pathNameArray[2]}`)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          this.setState({
+            trainInformation: res.body,
+            editOrNew: 1
+          }, ()=> {
+            this.getEditorValue(this.state.trainInformation);
+          });
+        })
+    } else {
+      this.setState({
+        trainInformation: {},
+        editOrNew: 0
+      });
+    }
+  }
+
+  getEditorValue(trainInformation) {
+    console.log(trainInformation);
+    this.trainId.value = trainInformation.trainId;
+    this.startPlace.value = trainInformation.startPlace;
+    this.endPlace.value = trainInformation.endPlace;
+    this.setState({
+      startTime: trainInformation.startTime,
+      endTime: trainInformation.endTime
+    });
   }
 
   judgeTrainId() {

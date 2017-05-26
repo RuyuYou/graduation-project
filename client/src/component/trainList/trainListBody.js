@@ -83,8 +83,6 @@ export default class TrainListBody extends Component {
 
   render() {
     const trainList = this.state.trainList || [];
-    console.log('-----------------');
-    console.log(trainList);
     const listHTML = trainList.map((item, index)=> {
       const updatePath = window.location.pathname + `/${item._id}/edit`;
       const startTime = `${item.startTime.year}年${item.startTime.month}月${item.startTime.day}日

@@ -66,7 +66,6 @@ export default class TrainEditorBody extends Component {
   }
 
   getEditorValue(trainInformation) {
-    console.log(trainInformation);
     this.trainId.value = trainInformation.trainId;
     this.startPlace.value = trainInformation.startPlace;
     this.endPlace.value = trainInformation.endPlace;
@@ -188,9 +187,6 @@ export default class TrainEditorBody extends Component {
     let endTime = this.state.endTime.month * 100000 + this.state.endTime.day * 1000
       + this.state.endTime.hour * 10 + this.state.endTime.minute;
     const timer = endTime - startTime;
-    console.log(startTime);
-    console.log(endTime);
-    console.log(timer);
     if (timer <= 0) {
       this.setState({
         endTimeError: '到达时间不能低于发车时间'

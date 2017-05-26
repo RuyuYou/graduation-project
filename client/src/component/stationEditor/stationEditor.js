@@ -44,7 +44,8 @@ export default class StationEditor extends Component {
         minute: -1
       },
       activeIndex: -1,
-      leaveTimeError: ''
+      leaveTimeError: '',
+      showStationPlace: false
     };
   }
 
@@ -239,8 +240,17 @@ ${item.arriveTime.hour}时${item.arriveTime.minute}分`;
     });
 
     return (<div>
-      <div>
-        <label className='fontSize'>列车站点信息如下</label>
+      <div className='form-group row no-margin-form'>
+        <label className='col-sm-2 control-label'> 列车号 </label>
+        <div className='col-sm-4'>
+          <input type='text' className='form-control' placeholder='请输入列车号'
+                 ref={(ref) => {
+                   this.trainId = ref;
+                 }}/>
+        </div>
+      </div>
+
+      <div className={this.state.showStationPlace ? '' : 'hidden'}>
         <table className="table table-striped table-bordered table-hover">
           <thead>
           <ListHeader />
@@ -252,10 +262,22 @@ ${item.arriveTime.hour}时${item.arriveTime.minute}分`;
       </div>
 
       <div className="btn-center margin-top">
-        <button className="btn btn-primary btn-save"
-                onClick={this.addStationPlace.bind(this)}>
-          点击添加中间站点
-        </button>
+
+      </div>
+
+      <div className="row margin-top">
+        <div className=' col-sm-3 width-left text-center'>
+          <button className="btn btn-primary btn-save"
+                  onClick={this.addStationPlace.bind(this)}>
+            点击添加中间站点
+          </button>
+        </div>
+        <div className='col-sm-3 col-sm-offset-1 text-center'>
+          <button className='btn btn-primary btn-save'>
+            {'保存  '}
+          </button>
+        </div>
+
       </div>
 
       <div className={this.state.showAddModal ? '' : 'hidden'}>

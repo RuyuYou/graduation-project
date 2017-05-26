@@ -25,7 +25,9 @@ export default class StationEditor extends Component {
         day: -1,
         hour: -1,
         minute: -1
-      }
+      },
+      activeIndex: -1,
+      leaveTimeError: ''
     };
   }
 
@@ -45,6 +47,16 @@ export default class StationEditor extends Component {
   }
 
   makeSureAdd() {
+    let arriveTime = this.state.arriveTime.month * 100000 + this.state.arriveTime.day * 1000
+      + this.state.arriveTime.hour * 10 + this.state.arriveTime.minute;
+    let leaveTime = this.state.leaveTime.month * 100000 + this.state.leaveTime.day * 1000
+      + this.state.leaveTime.hour * 10 + this.state.leaveTime.minute;
+    const timer = leaveTime - arriveTime;
+    if (timer <= 0) {
+      this.setState({
+        leaveTimeError: '离开时间不能低于到达时间'
+      });
+    }
     if (this.state.activeIndex === -1) {
       if (this.station.value != '') {
         const value = this.station.value;
@@ -75,7 +87,7 @@ export default class StationEditor extends Component {
         });
       } else {
         this.setState({
-          stationPlaceError: '中间站不能为空'
+          stationPlaceError: '中间站点不能为空'
         });
       }
     }
@@ -134,6 +146,23 @@ export default class StationEditor extends Component {
     return optionMinute;
   }
 
+  handleChangeArriveTime(i, event) {
+    const value = event.target.value;
+    const valueObj = this.state.arriveTime;
+    valueObj[i] = value;
+    this.setState({
+      arriveTime: valueObj
+    });
+  }
+
+  handleChangeLeaveTime(i, event) {
+    const value = event.target.value;
+    const valueObj = this.state.leaveTime;
+    valueObj[i] = value;
+    this.setState({
+      leaveTime: valueObj
+    });
+  }
 
   render() {
     return (<div>
@@ -158,43 +187,53 @@ export default class StationEditor extends Component {
             </Modal.Header>
 
             <Modal.Body>
-              <div className="form-group text-center margin-modal no-margin-bottom">
+              <div className="form-group margin-modal no-margin-bottom">
                 <input type="text" className="form-control" placeholder="请输入中间站"
                        ref={(ref)=> {
                          this.station = ref;
                        }} onFocus={this.hiddenErrorMessage.bind(this)}/>
+                <span className="error-tip1">{this.state.stationPlaceError}</span>
               </div>
-              <span className="error-tip text-center">{this.state.stationPlaceError}</span>
 
               <div className='form-group row no-margin-form'>
                 <label className='col-xs-2 control-label'> 到达时间 </label>
                 <div>
                   <div className='form-group col-xs-3'>
-                    <select className="form-control city" name="year">
+                    <select className="form-control city" name="year"
+                            value={this.state.arriveTime.year}
+                            onChange={this.handleChangeArriveTime.bind(this, 'year')}>
                       <option value="-1">请选择</option>
                       <option value="2017">2017</option>
                     </select>年
                   </div>
                   <div className="form-group col-xs-3">
-                    <select className="form-control city" name="month">
+                    <select className="form-control city" name="month"
+                            value={this.state.arriveTime.month}
+                            onChange={this.handleChangeArriveTime.bind(this, 'month')}>
                       <option value="-1">请选择</option>
                       {this.getOptionMonth()}
                     </select>月
                   </div>
                   <div className="form-group col-xs-3">
-                    <select className="form-control city" name="day">
+                    <select className="form-control city" name="day"
+                            value={this.state.arriveTime.day}
+                            onChange={this.handleChangeArriveTime.bind(this, 'day')}>
                       <option value="-1">请选择</option>
                       {this.getOptionDay()}
                     </select>日
                   </div>
-                  <div className="form-group col-xs-offset-2 col-xs-3 no-margin-form">
-                    <select className="form-control city" name="hour">
+                  <div className="form-group col-xs-offset-2 col-xs-3">
+                    <select className="form-control city" name="hour"
+                            value={this.state.arriveTime.hour}
+                            onChange={this.handleChangeArriveTime.bind(this, 'hour')}>
                       <option value="-1">请选择</option>
                       {this.getOptionHour()}
                     </select>时
                   </div>
-                  <div className="form-group col-xs-3 no-margin-form">
-                    <select className="form-control city" name="minute">
+                  <div className="form-group col-xs-3">
+                    <select className="form-control city" name="minute"
+                            value={this.state.arriveTime.minute}
+                            onChange={this.handleChangeArriveTime.bind(this, 'minute')}>
                       <option value="-1">请选择</option>
                       {this.getOptionMinute()}
                     </select>分
@@ -206,37 +245,49 @@ export default class StationEditor extends Component {
                 <label className='col-xs-2 control-label'> 离开时间 </label>
                 <div>
                   <div className='form-group col-xs-3'>
-                    <select className="form-control city" name="year">
+                    <select className="form-control city" name="year"
+                            value={this.state.leaveTime.year}
+                            onChange={this.handleChangeLeaveTime.bind(this, 'year')}>
                       <option value="-1">请选择</option>
                       <option value="2017">2017</option>
                     </select>年
                   </div>
                   <div className="form-group col-xs-3">
-                    <select className="form-control city" name="month">
+                    <select className="form-control city" name="month"
+                            value={this.state.leaveTime.month}
+                            onChange={this.handleChangeLeaveTime.bind(this, 'month')}>
                       <option value="-1">请选择</option>
                       {this.getOptionMonth()}
                     </select>月
                   </div>
                   <div className="form-group col-xs-3">
-                    <select className="form-control city" name="day">
+                    <select className="form-control city" name="day"
+                            value={this.state.leaveTime.day}
+                            onChange={this.handleChangeLeaveTime.bind(this, 'day')}>
                       <option value="-1">请选择</option>
                       {this.getOptionDay()}
                     </select>日
                   </div>
                   <div className="form-group col-xs-offset-2 col-xs-3 no-margin-form">
-                    <select className="form-control city" name="hour">
+                    <select className="form-control city" name="hour"
+                            value={this.state.leaveTime.hour}
+                            onChange={this.handleChangeLeaveTime.bind(this, 'hour')}>
                       <option value="-1">请选择</option>
                       {this.getOptionHour()}
                     </select>时
                   </div>
                   <div className="form-group col-xs-3 no-margin-form">
-                    <select className="form-control city" name="minute">
+                    <select className="form-control city" name="minute"
+                            value={this.state.leaveTime.minute}
+                            onChange={this.handleChangeLeaveTime.bind(this, 'minute')}>
                       <option value="-1">请选择</option>
                       {this.getOptionMinute()}
                     </select>分
                   </div>
                 </div>
               </div>
+              <span className="col-xs-offset-2 error-tip2 text-center">{this.state.stationPlaceError}</span>
+
 
             </Modal.Body>
 

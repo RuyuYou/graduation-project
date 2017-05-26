@@ -46,13 +46,29 @@ export default class StationEditor extends Component {
       activeIndex: -1,
       leaveTimeError: '',
       showStationPlace: false,
-      trainIdError: ''
+      trainIdError: '',
+      showDeleteModal: false
     };
   }
 
   addStationPlace() {
     this.setState({
-      showAddModal: true
+      showAddModal: true,
+      arriveTime: {
+        year: -1,
+        month: -1,
+        day: -1,
+        hour: -1,
+        minute: -1
+      },
+      leaveTime: {
+        year: -1,
+        month: -1,
+        day: -1,
+        hour: -1,
+        minute: -1
+      },
+      activeIndex: -1
     });
   }
 
@@ -71,13 +87,13 @@ export default class StationEditor extends Component {
     let leaveTime = this.state.leaveTime.month * 100000 + this.state.leaveTime.day * 1000
       + this.state.leaveTime.hour * 10 + this.state.leaveTime.minute;
     const timer = leaveTime - arriveTime;
-    if (timer <= 0) {
-      this.setState({
-        leaveTimeError: '离开时间不能低于到达时间'
-      });
-    }
+
     if (this.state.activeIndex === -1) {
-      if (this.station.value != '') {
+      if (timer <= 0) {
+        this.setState({
+          leaveTimeError: '离开时间不能低于到达时间'
+        });
+      } else if (this.station.value != '') {
         const value = {
           station: this.station.value,
           leaveTime: this.state.leaveTime,
@@ -88,20 +104,7 @@ export default class StationEditor extends Component {
           showAddModal: false,
           stationPlace: stationPlace,
           showStationPlace: true,
-          arriveTime: {
-            year: -1,
-            month: -1,
-            day: -1,
-            hour: -1,
-            minute: -1
-          },
-          leaveTime: {
-            year: -1,
-            month: -1,
-            day: -1,
-            hour: -1,
-            minute: -1
-          }
+          leaveTimeError: ''
         }, ()=> {
           this.station.value = '';
         });
@@ -111,7 +114,11 @@ export default class StationEditor extends Component {
         });
       }
     } else {
-      if (this.station.value != '') {
+      if (timer <= 0) {
+        this.setState({
+          leaveTimeError: '离开时间不能低于到达时间'
+        });
+      } else if (this.station.value != '') {
         const value = {
           station: this.station.value,
           leaveTime: this.state.leaveTime,
@@ -122,21 +129,7 @@ export default class StationEditor extends Component {
           showAddModal: false,
           stationPlace: stationPlace,
           showStationPlace: true,
-          activeIndex: -1,
-          arriveTime: {
-            year: -1,
-            month: -1,
-            day: -1,
-            hour: -1,
-            minute: -1
-          },
-          leaveTime: {
-            year: -1,
-            month: -1,
-            day: -1,
-            hour: -1,
-            minute: -1
-          }
+          activeIndex: -1
         }, ()=> {
           this.station.value = '';
         });
@@ -227,6 +220,39 @@ export default class StationEditor extends Component {
     }
   }
 
+  openEditModal(station, index) {
+    this.setState({
+      showAddModal: true,
+      activeIndex: index
+    }, ()=> {
+      this.station.value = station
+    });
+  }
+
+  openDeleteModal(index) {
+    this.setState({
+      showDeleteModal: true,
+      activeIndex: index
+    });
+  }
+
+  cancelStationButton() {
+    this.setState({
+      showDeleteModal: false,
+      activeIndex: -1
+    });
+  }
+
+  deleteStationPlace() {
+    const newStationPlace = this.state.stationPlace;
+    newStationPlace.splice(this.state.activeIndex, 1);
+    this.setState({
+      stationPlace: newStationPlace,
+      activeIndex: -1,
+      showDeleteModal: false
+    });
+  }
+
   render() {
 
     const stationPlaceHTML = stationPlace.map((item, index)=> {
@@ -241,8 +267,10 @@ ${item.arriveTime.hour}时${item.arriveTime.minute}分`;
           <td>{arriveTime}</td>
           <td>{leaveTime}</td>
           <td>
-            <Link>修改站点</Link>
-            <Link>删除站点</Link>
+            <Link className="margin-right" onClick={this.openEditModal.bind(this, item.station, index)}>
+              修改站点
+            </Link>
+            <Link onClick={this.openDeleteModal.bind(this, index)}>删除站点</Link>
           </td>
         </tr>
       )
@@ -407,6 +435,28 @@ ${item.arriveTime.hour}时${item.arriveTime.minute}分`;
             <Modal.Footer>
               <Button onClick={this.cancelButton.bind(this)}>取消</Button>
               <Button bsStyle='primary' onClick={this.makeSureAdd.bind(this)}>确定</Button>
+            </Modal.Footer>
+
+          </Modal.Dialog>
+        </div>
+
+      </div>
+
+      <div className={this.state.showDeleteModal ? '' : 'hidden'}>
+        <div className='static-modal'>
+
+          <Modal.Dialog>
+            <Modal.Header>
+              <Modal.Title>删除提示</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              您确定要删除该中间站点吗？
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button onClick={this.cancelStationButton.bind(this)}>取消</Button>
+              <Button bsStyle='primary' onClick={this.deleteStationPlace.bind(this)}>确定</Button>
             </Modal.Footer>
 
           </Modal.Dialog>

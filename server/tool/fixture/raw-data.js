@@ -34,17 +34,17 @@ module.exports = {
       "stations": [
         {
           "leaveTime": {"minute": 7, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "endTime": {"minute": 1, "hour": 4, "day": 29, "month": 5, "year": 2017},
+          "arriveTime": {"minute": 1, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "station": "1"
         },
         {
           "leaveTime": {"minute": 9, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "endTime": {"minute": 8, "hour": 4, "day": 29, "month": 5, "year": 2017},
+          "arriveTime": {"minute": 8, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "station": "2"
         },
         {
           "leaveTime": {"minute": 20, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "endTime": {"minute": 10, "hour": 4, "day": 29, "month": 5, "year": 2017},
+          "arriveTime": {"minute": 10, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "station": "3"
         }
       ],
@@ -56,17 +56,17 @@ module.exports = {
       "stations": [
         {
           "leaveTime": {"minute": 7, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "endTime": {"minute": 1, "hour": 4, "day": 29, "month": 5, "year": 2017},
+          "arriveTime": {"minute": 1, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "station": "1"
         },
         {
           "leaveTime": {"minute": 9, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "endTime": {"minute": 8, "hour": 4, "day": 29, "month": 5, "year": 2017},
+          "arriveTime": {"minute": 8, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "station": "2"
         },
         {
           "leaveTime": {"minute": 20, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "endTime": {"minute": 10, "hour": 4, "day": 29, "month": 5, "year": 2017},
+          "arriveTime": {"minute": 10, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "station": "3"
         }
       ],

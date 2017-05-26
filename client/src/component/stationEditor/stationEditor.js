@@ -1,7 +1,8 @@
 import {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 import {Link} from 'react-router';
-
+import superagent from 'superagent';
+import noCache from 'superagent-no-cache';
 
 const stationPlace = [];
 
@@ -47,8 +48,37 @@ export default class StationEditor extends Component {
       leaveTimeError: '',
       showStationPlace: false,
       trainIdError: '',
-      showDeleteModal: false
+      showDeleteModal: false,
+      editOrNew: 0
     };
+  }
+
+  componentDidMount() {
+    const pathNameArray = window.location.pathname.split('/');
+    if (pathNameArray[pathNameArray.length - 1] === 'edit') {
+      superagent
+        .get(`/stations/${pathNameArray[2]}`)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          console.log(res.body);
+          this.setState({
+            stationPlace: res.body.stations,
+            showStationPlace: true
+          }, ()=> {
+            this.trainId.value = res.body.trainId;
+          });
+        });
+    } else {
+      this.setState({
+        stationPlace: [],
+        editOrNew: 0
+      }, ()=> {
+        this.trainId.value = '';
+      });
+    }
   }
 
   addStationPlace() {
@@ -253,9 +283,18 @@ export default class StationEditor extends Component {
     });
   }
 
+  saveStations() {
+    const info = {
+      trainId: this.trainId.value,
+      stations: this.state.stationPlace
+    }
+
+  }
+
   render() {
 
-    const stationPlaceHTML = stationPlace.map((item, index)=> {
+    const stationPlaceHTML = this.state.stationPlace.map((item, index)=> {
+      console.log(item);
       const leaveTime = `${item.leaveTime.year}年${item.leaveTime.month}月${item.leaveTime.day}日
 ${item.leaveTime.hour}时${item.leaveTime.minute}分`;
       const arriveTime = `${item.arriveTime.year}年${item.arriveTime.month}月${item.arriveTime.day}日
@@ -312,7 +351,8 @@ ${item.arriveTime.hour}时${item.arriveTime.minute}分`;
           </button>
         </div>
         <div className='col-sm-3 col-sm-offset-1 text-center'>
-          <button className='btn btn-primary btn-save'>
+          <button className='btn btn-primary btn-save'
+                  onClick={this.saveStations.bind(this)}>
             {'保存  '}
           </button>
         </div>
@@ -461,7 +501,6 @@ ${item.arriveTime.hour}时${item.arriveTime.minute}分`;
 
           </Modal.Dialog>
         </div>
-
       </div>
     </div>);
   }

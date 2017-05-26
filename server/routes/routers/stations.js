@@ -5,10 +5,10 @@ const StationController = require('../../controllers/station-controller');
 const router = Router();
 const stationCtrl = new StationController();
 
-// router.get('/', stationCtrl.getAll);
-// router.get('/:stationId', stationCtrl.getOne);
+router.get('/', stationCtrl.getAllStation);
+router.get('/:stationId', stationCtrl.getOneStation);
 router.post('/', stationCtrl.createStation);
-// router.delete('/:stationId', stationCtrl.delete);
-// router.put('/:stationId', stationCtrl.update);
+router.delete('/:stationId', stationCtrl.deleteStation);
+router.put('/:stationId', stationCtrl.updateStation);
 
 module.exports = router;

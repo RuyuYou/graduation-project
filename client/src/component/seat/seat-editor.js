@@ -18,7 +18,10 @@ export default class SeatEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeIndex: 0
+      activeIndex: 0,
+      trainIdError: '',
+      positionError: '',
+      priceError: ''
     };
   }
 
@@ -51,6 +54,36 @@ export default class SeatEditor extends Component {
     });
   }
 
+  judgeTrainId() {
+    if (this.trainId.value == '') {
+      this.setState({
+        trainIdError: '列车号不能为空'
+      });
+    }
+  }
+
+  judgePosition() {
+    if (this.position.value == '') {
+      this.setState({
+        positionError: '位置不能为空'
+      });
+    }
+  }
+
+  judgePrice() {
+    if (this.price.value == '') {
+      this.setState({
+        priceError: '价格不能为空'
+      });
+    }
+  }
+
+  hiddenErrorMessage(err) {
+    var errObj = {};
+    errObj[err] = '';
+    this.setState(errObj);
+  }
+
   render() {
     return (<div className="seat-form">
 
@@ -63,8 +96,33 @@ export default class SeatEditor extends Component {
           <input type='text' className='form-control'
                  ref={(ref) => {
                    this.trainId = ref;
-                 }}/>
-          <ErrorTip />
+                 }} onBlur={this.judgeTrainId.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'trainIdError')}/>
+          <ErrorTip error={this.state.trainIdError}/>
+        </div>
+      </div>
+
+      <div className=' seat-form'>
+        <label className='col-sm-4'>位置</label>
+        <div className='col-sm-8 margin-bottom'>
+          <input type='text' className='form-control'
+                 ref={(ref) => {
+                   this.position = ref;
+                 }} onBlur={this.judgePosition.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'positionError')}/>
+          <ErrorTip error={this.state.positionError}/>
+        </div>
+      </div>
+
+      <div className=' seat-form'>
+        <label className='col-sm-4'>价格</label>
+        <div className='col-sm-8 margin-bottom'>
+          <input type='number' className='form-control'
+                 ref={(ref) => {
+                   this.price = ref;
+                 }} onBlur={this.judgePrice.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'priceError')}/>
+          <ErrorTip error={this.state.priceError}/>
         </div>
       </div>
     </div>);

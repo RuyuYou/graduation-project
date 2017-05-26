@@ -1,4 +1,6 @@
 import {Component} from 'react';
+import superagent from 'superagent';
+import noCache from 'superagent-no-cache';
 
 class ErrorTip extends Component {
   render() {
@@ -84,6 +86,50 @@ export default class SeatEditor extends Component {
     this.setState(errObj);
   }
 
+  submit() {
+    const info = {
+      trainId: this.trainId.value,
+      position: this.position.value,
+      price: this.price.value
+    };
+    if (this.state.activeIndex === 1) {
+      const id = this.props.currentTicker._id;
+      superagent.put(`/seats/${id}`)
+        .use(noCache)
+        .send(info)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status === 204) {
+            this.setState({trainIdError: '该列车已存储过票务信息'});
+          } else if (res.status === 202) {
+            this.setState({trainIdError: '不存在该列车,请先创建'});
+          } else {
+            this.props.modifyTickers();
+            this.cleanForm();
+          }
+        })
+    } else {
+      superagent.post('/seats')
+        .use(noCache)
+        .send(info)
+        .end((err, res)=> {
+          if (err) {
+            throw  err;
+          }
+          if (res.status === 204) {
+            this.setState({trainIdError: '该列车已存储过票务信息'});
+          } else if (res.status === 202) {
+            this.setState({trainIdError: '不存在该列车,请先创建'});
+          } else {
+            this.props.modifyTickers();
+            this.cleanForm();
+          }
+        });
+    }
+  }
+
   render() {
     return (<div className="seat-form">
 
@@ -124,6 +170,13 @@ export default class SeatEditor extends Component {
                  onFocus={this.hiddenErrorMessage.bind(this, 'priceError')}/>
           <ErrorTip error={this.state.priceError}/>
         </div>
+      </div>
+
+      <div className='role-management-form text-center'>
+        <button className='btn btn-primary btn-size'
+                onClick={this.submit.bind(this)}>
+          确定
+        </button>
       </div>
     </div>);
   }

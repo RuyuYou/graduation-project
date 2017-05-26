@@ -25,7 +25,8 @@ class SeatController {
   }
 
   create(req, res, next) {
-    Seat.create(req.body, (err, result)=> {
+    const seatInformation = Object.assign(req.body, {createPeople: req.cookies.userName});
+    Seat.create(seatInformation, (err, result)=> {
       if (err) {
         return next(err);
       }

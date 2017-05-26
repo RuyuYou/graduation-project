@@ -45,7 +45,8 @@ export default class StationEditor extends Component {
       },
       activeIndex: -1,
       leaveTimeError: '',
-      showStationPlace: false
+      showStationPlace: false,
+      trainIdError: ''
     };
   }
 
@@ -218,6 +219,14 @@ export default class StationEditor extends Component {
     });
   }
 
+  judgeTrainId() {
+    if (this.trainId.value == '') {
+      this.setState({
+        trainIdError: '列车号不能为空'
+      });
+    }
+  }
+
   render() {
 
     const stationPlaceHTML = stationPlace.map((item, index)=> {
@@ -246,9 +255,11 @@ ${item.arriveTime.hour}时${item.arriveTime.minute}分`;
           <input type='text' className='form-control' placeholder='请输入列车号'
                  ref={(ref) => {
                    this.trainId = ref;
-                 }}/>
+                 }} onBlur={this.judgeTrainId.bind(this)} onFocus={this.hiddenErrorMessage.bind(this, 'trainIdError')}/>
         </div>
       </div>
+      <span className="error-tip1 col-sm-offset-2">{this.state.trainIdError}</span>
+
 
       <div className={this.state.showStationPlace ? '' : 'hidden'}>
         <table className="table table-striped table-bordered table-hover">

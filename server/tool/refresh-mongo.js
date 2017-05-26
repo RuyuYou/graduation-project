@@ -1,15 +1,16 @@
 const mogoose = require('mongoose');
 const rawData = require('./fixture/raw-data');
-// const Admin = require('../models/admin');
 const Ticker = require('../models/ticker');
 const Train = require('../models/train');
 const User = require('../models/user');
+const Station = require('../models/station');
 
 const modelMap = {
   // Admin,
   // Ticker,
   Train,
   // User
+  Station
 };
 
 let docs = Object.keys(rawData);

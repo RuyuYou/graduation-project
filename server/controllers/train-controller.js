@@ -27,7 +27,6 @@ class TrainController {
   }
 
   create(req, res, next) {
-    console.log(req.cookies);
     Train.findOne({trainId: req.body.trainId}, (err, result)=> {
       if (err) {
         return next(err);

@@ -23,10 +23,10 @@ class TrainListHeader extends Component {
             <i className='fa fa-plus blue'> </i>
             <span className='text'>新增车次 </span>
           </button>
-          <button className='btn btn-default' disabled="disabled">
-            <i className='fa fa-trash-o red'> </i>
-            <span className='text'>批量删除 </span>
-          </button>
+          {/*<button className='btn btn-default' disabled="disabled">*/}
+            {/*<i className='fa fa-trash-o red'> </i>*/}
+            {/*<span className='text'>批量删除 </span>*/}
+          {/*</button>*/}
           <button className='btn btn-default pull-right'>
             <a href={href}><i className='fa fa-share'></i>
               <span className='text'>生成报表 </span>

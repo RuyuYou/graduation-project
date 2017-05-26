@@ -2,6 +2,8 @@ import {Component} from 'react';
 import {Link, withRouter} from 'react-router';
 import superagent from 'superagent';
 import noCache from 'superagent-no-cache';
+import {Modal, Button} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
 class ErrorTip extends Component {
   render() {
@@ -13,7 +15,7 @@ class ErrorTip extends Component {
   }
 }
 
-export default class TrainEditorBody extends Component {
+class TrainEditorBody extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,7 +38,8 @@ export default class TrainEditorBody extends Component {
       },
       endTimeError: '',
       showSuccess: false,
-      trainInformation: {}
+      trainInformation: {},
+      showDeleteTrainModal: false
     };
   }
 
@@ -257,6 +260,36 @@ export default class TrainEditorBody extends Component {
     });
   }
 
+  openDeleteTrain() {
+    this.setState({
+      showDeleteTrainModal: true
+    });
+  }
+
+  cancelDeleteTrain() {
+    this.setState({
+      showDeleteTrainModal: false
+    });
+  }
+
+  deleteTrain() {
+    superagent
+      .delete(`/trains/${this.state.trainInformation._id}`)
+      .use(noCache)
+      .end((err, res)=> {
+        if (err) {
+          throw err;
+        }
+        if (res.status === 204) {
+          this.setState({
+            showDeleteTrainModal: false
+          }, ()=> {
+            this.props.router.push('/train');
+          });
+        }
+      });
+  }
+
   render() {
     const messageSuccess = this.state.editOrNew == 0 ? `新建` : `修改`;
     const createNew = `/train/new`;
@@ -269,7 +302,8 @@ export default class TrainEditorBody extends Component {
           <input type='text' className='form-control' placeholder='请输入列车号'
                  ref={(ref) => {
                    this.trainId = ref;
-                 }} onBlur={this.judgeTrainId.bind(this)} onFocus={this.hiddenErrorMessage.bind(this, 'trainIdError')}/>
+                 }} onBlur={this.judgeTrainId.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'trainIdError')}/>
         </div>
       </div>
       <ErrorTip error={this.state.trainIdError}/>
@@ -404,7 +438,9 @@ export default class TrainEditorBody extends Component {
           </button>
         </div>
         <div className='col-sm-3 col-sm-offset-1 text-center'>
-          <button className='btn btn-primary btn-save'>{'删除  '}
+          <button className='btn btn-primary btn-save' disabled={this.state.editOrNew == 0}
+                  onClick={this.openDeleteTrain.bind(this)}>
+            {'删除  '}
           </button>
         </div>
 
@@ -424,6 +460,31 @@ export default class TrainEditorBody extends Component {
           </div>
         </div>
       </div>
+
+      <div className={this.state.showDeleteTrainModal ? '' : 'hidden'}>
+        <div className='static-modal'>
+          <Modal.Dialog>
+            <Modal.Header>
+              <Modal.Title>删除提示</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              您确定要删除该车次吗？
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button onClick={this.cancelDeleteTrain.bind(this)}>取消</Button>
+              <Button bsStyle='primary' onClick={this.deleteTrain.bind(this)}>确定</Button>
+            </Modal.Footer>
+
+          </Modal.Dialog>
+        </div>
+
+      </div>
     </div>);
   }
 }
+
+const mapStateToProps = (state) => state;
+
+export default connect(mapStateToProps)(withRouter(TrainEditorBody));

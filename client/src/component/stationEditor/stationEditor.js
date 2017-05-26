@@ -1,8 +1,10 @@
 import {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
-import {Link} from 'react-router';
 import superagent from 'superagent';
 import noCache from 'superagent-no-cache';
+import {connect} from 'react-redux';
+import {Link, withRouter} from 'react-router';
+
 
 const stationPlace = [];
 
@@ -22,7 +24,7 @@ class ListHeader extends Component {
   }
 }
 
-export default class StationEditor extends Component {
+class StationEditor extends Component {
 
   constructor(props) {
     super(props);
@@ -49,9 +51,11 @@ export default class StationEditor extends Component {
       showStationPlace: false,
       trainIdError: '',
       showDeleteModal: false,
-      editOrNew: 0
+      editOrNew: 0,
+      stationInformation: {}
     };
   }
+
 
   componentDidMount() {
     const pathNameArray = window.location.pathname.split('/');
@@ -63,18 +67,23 @@ export default class StationEditor extends Component {
           if (err) {
             throw err;
           }
-          console.log(res.body);
           this.setState({
             stationPlace: res.body.stations,
-            showStationPlace: true
+            showStationPlace: true,
+            stationInformation: res.body,
+            editOrNew: 1,
           }, ()=> {
-            this.trainId.value = res.body.trainId;
+            this.trainId.value = this.state.stationInformation.trainId;
+            for (let i = 0; i < this.state.stationPlace.length; i++) {
+              stationPlace.push(this.state.stationPlace[i]);
+            }
           });
         });
     } else {
       this.setState({
         stationPlace: [],
-        editOrNew: 0
+        editOrNew: 0,
+        stationInformation: {}
       }, ()=> {
         this.trainId.value = '';
       });
@@ -250,12 +259,14 @@ export default class StationEditor extends Component {
     }
   }
 
-  openEditModal(station, index) {
+  openEditModal(item, index) {
     this.setState({
       showAddModal: true,
-      activeIndex: index
+      activeIndex: index,
+      arriveTime: item.arriveTime,
+      leaveTime: item.leaveTime
     }, ()=> {
-      this.station.value = station
+      this.station.value = item.station
     });
   }
 
@@ -287,14 +298,47 @@ export default class StationEditor extends Component {
     const info = {
       trainId: this.trainId.value,
       stations: this.state.stationPlace
+    };
+    console.log(info);
+    if (this.state.editOrNew == 0) {
+      superagent
+        .post('/stations')
+        .send(info)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status == 201) {
+            this.props.router.push('/station');
+            this.setState({
+              stationInformation: {},
+              stationPlace: []
+            });
+          }
+        });
+    } else {
+      superagent
+        .put(`/stations/${this.state.stationInformation._id}`)
+        .send(info)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status == 200) {
+            this.props.router.push('/station');
+            this.setState({
+              stationInformation: {},
+              stationPlace: []
+            });
+          }
+        });
     }
-
   }
 
   render() {
-
     const stationPlaceHTML = this.state.stationPlace.map((item, index)=> {
-      console.log(item);
       const leaveTime = `${item.leaveTime.year}年${item.leaveTime.month}月${item.leaveTime.day}日
 ${item.leaveTime.hour}时${item.leaveTime.minute}分`;
       const arriveTime = `${item.arriveTime.year}年${item.arriveTime.month}月${item.arriveTime.day}日
@@ -306,7 +350,7 @@ ${item.arriveTime.hour}时${item.arriveTime.minute}分`;
           <td>{arriveTime}</td>
           <td>{leaveTime}</td>
           <td>
-            <Link className="margin-right" onClick={this.openEditModal.bind(this, item.station, index)}>
+            <Link className="margin-right" onClick={this.openEditModal.bind(this, item, index)}>
               修改站点
             </Link>
             <Link onClick={this.openDeleteModal.bind(this, index)}>删除站点</Link>
@@ -505,3 +549,7 @@ ${item.arriveTime.hour}时${item.arriveTime.minute}分`;
     </div>);
   }
 }
+
+const mapStateToProps = (state) => state;
+
+export default connect(mapStateToProps)(withRouter(StationEditor));

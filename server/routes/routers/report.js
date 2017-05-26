@@ -5,6 +5,6 @@ const ReportController = require('../../controllers/report-controller');
 const router = Router();
 const reportCtrl = new ReportController();
 
-router.get('/', reportCtrl.getAll);
+router.get('/train', reportCtrl.getTrain);
 
 module.exports = router;

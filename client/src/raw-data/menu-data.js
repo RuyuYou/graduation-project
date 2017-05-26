@@ -54,9 +54,9 @@ export default [
     id: 7,
     parent: 1,
     level: 2,
-    text: '个人中心',
-    uri: '/userCenter',
-    icon: 'user-circle'
+    text: '生成报表',
+    uri: '/reports',
+    icon: 'share'
   },
   {
     id: 8,

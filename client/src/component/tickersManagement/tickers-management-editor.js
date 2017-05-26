@@ -22,9 +22,9 @@ export  default class TickersManagementEditor extends Component {
     this.state = {
       activeIndex: 0,
       trainIdError: '',
-      firstError: '',
-      secondError: '',
-      specialError: ''
+      cabinError: '',
+      sleeperError: '',
+      seatError: ''
     };
   }
 
@@ -66,12 +66,9 @@ export  default class TickersManagementEditor extends Component {
   receivePropsData(currentTicker) {
     const item = currentTicker.currentTicker;
     this.trainId.value = item.trainId;
-    this.firstSeat.value = item.firstInformation.firstSeat;
-    this.firstPrice.value = item.firstInformation.firstPrice;
-    this.secondSeat.value = item.secondInformation.secondSeat;
-    this.secondPrice.value = item.secondInformation.secondPrice;
-    this.specialSeat.value = item.specialInformation.specialSeat;
-    this.specialPrice.value = item.specialInformation.specialPrice;
+    this.cabin.value = item.cabinNumber;
+    this.sleeper.value = item.sleeperNumber;
+    this.seat.value = item.seatNumber;
   }
 
   componentWillReceiveProps(next) {
@@ -88,6 +85,30 @@ export  default class TickersManagementEditor extends Component {
     if (this.trainId.value == '') {
       this.setState({
         trainIdError: '列车号不能为空'
+      });
+    }
+  }
+
+  judgeCabin() {
+    if (this.cabin.value == '') {
+      this.setState({
+        cabinError: '车厢个数不能为空'
+      });
+    }
+  }
+
+  judgeSleeper() {
+    if (this.sleeper.value == '') {
+      this.setState({
+        sleeperError: '卧铺个数不能为空'
+      });
+    }
+  }
+
+  judgeSeat() {
+    if (this.seat.value == '') {
+      this.setState({
+        seatError: '硬座个数不能为空'
       });
     }
   }
@@ -152,24 +173,6 @@ export  default class TickersManagementEditor extends Component {
     this.setState(errObj);
   }
 
-  judgeFirstSeat() {
-    if (this.firstPrice.value == '' || this.firstSeat.value == '') {
-      this.setState({firstError: '一等座信息不能为空'});
-    }
-  }
-
-  judgeSecondSeat() {
-    if (this.secondPrice.value == '' || this.secondSeat.value == '') {
-      this.setState({secondError: '二等座信息不能为空'});
-    }
-  }
-
-  judgeSpecialSeat() {
-    if (this.specialPrice.value == '' || this.specialSeat.value == '') {
-      this.setState({specialError: '特等座信息不能为空'});
-    }
-  }
-
   render() {
     return (
       <div className="tickers-management-editor">
@@ -191,71 +194,38 @@ export  default class TickersManagementEditor extends Component {
           </div>
 
           <div className='tickers-management-form'>
-            <label className='col-sm-4'>一等座</label>
-            <div className='col-sm-8 form-line margin-bottom'
-                 onBlur={this.judgeFirstSeat.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'firstError')}>
-              <div className="form-group col-sm-6 no-padding-left  margin-border">
-                <input type='number' className='form-control'
-                       placeholder="个数"
-                       ref={(ref) => {
-                         this.firstSeat = ref;
-                       }}/>
-              </div>
-              <div className="form-group col-sm-6 no-padding-right margin-border">
-                <input type='number' className='form-control'
-                       placeholder="价格"
-                       ref={(ref) => {
-                         this.firstPrice = ref;
-                       }}/>
-              </div>
-              <ErrorTip error={this.state.firstError}/>
+            <label className='col-sm-4'>车厢个数</label>
+            <div className='col-sm-8 margin-bottom'>
+              <input type='number' className='form-control'
+                     ref={(ref) => {
+                       this.cabin = ref;
+                     }} onBlur={this.judgeCabin.bind(this)}
+                     onFocus={this.hiddenErrorMessage.bind(this, 'cabinError')}/>
+              <ErrorTip error={this.state.cabinError}/>
             </div>
           </div>
 
           <div className='tickers-management-form'>
-            <label className='col-sm-4'>二等座</label>
-            <div className='col-sm-8 form-line margin-bottom'
-                 onBlur={this.judgeSecondSeat.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'secondError')}>
-              <div className="form-group col-sm-6 no-padding-left margin-border">
-                <input type='number' className='form-control'
-                       placeholder="个数"
-                       ref={(ref) => {
-                         this.secondSeat = ref;
-                       }}/>
-              </div>
-              <div className="form-group col-sm-6 no-padding-right margin-border">
-                <input type='number' className='form-control'
-                       placeholder="价格"
-                       ref={(ref) => {
-                         this.secondPrice = ref;
-                       }}/>
-              </div>
-              <ErrorTip error={this.state.secondError}/>
+            <label className='col-sm-4'>卧铺个数</label>
+            <div className='col-sm-8 margin-bottom'>
+              <input type='number' className='form-control'
+                     ref={(ref) => {
+                       this.sleeper = ref;
+                     }} onBlur={this.judgeSleeper.bind(this)}
+                     onFocus={this.hiddenErrorMessage.bind(this, 'sleeperError')}/>
+              <ErrorTip error={this.state.sleeperError}/>
             </div>
           </div>
 
           <div className='tickers-management-form'>
-            <label className='col-sm-4'>特等座</label>
-            <div className='col-sm-8 form-line margin-bottom'
-                 onBlur={this.judgeSpecialSeat.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'specialError')}>
-              <div className="form-group col-sm-6 no-padding-left margin-border">
-                <input type='number' className='form-control'
-                       placeholder="个数"
-                       ref={(ref) => {
-                         this.specialSeat = ref;
-                       }}/>
-              </div>
-              <div className="form-group col-sm-6 no-padding-right margin-border">
-                <input type='number' className='form-control'
-                       placeholder="价格"
-                       ref={(ref) => {
-                         this.specialPrice = ref;
-                       }}/>
-              </div>
-              <ErrorTip error={this.state.specialError}/>
+            <label className='col-sm-4'>硬座个数</label>
+            <div className='col-sm-8 margin-bottom'>
+              <input type='number' className='form-control'
+                     ref={(ref) => {
+                       this.seat = ref;
+                     }} onBlur={this.judgeSeat.bind(this)}
+                     onFocus={this.hiddenErrorMessage.bind(this, 'seatError')}/>
+              <ErrorTip error={this.state.seatError}/>
             </div>
           </div>
 

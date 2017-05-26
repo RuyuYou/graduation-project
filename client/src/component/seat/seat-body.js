@@ -10,7 +10,8 @@ class SeatBody extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      seatList: []
+      seatList: [],
+      currentTicker: {}
     };
   }
 
@@ -31,14 +32,29 @@ class SeatBody extends Component {
     this.requestData();
   }
 
+  changeTickers(tricker) {
+    this.setState({
+      currentTicker: tricker
+    });
+  }
+
+  modifyTickers() {
+    this.requestData();
+    this.setState({
+      currentTicker: {}
+    });
+  }
+
   render() {
     return (
       <div className="seat-body row">
         <div className="col-sm-8">
-          <SeatList seatList={this.state.seatList}/>
+          <SeatList seatList={this.state.seatList}
+                    changeTickers={this.changeTickers.bind(this)}/>
         </div>
         <div className="col-sm-4">
-          <SeatEditor/>
+          <SeatEditor currentTicker={this.state.currentTicker}
+                      modifyTickers={this.modifyTickers.bind(this)}/>
         </div>
       </div>
     )

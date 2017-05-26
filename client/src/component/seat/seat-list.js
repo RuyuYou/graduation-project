@@ -1,11 +1,27 @@
 import {Component} from 'react';
 
 export default class SeatList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentTicker: {},
+      activeIndex: -1
+    }
+  }
+
+  clickSeat(index, information) {
+    this.setState({
+      currentTicker: information,
+      activeIndex: index
+    });
+    this.props.changeTickers(information);
+  }
+
   render() {
 
     const seatListHTML = this.props.seatList.map((item, index)=> {
       return <tbody key={index}>
-      <tr >
+      <tr onClick={this.clickSeat.bind(this, index, item)}>
         <td>{item.trainId}</td>
         <td>{item.position}</td>
         <td>{item.price}</td>

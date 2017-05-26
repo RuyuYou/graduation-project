@@ -27,8 +27,27 @@ export default class SeatEditor extends Component {
     };
   }
 
-  componentWillReceiveProps() {
-    console.log(this.props.currentTicker);
+  receivePropsData(currentTicker) {
+    const item = currentTicker.currentTicker;
+    this.trainId.value = item.trainId;
+    this.position.value = item.position;
+    this.price.value = item.price;
+  }
+
+  componentWillReceiveProps(next) {
+    if (next.currentTicker.trainId) {
+      this.receivePropsData(next);
+      this.setState({
+        activeIndex: 1,
+        updateFormEnable: true
+      });
+    }
+  }
+
+  cleanForm() {
+    this.trainId.value = '';
+    this.position.value = '';
+    this.price.value = '';
   }
 
   handleTabsToggle(index) {

@@ -5,7 +5,8 @@ const sleeperSchema = new Schema({
   trainId: String,
   type: String,
   position: String,
-  price: Number
+  price: Number,
+  createPeople: String
 });
 
 const Sleeper = mongoose.model('Sleeper', sleeperSchema);

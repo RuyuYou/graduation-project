@@ -116,21 +116,26 @@ module.exports = {
       "trainId": "1",
       "type": "软卧",
       "position": "上",
-      "price": 255.4
+      "price": 255.4,
+      "createPeople": "赵思"
     },
     {
       "_id": "5928dd7a9831eb2b16b30a88",
       "trainId": "1",
       "type": "软卧",
       "position": "中",
-      "price": 155.4
+      "price": 155.4,
+      "createPeople": "赵思"
+
     },
     {
       "_id": "5928ad7a9831eb2b19b30a88",
       "trainId": "1",
       "type": "硬卧",
       "position": "下",
-      "price": 255.4
+      "price": 255.4,
+      "createPeople": "赵思"
+
     }
   ]
 };

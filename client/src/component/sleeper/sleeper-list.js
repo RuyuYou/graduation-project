@@ -20,6 +20,7 @@ export default class SleeperList extends Component {
   render() {
 
     const sleeperListHTML = this.props.sleeperList.map((item, index)=> {
+      console.log(item);
       return <tbody key={index}>
       <tr onClick={this.clickSeat.bind(this, index, item)}>
         <td>{item.trainId}</td>

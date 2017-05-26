@@ -24,7 +24,7 @@ class Reports extends Component {
           <div className="col-sm-offset-2 col-sm-4">
             <button className='btn btn-default'>
               <a href={href}><i className='fa fa-share'></i>
-                <span className='text'>车次报表 </span>
+                <span className='text'>票价报表 </span>
               </a>
             </button>
           </div>

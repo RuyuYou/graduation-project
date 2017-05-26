@@ -1,11 +1,12 @@
 import {Component} from 'react';
+import '../../../style/station.less';
 
 export default class Station extends Component {
   render() {
     return (<div id="seat">
-      <h1 className='text-center' style={{color: '#438EB9'}}>
-        站点信息
-      </h1>
+      <div className='seat-header'>
+        站点管理
+      </div>
     </div>);
   }
 }

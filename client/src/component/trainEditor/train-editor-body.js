@@ -203,22 +203,39 @@ export default class TrainEditorBody extends Component {
         endPlace: this.endPlace.value,
         endTime: this.state.endTime
       };
-      superagent
-        .post('/trains')
-        .send(info)
-        .use(noCache)
-        .end((err, res)=> {
-          if (err) {
-            throw err;
-          }
-          if (res.status === 201) {
-            this.setState({showSuccess: true}, ()=> {
-              this.initInformation();
-            });
-          } else if (res.status === 204) {
-            this.setState({trainIdError: '该列车号已存在'});
-          }
-        });
+      if (this.state.editOrNew == 0) {
+        superagent
+          .post('/trains')
+          .send(info)
+          .use(noCache)
+          .end((err, res)=> {
+            if (err) {
+              throw err;
+            }
+            if (res.status === 201) {
+              this.setState({showSuccess: true}, ()=> {
+                this.initInformation();
+              });
+            } else if (res.status === 204) {
+              this.setState({trainIdError: '该列车号已存在'});
+            }
+          });
+      } else {
+        superagent
+          .put(`/trains/${this.state.trainInformation._id}`)
+          .send(info)
+          .use(noCache)
+          .end((err, res)=> {
+            if (err) {
+              throw err;
+            }
+            if (res.status === 204) {
+              this.setState({showSuccess: true}, ()=> {
+                this.initInformation();
+              });
+            }
+          });
+      }
     }
   }
 
@@ -245,6 +262,9 @@ export default class TrainEditorBody extends Component {
   }
 
   render() {
+    const messageSuccess = this.state.editOrNew == 0 ? `新建` : `修改`;
+    const createNew = `/train/new`;
+    const list = `/train`;
 
     return (<div>
       <div className='form-group row no-margin-form'>
@@ -396,13 +416,13 @@ export default class TrainEditorBody extends Component {
           <div className='alert alert-block alert-success col-sm-6 col-sm-offset-3 no-margin-bottom text-center'>
             <p className='message-hint'>
               <i className='ace-icon fa fa-check-circle icon-space'> </i>
-              {`车次成功,请选择查看车次列表还是继续新增车次?`}
+              {`车次${messageSuccess}成功,请选择查看车次列表还是继续新增车次?`}
             </p>
-            <Link>
+            <Link to={list}>
               <button className='btn btn-sm btn-success icon-space'>查看车次列表
               </button>
             </Link>
-            <Link>
+            <Link to={createNew}>
               <button className='btn btn-sm btn-default col-sm-offset-2'>{`继续新增车次`}</button>
             </Link>
           </div>

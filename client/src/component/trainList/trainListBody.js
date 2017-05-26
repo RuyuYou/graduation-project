@@ -88,9 +88,9 @@ export default class TrainListBody extends Component {
     const listHTML = trainList.map((item, index)=> {
       const updatePath = window.location.pathname + `/${item._id}/edit`;
       const startTime = `${item.startTime.year}年${item.startTime.month}月${item.startTime.day}日
-${item.startTime.hour}时${item.startTime.minutes}分`;
+${item.startTime.hour}时${item.startTime.minute}分`;
       const endTime = `${item.endTime.year}年${item.endTime.month}月${item.endTime.day}日
-${item.endTime.hour}时${item.endTime.minutes}分`;
+${item.endTime.hour}时${item.endTime.minute}分`;
       return (
         <tr key={index}>
           <td><input type="checkbox"/></td>

@@ -43,7 +43,8 @@ class Main extends Component {
           </Route>
           <Route path='station'>
             <IndexRoute component={Station}/>
-            <Router path=":id/editor" component={StationEditor}/>
+            <Router path="new" component={StationEditor}/>
+            <Router path=":id/edit" component={StationEditor}/>
           </Route>
           <Route path="seat" component={Seat}/>
           <Route path="sleeper" component={Sleeper}/>

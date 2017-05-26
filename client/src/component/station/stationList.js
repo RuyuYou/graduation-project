@@ -98,7 +98,7 @@ export default class StationList extends Component {
   render() {
     const stationsHTML = this.state.stationList.map((item, index)=> {
       const stationHTML = this.getStations(item.stations);
-      const href = `/station/${item._id}/editor`;
+      const href = `/station/${item._id}/edit`;
       return (
         <tr key={index}>
           <td><input type="checkbox"/></td>

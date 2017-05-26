@@ -16,5 +16,32 @@
   .seat-body {
     background-color: #f5f9fc;
     margin: 0px 0px;
+    .seat-list {
+      padding: 0;
+      margin-top: 10px;
+      .table-striped {
+        tbody {
+          tr:nth-of-type(even) {
+            background-color: #E9F1F6;
+          }
+          td {
+            border: 1px solid #DDDDDD;
+            padding: 8px;
+          }
+        }
+        thead {
+          tr {
+            color: #707070;
+            background: #F2F2F2
+          }
+          th {
+            text-align: left;
+          }
+        }
+      }
+      .table-bordered {
+        margin-bottom: 0;
+      }
+    }
   }
 }

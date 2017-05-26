@@ -3,6 +3,8 @@ import superagent from 'superagent';
 import noCache from 'superagent-no-cache';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
+import SeatList from './seat-list';
+import SeatEditor from './seat-editor';
 
 class SeatBody extends Component {
   constructor(props) {
@@ -31,8 +33,13 @@ class SeatBody extends Component {
 
   render() {
     return (
-      <div className="seat-body">
-        
+      <div className="seat-body row">
+        <div className="col-sm-8">
+          <SeatList/>
+        </div>
+        <div className="col-sm-4">
+          <SeatEditor/>
+        </div>
       </div>
     )
   }

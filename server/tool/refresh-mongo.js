@@ -5,14 +5,14 @@ const Train = require('../models/train');
 const User = require('../models/user');
 const Station = require('../models/station');
 const Seat = require('../models/seat');
+const Sleeper = require('../models/sleeper');
 
 const modelMap = {
-  // Admin,
   Ticker,
   Train,
-  // User
   Station,
-  Seat
+  Seat,
+  Sleeper
 };
 
 let docs = Object.keys(rawData);

@@ -18,6 +18,7 @@ import Station from './component/station';
 import Seat from './component/seat';
 import Sleeper from './component/sleeper';
 import UserManagement from './component/usersManagement';
+import StationEditor from './component/stationEditor/index';
 
 const store = createStore(
   rootReducer,
@@ -40,7 +41,10 @@ class Main extends Component {
             <Router path='new' component={TrainEditor}/>
             <Router path=':id/edit' component={TrainEditor}/>
           </Route>
-          <Route path='station' component={Station}/>
+          <Route path='station'>
+            <IndexRoute component={Station}/>
+            <Router path=":id/editor" component={StationEditor}/>
+          </Route>
           <Route path="seat" component={Seat}/>
           <Route path="sleeper" component={Sleeper}/>
           <Route path='usersManagement' component={UserManagement}/>

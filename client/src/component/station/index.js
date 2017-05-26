@@ -4,8 +4,8 @@ import StationList from './stationList';
 
 export default class Station extends Component {
   render() {
-    return (<div id="seat">
-      <div className='seat-header'>
+    return (<div id="station">
+      <div className='station-header'>
         站点管理
       </div>
       <div className="station-title">

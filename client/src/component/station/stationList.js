@@ -98,6 +98,7 @@ export default class StationList extends Component {
   render() {
     const stationsHTML = this.state.stationList.map((item, index)=> {
       const stationHTML = this.getStations(item.stations);
+      const href = `/station/${item._id}/editor`;
       return (
         <tr key={index}>
           <td><input type="checkbox"/></td>
@@ -106,7 +107,8 @@ export default class StationList extends Component {
           <td>{item.createPeople}</td>
           <td>
             <div>
-              <a href="/station/edit" className='margin-right'>站点详情</a>
+              <Link to={href} className='margin-right'>站点详情
+              </Link>
               <Link onClick={this.openDeleteStation.bind(this, item._id)}>
                 <a href="#">删除站点</a>
               </Link>

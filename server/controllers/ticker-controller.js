@@ -42,31 +42,15 @@ class TickerController {
   }
 
   updateTickers(req, res, next) {
-    Train.findOne({trainId: req.body.trainId}, (err, doc)=> {
+    Tickers.findByIdAndUpdate(req.params.tickerId, req.body, (err, result)=> {
       if (err) {
         return next(err);
       }
-      if (!doc) {
-        return res.sendStatus(constant.httpCode.ACCEPTED);
+      if (!result) {
+        return res.sendStatus(constant.httpCode.NOT_FOUND);
       }
-      if (doc) {
-        Tickers.findOne({trainId: req.body.trainId}, (err, result)=> {
-          if (result) {
-            return res.sendStatus(constant.httpCode.NO_CONTENT);
-          } else {
-            Tickers.findByIdAndUpdate(req.params.tickerId, req.body, (err, result)=> {
-              if (err) {
-                return next(err);
-              }
-              if (!result) {
-                return res.sendStatus(constant.httpCode.NOT_FOUND);
-              }
-              return res.status(constant.httpCode.OK).send(result);
-            });
-          }
-        });
-      }
-    })
+      return res.status(constant.httpCode.OK).send(result);
+    });
   }
 }
 

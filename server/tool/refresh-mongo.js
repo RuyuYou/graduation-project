@@ -12,7 +12,8 @@ const modelMap = {
   Train,
   Station,
   Seat,
-  Sleeper
+  Sleeper,
+  User
 };
 
 let docs = Object.keys(rawData);

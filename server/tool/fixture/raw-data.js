@@ -75,13 +75,13 @@ module.exports = {
   Ticker: [
     {
       "_id": "5928949ff981700d878017b4",
-      "trainId": "1",
+      "trainId": "G21",
       "cabinNumber": 18,
       "sleeperNumber": 10,
       "seatNumber": 8
     }, {
       "_id": "5928949ff981f00d878017b4",
-      "trainId": "2",
+      "trainId": "G21",
       "cabinNumber": 20,
       "sleeperNumber": 10,
       "seatNumber": 10
@@ -136,6 +136,40 @@ module.exports = {
       "price": 255.4,
       "createPeople": "赵思"
 
+    }
+  ],
+  User: [
+    {
+      "_id": "58ea4b9d4fa41b33bb4f07d3",
+      "userId": 140,
+      "userName": "赵思",
+      "password": "12345678",
+      "email": "admin@10.com",
+      "mobilePhone": "13112345678"
+    },
+    {
+      "_id": "58ea4b9d4fa44b33bb4f07d3",
+      "userId": 123,
+      "userName": "张三",
+      "password": "12345678",
+      "email": "admin@12.com",
+      "mobilePhone": "13212345678"
+    },
+    {
+      "_id": "58ea4b9d4fa41b33bb4e07d3",
+      "userId": 126,
+      "userName": "陈有",
+      "password": "12345678",
+      "email": "chen@26.com",
+      "mobilePhone": "13312345678"
+    },
+    {
+      "_id": "58ea4b9d4fa41b33bb4f00d3",
+      "userId": 32,
+      "userName": "孙衵",
+      "password": "12345678",
+      "email": "sun@32.com",
+      "mobilePhone": "13412345678"
     }
   ]
 };

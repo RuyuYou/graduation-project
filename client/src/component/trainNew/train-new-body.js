@@ -299,7 +299,7 @@ class TrainNewBody extends Component {
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 列车号 </label>
         <div className='col-sm-6'>
-          <input type='text' className='form-control' placeholder='请输入列车号'
+          <input type='text' className='form-control width' placeholder='请输入列车号'
                  ref={(ref) => {
                    this.trainId = ref;
                  }} onBlur={this.judgeTrainId.bind(this)}
@@ -311,7 +311,7 @@ class TrainNewBody extends Component {
       <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 起点站 </label>
         <div className='col-sm-6'>
-          <input type='text' className='form-control' placeholder='请输入起点站'
+          <input type='text' className='form-control width' placeholder='请输入起点站'
                  ref={(ref) => {
                    this.startPlace = ref;
                  }} onBlur={this.judgeStartPlace.bind(this)}
@@ -325,7 +325,7 @@ class TrainNewBody extends Component {
         <div onBlur={this.judgeStartTime.bind(this)}
              onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
           <div className='form-group col-sm-2'>
-            <select className="form-control province" name="year"
+            <select className="form-control width province" name="year"
                     value={this.state.startTime.year}
                     onChange={this.handleChangeStartTime.bind(this, 'year')}>
               <option value="-1">请选择</option>
@@ -333,7 +333,7 @@ class TrainNewBody extends Component {
             </select>年
           </div>
           <div className="form-group col-sm-2">
-            <select className="form-control city" name="month"
+            <select className="form-control width city" name="month"
                     value={this.state.startTime.month}
                     onChange={this.handleChangeStartTime.bind(this, 'month')}>
               <option value="-1">请选择</option>
@@ -341,7 +341,7 @@ class TrainNewBody extends Component {
             </select>月
           </div>
           <div className="form-group col-sm-2">
-            <select className="form-control city" name="day"
+            <select className="form-control  width city" name="day"
                     value={this.state.startTime.day}
                     onChange={this.handleChangeStartTime.bind(this, 'day')}>
               <option value="-1">请选择</option>
@@ -349,7 +349,7 @@ class TrainNewBody extends Component {
             </select>日
           </div>
           <div className="form-group col-sm-offset-4 col-sm-2 no-margin-form">
-            <select className="form-control city" name="hour"
+            <select className="form-control width city" name="hour"
                     value={this.state.startTime.hour}
                     onChange={this.handleChangeStartTime.bind(this, 'hour')}>
               <option value="-1">请选择</option>
@@ -357,7 +357,7 @@ class TrainNewBody extends Component {
             </select>时
           </div>
           <div className="form-group col-sm-2 no-margin-form">
-            <select className="form-control city" name="minute"
+            <select className="form-control width city" name="minute"
                     value={this.state.startTime.minute}
                     onChange={this.handleChangeStartTime.bind(this, 'minute')}>
               <option value="-1">请选择</option>
@@ -374,7 +374,7 @@ class TrainNewBody extends Component {
       <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 终点站 </label>
         <div className='col-sm-6'>
-          <input type='text' className='form-control' placeholder='请输入终点站'
+          <input type='text' className='form-control width' placeholder='请输入终点站'
                  ref={(ref) => {
                    this.endPlace = ref;
                  }} onBlur={this.judgeEndPlace.bind(this)}
@@ -388,7 +388,7 @@ class TrainNewBody extends Component {
         <div onBlur={this.judgeEndTime.bind(this)}
              onFocus={this.hiddenErrorMessage.bind(this, 'endTimeError')}>
           <div className='form-group col-sm-2'>
-            <select className="form-control province" name="year"
+            <select className="form-control width province" name="year"
                     value={this.state.endTime.year}
                     onChange={this.handleChangeEndTime.bind(this, 'year')}>
               <option value="-1">请选择</option>
@@ -396,7 +396,7 @@ class TrainNewBody extends Component {
             </select>年
           </div>
           <div className="form-group col-sm-2">
-            <select className="form-control city" name="month"
+            <select className="form-control width city" name="month"
                     value={this.state.endTime.month}
                     onChange={this.handleChangeEndTime.bind(this, 'month')}>
               <option value="-1">请选择</option>
@@ -404,7 +404,7 @@ class TrainNewBody extends Component {
             </select>月
           </div>
           <div className="form-group col-sm-2">
-            <select className="form-control city" name="day"
+            <select className="form-control width city" name="day"
                     value={this.state.endTime.day}
                     onChange={this.handleChangeEndTime.bind(this, 'day')}>
               <option value="-1">请选择</option>
@@ -412,7 +412,7 @@ class TrainNewBody extends Component {
             </select>日
           </div>
           <div className="form-group col-sm-offset-4 col-sm-2 no-margin-form">
-            <select className="form-control city" name="hour"
+            <select className="form-control width city" name="hour"
                     value={this.state.endTime.hour}
                     onChange={this.handleChangeEndTime.bind(this, 'hour')}>
               <option value="-1">请选择</option>
@@ -420,7 +420,7 @@ class TrainNewBody extends Component {
             </select>时
           </div>
           <div className="form-group col-sm-2 no-margin-form">
-            <select className="form-control city" name="minute"
+            <select className="form-control width city" name="minute"
                     value={this.state.endTime.minute}
                     onChange={this.handleChangeEndTime.bind(this, 'minute')}>
               <option value="-1">请选择</option>

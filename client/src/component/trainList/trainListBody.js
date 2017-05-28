@@ -80,12 +80,20 @@ export default class TrainListBody extends Component {
     });
   }
 
+  judgeDays(days) {
+    if (days == 0) {
+      return '当天';
+    } else {
+      return `+${days}天`;
+    }
+  }
+
   render() {
     const trainList = this.state.trainList || [];
     const listHTML = trainList.map((item, index)=> {
       const updatePath = window.location.pathname + `/${item._id}/edit`;
       const startTime = `${item.startTime.hour}时${item.startTime.minute}分`;
-      const endTime = `${item.endTime.hour}时${item.endTime.minute}分${item.endTime.days}`;
+      const endTime = `${item.endTime.hour}时${item.endTime.minute}分`;
       const lastedTime = `${item.lastedTime.hour}时${item.lastedTime.minute}分钟`;
       return (
         <tr key={index}>
@@ -94,7 +102,10 @@ export default class TrainListBody extends Component {
           <td>{item.startPlace}</td>
           <td>{item.endPlace}</td>
           <td>{startTime}</td>
-          <td>{endTime}</td>
+          <td>
+            {endTime}
+            <label className="red">{this.judgeDays(item.endTime.days)}</label>
+          </td>
           <td>{item.mile}</td>
           <td>{lastedTime}</td>
           <td>{item.createPeople}</td>

@@ -6,8 +6,8 @@ module.exports = {
       "type": "新空快速",
       "startPlace": "西安",
       "endPlace": "广州",
-      "startTime": {"hour": '08', "minute": '30'},
-      "endTime": {"hour": '11', "minute": '02', "days": "次日"},
+      "startTime": {"hour": '10', "minute": '04'},
+      "endTime": {"hour": '13', "minute": '09', "days": "1"},
       "lastedTime": {"hour": "27", "minute": "05"},
       "mile": 2093,
       "createPeople": "赵思"

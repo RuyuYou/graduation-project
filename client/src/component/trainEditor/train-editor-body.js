@@ -25,7 +25,8 @@ class TrainEditorBody extends Component {
       lastedError: '',
       showSuccess: false,
       trainInformation: {},
-      showDeleteTrainModal: false
+      showDeleteTrainModal: false,
+      endDays: -1
     };
   }
 
@@ -57,6 +58,9 @@ class TrainEditorBody extends Component {
     this.type.value = trainInformation.type;
     this.lastedHour.value = trainInformation.lastedTime.hour;
     this.lastedMinute.value = trainInformation.lastedTime.minute;
+    this.setState({
+      endDays: trainInformation.endTime.days
+    });
   }
 
   judgeStartPlace() {
@@ -94,16 +98,17 @@ class TrainEditorBody extends Component {
     } else {
       if (isNaN(this.endHour.value) || isNaN(this.endMinute.value)) {
         this.setState({endTimeError: '到达时间输入错误，请从新输入'});
-      }
-    }
-  }
-
-  judgeLastedTime() {
-    if (this.lastedHour.value == '' || this.lastedMinute.value == '') {
-      this.setState({lastedError: '运行时间不能为空'});
-    } else {
-      if (isNaN(this.lastedMinute.value) || isNaN(this.lastedHour.value)) {
-        this.setState({lastedError: '运行时间输入错误，请从新输入'});
+      } else {
+        console.log(parseInt(this.startHour.value));
+        const startTime = parseInt(this.startHour.value) * 60 + parseInt(this.startMinute.value);
+        const endTime = (parseInt(this.state.endDays) * 24 + parseInt(this.endHour.value)) * 60 + parseInt(this.endMinute.value);
+        console.log(parseInt(this.state.endDays));
+        console.log(startTime);
+        console.log(endTime);
+        const lastedTime = endTime - startTime;
+        console.log(lastedTime);
+        this.lastedHour.value = parseInt(lastedTime / 60);
+        this.lastedMinute.value = parseInt(lastedTime % 60);
       }
     }
   }
@@ -178,6 +183,13 @@ class TrainEditorBody extends Component {
           });
         }
       });
+  }
+
+  handleChangeEndDays(event) {
+    const value = event.target.value;
+    this.setState({
+      endDays: value
+    });
   }
 
   render() {
@@ -260,22 +272,31 @@ class TrainEditorBody extends Component {
                      this.endMinute = ref;
                    }}/>分
           </div>
+          <div className='form-group col-sm-2'>
+            <select className="form-control width province" name="year"
+                    value={this.state.endDays}
+                    onChange={this.handleChangeEndDays.bind(this)}>
+              <option value="-1">请选择</option>
+              <option value="0">当天</option>
+              <option value="1">+1天</option>
+              <option value="2">+2天</option>
+            </select>
+          </div>
         </div>
       </div>
       <ErrorTip error={this.state.endTimeError}/>
 
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 运行时间 </label>
-        <div onBlur={this.judgeLastedTime.bind(this)}
-             onFocus={this.hiddenErrorMessage.bind(this, 'lastedError')}>
+        <div>
           <div className="form-group col-sm-2 no-margin-form">
-            <input type='text' className='form-control margin-right width'
+            <input type='text' className='form-control margin-right width' disabled={true}
                    ref={(ref) => {
                      this.lastedHour = ref;
                    }}/>时
           </div>
           <div className="form-group col-sm-2 no-margin-form">
-            <input type='text' className='form-control margin-right width'
+            <input type='text' className='form-control margin-right width' disabled={true}
                    ref={(ref) => {
                      this.lastedMinute = ref;
                    }}/>分

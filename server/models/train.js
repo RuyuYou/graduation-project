@@ -3,22 +3,19 @@ const Schema = mongoose.Schema;
 
 const trainSchema = new Schema({
   trainId: String,
+  type: String,
   startPlace: String,
-  startTime: {
-    year: Number,
-    month: Number,
-    day: Number,
-    hour: Number,
-    minute: Number
-  },
   endPlace: String,
-  endTime: {
-    year: Number,
-    month: Number,
-    day: Number,
-    hour: Number,
-    minute: Number
+  startTime: {
+    hour: String,
+    minute: String
   },
+  endTime: {
+    days: String,
+    hour: String,
+    minute: String
+  },
+  mile: Number,
   createPeople: String
 });
 

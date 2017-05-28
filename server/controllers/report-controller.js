@@ -11,8 +11,8 @@ class ReportController {
       }
       content += '列车号,起点站,发车时间,终点站,到达时间\n';
       for (var i = 0; i < doc.length; i++) {
-        const startTime = `${doc[i].startTime.year}年${doc[i].startTime.month}月${doc[i].startTime.day}日${doc[i].startTime.hour}时${doc[i].startTime.minutes}分`;
-        const endTime = `${doc[i].endTime.year}年${doc[i].endTime.month}月${doc[i].endTime.day}日${doc[i].endTime.hour}时${doc[i].startTime.minutes}分`;
+        const startTime = `${doc[i].startTime.year}年${doc[i].startTime.month}月${doc[i].startTime.day}日${doc[i].startTime.hour}时${doc[i].startTime.minute}分`;
+        const endTime = `${doc[i].endTime.year}年${doc[i].endTime.month}月${doc[i].endTime.day}日${doc[i].endTime.hour}时${doc[i].endTime.minute}分`;
         let middleText = '';
         content += doc[i].trainId + ',';
         content += doc[i].startPlace + ',';

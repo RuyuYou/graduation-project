@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 import noCache from 'superagent-no-cache';
 import {Modal, Button} from 'react-bootstrap';
 
-const header = ['列车号','起点站','发车时间','终点站','到达时间','创建人', '操作'];
+const header = ['列车号', '列车类型', '起点站', '终点站', '发车时间', '到达时间', '里程', '创建人', '操作'];
 
 class ListHeader extends Component {
   render() {
@@ -13,7 +13,6 @@ class ListHeader extends Component {
     });
     return (
       <tr>
-        <th><input type="checkbox"/></th>
         {title}
       </tr>
     )
@@ -85,18 +84,17 @@ export default class TrainListBody extends Component {
     const trainList = this.state.trainList || [];
     const listHTML = trainList.map((item, index)=> {
       const updatePath = window.location.pathname + `/${item._id}/edit`;
-      const startTime = `${item.startTime.year}年${item.startTime.month}月${item.startTime.day}日
-${item.startTime.hour}时${item.startTime.minute}分`;
-      const endTime = `${item.endTime.year}年${item.endTime.month}月${item.endTime.day}日
-${item.endTime.hour}时${item.endTime.minute}分`;
+      const startTime = `${item.startTime.hour}时${item.startTime.minute}分`;
+      const endTime = `${item.endTime.hour}时${item.endTime.minute}分${item.endTime.days}`;
       return (
         <tr key={index}>
-          <td><input type="checkbox"/></td>
           <td>{item.trainId}</td>
+          <td>{item.type}</td>
           <td>{item.startPlace}</td>
-          <td>{startTime}</td>
           <td>{item.endPlace}</td>
+          <td>{startTime}</td>
           <td>{endTime}</td>
+          <td>{item.mile}</td>
           <td>{item.createPeople}</td>
           <td>
             <div className='action-buttons'>

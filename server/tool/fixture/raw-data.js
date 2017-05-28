@@ -2,28 +2,15 @@ module.exports = {
   Train: [
     {
       "_id": "591686df707c543076c0eec6",
-      "trainId": "G211",
+      "trainId": "K48",
+      "type": "新空快速",
       "startPlace": "西安",
-      "startTime": {"year": 2017, "month": 5, "day": 29, "hour": 8, "minute": 25},
-      "endPlace": "郑州",
-      "endTime": {"year": 2017, "month": 5, "day": 30, "hour": 8, "minute": 25},
-      "createPeople": "admin1"
-    }, {
-      "_id": "591686df707c543076c0efc6",
-      "trainId": "G212",
-      "startPlace": "西安",
-      "startTime": {"year": 2017, "month": 5, "day": 27, "hour": 8, "minute": 25},
-      "endPlace": "郑州",
-      "endTime": {"year": 2017, "month": 5, "day": 28, "hour": 8, "minute": 25},
-      "createPeople": "admin2"
-    }, {
-      "_id": "591686df707c543576c0eec6",
-      "trainId": "G213",
-      "startPlace": "西安",
-      "startTime": {"year": 2017, "month": 5, "day": 27, "hour": 8, "minute": 25},
-      "endPlace": "郑州",
-      "endTime": {"year": 2017, "month": 5, "day": 28, "hour": 8, "minute": 25},
-      "createPeople": "admin3"
+      "endPlace": "广州",
+      "startTime": {"hour": '08', "minute": '30'},
+      "endTime": {"hour": '11', "minute": '02', "days": "次日"},
+      "lastedTime": {"hour": "26", "minute": "32"},
+      "mile": 2093,
+      "createPeople": "赵思"
     }
   ],
   Station: [
@@ -35,17 +22,17 @@ module.exports = {
         {
           "leaveTime": {"minute": 7, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "arriveTime": {"minute": 1, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "station": "1"
+          "station": "郑州"
         },
         {
           "leaveTime": {"minute": 9, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "arriveTime": {"minute": 8, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "station": "2"
+          "station": "石家庄"
         },
         {
           "leaveTime": {"minute": 20, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "arriveTime": {"minute": 10, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "station": "3"
+          "station": "宝鸡"
         }
       ],
     },
@@ -57,17 +44,17 @@ module.exports = {
         {
           "leaveTime": {"minute": 7, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "arriveTime": {"minute": 1, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "station": "1"
+          "station": "洛阳"
         },
         {
           "leaveTime": {"minute": 9, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "arriveTime": {"minute": 8, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "station": "2"
+          "station": "天津"
         },
         {
           "leaveTime": {"minute": 20, "hour": 4, "day": 29, "month": 5, "year": 2017},
           "arriveTime": {"minute": 10, "hour": 4, "day": 29, "month": 5, "year": 2017},
-          "station": "3"
+          "station": "郑州"
         }
       ],
     }

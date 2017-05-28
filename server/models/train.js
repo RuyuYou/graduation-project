@@ -15,6 +15,10 @@ const trainSchema = new Schema({
     hour: String,
     minute: String
   },
+  lastedTime: {
+    hour: String,
+    minute: String
+  },
   mile: Number,
   createPeople: String
 });

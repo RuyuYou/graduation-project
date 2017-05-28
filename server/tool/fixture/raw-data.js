@@ -8,7 +8,7 @@ module.exports = {
       "endPlace": "广州",
       "startTime": {"hour": '08', "minute": '30'},
       "endTime": {"hour": '11', "minute": '02', "days": "次日"},
-      "lastedTime": {"hour": "26", "minute": "32"},
+      "lastedTime": {"hour": "27", "minute": "05"},
       "mile": 2093,
       "createPeople": "赵思"
     }

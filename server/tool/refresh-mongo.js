@@ -10,9 +10,9 @@ const Sleeper = require('../models/sleeper');
 const modelMap = {
   Ticker,
   Train,
-  Station,
-  Seat,
-  Sleeper,
+  // Station,
+  // Seat,
+  // Sleeper,
   User
 };
 

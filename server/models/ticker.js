@@ -3,9 +3,17 @@ const Schema = mongoose.Schema;
 
 const tickerSchema = new Schema({
   trainId: String,
-  cabinNumber: Number,
-  sleeperNumber: Number,
-  seatNumber: Number
+  seat: Number,
+  soft: {
+    up: Number,
+    middle: Number,
+    down: Number
+  },
+  hard: {
+    up: Number,
+    middle: Number,
+    down: Number
+  }
 });
 
 const Ticker = mongoose.model('Ticker', tickerSchema);

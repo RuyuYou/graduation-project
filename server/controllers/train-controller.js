@@ -48,28 +48,20 @@ class TrainController {
 
   delete(req, res, next) {
     const trainId = req.params.trainId;
-    Tickers.findById(trainId, (err, result)=> {
+    Train.findOneAndRemove({trainId}, (err, result)=> {
       if (err) {
         return next(err);
       }
-      if (result) {
-        return res.sendStatus(constant.httpCode.ACCEPTED);
+      if (!result) {
+        return res.sendStatus(constant.httpCode.NOT_FOUND);
       }
-      Train.findByIdAndRemove(trainId, (err, result)=> {
-        if (err) {
-          return next(err);
-        }
-        if (!result) {
-          return res.sendStatus(constant.httpCode.NOT_FOUND);
-        }
-        return res.sendStatus(constant.httpCode.NO_CONTENT);
-      });
+      return res.sendStatus(constant.httpCode.NO_CONTENT);
     });
   }
 
   update(req, res, next) {
     const trainId = req.params.trainId;
-    Train.findByIdAndUpdate(trainId, req.body, (err, result)=> {
+    Train.findOneAndUpdate({trainId}, req.body, (err, result)=> {
       if (err) {
         return next(err);
       }

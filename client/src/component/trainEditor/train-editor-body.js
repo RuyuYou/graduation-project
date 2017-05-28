@@ -39,11 +39,7 @@ class TrainEditorBody extends Component {
         if (err) {
           throw err;
         }
-        this.setState({
-          trainInformation: res.body,
-        }, ()=> {
-          this.getEditorValue(this.state.trainInformation);
-        });
+        this.getEditorValue(res.body);
       })
   }
 
@@ -136,7 +132,7 @@ class TrainEditorBody extends Component {
       mile: this.mile.value
     };
     superagent
-      .put(`/trains/${this.state.trainInformation._id}`)
+      .put(`/trains/${this.trainId.value}`)
       .send(info)
       .use(noCache)
       .end((err, res)=> {
@@ -171,7 +167,7 @@ class TrainEditorBody extends Component {
 
   deleteTrain() {
     superagent
-      .delete(`/trains/${this.state.trainInformation._id}`)
+      .delete(`/trains/${this.trainId.value}`)
       .use(noCache)
       .end((err, res)=> {
         if (err) {

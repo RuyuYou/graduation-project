@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import TrainNewHeader from './train-new-header';
-import '../../../style/train-editor.less';
+import '../../../style/train-new.less';
 import TrainNewBody from './train-new-body';
 
 export default class TrainEditor extends Component {

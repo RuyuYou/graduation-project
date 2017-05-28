@@ -20,22 +20,8 @@ class TrainEditorBody extends Component {
     super(props);
     this.state = {
       trainIdError: '',
-      startTime: {
-        year: -1,
-        month: -1,
-        day: -1,
-        hour: -1,
-        minute: -1
-      },
       startTimeError: '',
       endPlaceError: '',
-      endTime: {
-        year: -1,
-        month: -1,
-        day: -1,
-        hour: -1,
-        minute: -1
-      },
       endTimeError: '',
       showSuccess: false,
       trainInformation: {},
@@ -45,45 +31,30 @@ class TrainEditorBody extends Component {
 
   componentDidMount() {
     const pathNameArray = window.location.pathname.split('/');
-    if (pathNameArray[pathNameArray.length - 1] === 'edit') {
-      superagent
-        .get(`/trains/${pathNameArray[2]}`)
-        .use(noCache)
-        .end((err, res)=> {
-          if (err) {
-            throw err;
-          }
-          this.setState({
-            trainInformation: res.body,
-            editOrNew: 1
-          }, ()=> {
-            this.getEditorValue(this.state.trainInformation);
-          });
-        })
-    } else {
-      this.setState({
-        trainInformation: {},
-        editOrNew: 0
-      });
-    }
+    superagent
+      .get(`/trains/${pathNameArray[2]}`)
+      .use(noCache)
+      .end((err, res)=> {
+        if (err) {
+          throw err;
+        }
+        this.setState({
+          trainInformation: res.body,
+        }, ()=> {
+          this.getEditorValue(this.state.trainInformation);
+        });
+      })
   }
 
   getEditorValue(trainInformation) {
     this.trainId.value = trainInformation.trainId;
     this.startPlace.value = trainInformation.startPlace;
     this.endPlace.value = trainInformation.endPlace;
-    this.setState({
-      startTime: trainInformation.startTime,
-      endTime: trainInformation.endTime
-    });
-  }
-
-  judgeTrainId() {
-    if (this.trainId.value == '') {
-      this.setState({
-        trainIdError: '列车号不能为空'
-      });
-    }
+    this.startHour.value = trainInformation.startTime.hour;
+    this.startMinute.value = trainInformation.startTime.minute;
+    this.endHour.value = trainInformation.endTime.hour;
+    this.endMinute.value = trainInformation.endTime.minute;
+    this.type.value = trainInformation.type;
   }
 
   judgeStartPlace() {
@@ -97,71 +68,6 @@ class TrainEditorBody extends Component {
     errObj[err1] = '';
     errObj[err2] = '';
     this.setState(errObj);
-  }
-
-  getOptionMonth() {
-    const nowDate = new Date();
-    const month = nowDate.getMonth();
-    const optionMonth = [];
-    for (let i = month; i < 12; i++) {
-      optionMonth.push(<option key={i} value={i + 1}>{i + 1}</option>)
-    }
-    return optionMonth;
-  }
-
-  getOptionDay() {
-    const nowDate = new Date();
-    const month = nowDate.getMonth() + 1;
-    const optionDay = [];
-    if (this.state.startTime.month == month) {
-      const date = nowDate.getDate();
-      for (let i = date + 1; i <= 31; i++) {
-        optionDay.push(<option key={i} value={i}>{i}</option>)
-      }
-    } else if (this.state.startTime.month == 6 || this.state.startTime.month == 9 || this.state.startTime.month == 11) {
-      for (let i = 0; i < 30; i++) {
-        optionDay.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
-      }
-    } else {
-      for (let i = 0; i < 31; i++) {
-        optionDay.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
-      }
-    }
-    return optionDay;
-  }
-
-  getOptionHour() {
-    const optionHour = [];
-    for (let i = 0; i <= 24; i++) {
-      optionHour.push(<option key={i} value={i}>{i}</option>)
-    }
-    return optionHour;
-  }
-
-  getOptionMinute() {
-    const optionMinute = [];
-    for (let i = -1; i < 60; i++) {
-      optionMinute.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
-    }
-    return optionMinute;
-  }
-
-  handleChangeStartTime(i, event) {
-    const value = event.target.value;
-    const valueObj = this.state.startTime;
-    valueObj[i] = value;
-    this.setState({
-      startTime: valueObj
-    });
-  }
-
-  handleChangeEndTime(i, event) {
-    const value = event.target.value;
-    const valueObj = this.state.endTime;
-    valueObj[i] = value;
-    this.setState({
-      endTime: valueObj
-    });
   }
 
   judgeStartTime() {
@@ -202,39 +108,21 @@ class TrainEditorBody extends Component {
         endPlace: this.endPlace.value,
         endTime: this.state.endTime
       };
-      if (this.state.editOrNew == 0) {
-        superagent
-          .post('/trains')
-          .send(info)
-          .use(noCache)
-          .end((err, res)=> {
-            if (err) {
-              throw err;
-            }
-            if (res.status === 201) {
-              this.setState({showSuccess: true}, ()=> {
-                this.initInformation();
-              });
-            } else if (res.status === 204) {
-              this.setState({trainIdError: '该列车号已存在'});
-            }
-          });
-      } else {
-        superagent
-          .put(`/trains/${this.state.trainInformation._id}`)
-          .send(info)
-          .use(noCache)
-          .end((err, res)=> {
-            if (err) {
-              throw err;
-            }
-            if (res.status === 204) {
-              this.setState({showSuccess: true}, ()=> {
-                this.initInformation();
-              });
-            }
-          });
-      }
+
+      superagent
+        .put(`/trains/${this.state.trainInformation._id}`)
+        .send(info)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status === 204) {
+            this.setState({showSuccess: true}, ()=> {
+              this.initInformation();
+            });
+          }
+        });
     }
   }
 
@@ -291,19 +179,22 @@ class TrainEditorBody extends Component {
   }
 
   render() {
-    const messageSuccess = this.state.editOrNew == 0 ? `新建` : `修改`;
-    const createNew = `/train/new`;
     const list = `/train`;
-
     return (<div>
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 列车号 </label>
-        <div className='col-sm-6'>
-          <input type='text' className='form-control' placeholder='请输入列车号'
+        <div className='col-sm-1 no-padding-right'>
+          <input type='text' className='form-control' disabled={true}
                  ref={(ref) => {
                    this.trainId = ref;
-                 }} onBlur={this.judgeTrainId.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'trainIdError')}/>
+                 }}/>
+        </div>
+        <label className='col-lg-1 control-label'> 列车类型 </label>
+        <div className='col-sm-1 no-padding-left'>
+          <input type='text' className='form-control' disabled={true}
+                 ref={(ref) => {
+                   this.type = ref;
+                 }}/>
         </div>
       </div>
       <ErrorTip error={this.state.trainIdError}/>
@@ -311,7 +202,7 @@ class TrainEditorBody extends Component {
       <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 起点站 </label>
         <div className='col-sm-6'>
-          <input type='text' className='form-control' placeholder='请输入起点站'
+          <input type='text' className='form-control width' placeholder='请输入起点站'
                  ref={(ref) => {
                    this.startPlace = ref;
                  }} onBlur={this.judgeStartPlace.bind(this)}
@@ -320,61 +211,10 @@ class TrainEditorBody extends Component {
       </div>
       <ErrorTip error={this.state.startPlaceError}/>
 
-      <div className='form-group row no-margin-form'>
-        <label className='col-sm-4 control-label'> 发车时间 </label>
-        <div onBlur={this.judgeStartTime.bind(this)}
-             onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
-          <div className='form-group col-sm-2'>
-            <select className="form-control province" name="year"
-                    value={this.state.startTime.year}
-                    onChange={this.handleChangeStartTime.bind(this, 'year')}>
-              <option value="-1">请选择</option>
-              <option value="2017">2017</option>
-            </select>年
-          </div>
-          <div className="form-group col-sm-2">
-            <select className="form-control city" name="month"
-                    value={this.state.startTime.month}
-                    onChange={this.handleChangeStartTime.bind(this, 'month')}>
-              <option value="-1">请选择</option>
-              {this.getOptionMonth()}
-            </select>月
-          </div>
-          <div className="form-group col-sm-2">
-            <select className="form-control city" name="day"
-                    value={this.state.startTime.day}
-                    onChange={this.handleChangeStartTime.bind(this, 'day')}>
-              <option value="-1">请选择</option>
-              {this.getOptionDay()}
-            </select>日
-          </div>
-          <div className="form-group col-sm-offset-4 col-sm-2 no-margin-form">
-            <select className="form-control city" name="hour"
-                    value={this.state.startTime.hour}
-                    onChange={this.handleChangeStartTime.bind(this, 'hour')}>
-              <option value="-1">请选择</option>
-              {this.getOptionHour()}
-            </select>时
-          </div>
-          <div className="form-group col-sm-2 no-margin-form">
-            <select className="form-control city" name="minute"
-                    value={this.state.startTime.minute}
-                    onChange={this.handleChangeStartTime.bind(this, 'minute')}>
-              <option value="-1">请选择</option>
-              {this.getOptionMinute()}
-            </select>分
-          </div>
-        </div>
-      </div>
-      <ErrorTip error={this.state.startTimeError}/>
-
-
-      <div className="split-border"></div>
-
       <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 终点站 </label>
         <div className='col-sm-6'>
-          <input type='text' className='form-control' placeholder='请输入终点站'
+          <input type='text' className='form-control width' placeholder='请输入终点站'
                  ref={(ref) => {
                    this.endPlace = ref;
                  }} onBlur={this.judgeEndPlace.bind(this)}
@@ -384,52 +224,48 @@ class TrainEditorBody extends Component {
       <ErrorTip error={this.state.endPlaceError}/>
 
       <div className='form-group row no-margin-form'>
-        <label className='col-sm-4 control-label'> 到达时间 </label>
-        <div onBlur={this.judgeEndTime.bind(this)}
-             onFocus={this.hiddenErrorMessage.bind(this, 'endTimeError')}>
-          <div className='form-group col-sm-2'>
-            <select className="form-control province" name="year"
-                    value={this.state.endTime.year}
-                    onChange={this.handleChangeEndTime.bind(this, 'year')}>
-              <option value="-1">请选择</option>
-              <option value="2017">2017</option>
-            </select>年
-          </div>
-          <div className="form-group col-sm-2">
-            <select className="form-control city" name="month"
-                    value={this.state.endTime.month}
-                    onChange={this.handleChangeEndTime.bind(this, 'month')}>
-              <option value="-1">请选择</option>
-              {this.getOptionMonth()}
-            </select>月
-          </div>
-          <div className="form-group col-sm-2">
-            <select className="form-control city" name="day"
-                    value={this.state.endTime.day}
-                    onChange={this.handleChangeEndTime.bind(this, 'day')}>
-              <option value="-1">请选择</option>
-              {this.getOptionDay()}
-            </select>日
-          </div>
-          <div className="form-group col-sm-offset-4 col-sm-2 no-margin-form">
-            <select className="form-control city" name="hour"
-                    value={this.state.endTime.hour}
-                    onChange={this.handleChangeEndTime.bind(this, 'hour')}>
-              <option value="-1">请选择</option>
-              {this.getOptionHour()}
-            </select>时
+        <label className='col-sm-4 control-label'> 发车时间 </label>
+        <div onBlur={this.judgeStartTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width'
+                   ref={(ref) => {
+                     this.startHour = ref;
+                   }}/>时
           </div>
           <div className="form-group col-sm-2 no-margin-form">
-            <select className="form-control city" name="minute"
-                    value={this.state.endTime.minute}
-                    onChange={this.handleChangeEndTime.bind(this, 'minute')}>
-              <option value="-1">请选择</option>
-              {this.getOptionMinute()}
-            </select>分
+            <input type='text' className='form-control margin-right width'
+                   ref={(ref) => {
+                     this.startMinute = ref;
+                   }}/>分
+          </div>
+        </div>
+      </div>
+      <ErrorTip error={this.state.startTimeError}/>
+
+      <div className='form-group row no-margin-form'>
+        <label className='col-sm-4 control-label'> 到达时间 </label>
+        <div onBlur={this.judgeStartTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width'
+                   ref={(ref) => {
+                     this.endHour = ref;
+                   }}/>时
+          </div>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width'
+                   ref={(ref) => {
+                     this.endMinute = ref;
+                   }}/>分
           </div>
         </div>
       </div>
       <ErrorTip error={this.state.endTimeError}/>
+
+
+      <div className="split-border"></div>
+
 
       <div className="row margin-top">
         <div className='col-sm-3 width-left text-center'>
@@ -438,7 +274,7 @@ class TrainEditorBody extends Component {
           </button>
         </div>
         <div className='col-sm-3 col-sm-offset-1 text-center'>
-          <button className='btn btn-primary btn-save' disabled={this.state.editOrNew == 0}
+          <button className='btn btn-primary btn-save'
                   onClick={this.openDeleteTrain.bind(this)}>
             {'删除  '}
           </button>
@@ -448,14 +284,11 @@ class TrainEditorBody extends Component {
           <div className='alert alert-block alert-success col-sm-6 col-sm-offset-3 no-margin-bottom text-center'>
             <p className='message-hint'>
               <i className='ace-icon fa fa-check-circle icon-space'> </i>
-              {`车次${messageSuccess}成功,请选择查看车次列表还是继续新增车次?`}
+              {`车次修改成功,请返回车次列表`}
             </p>
             <Link to={list}>
               <button className='btn btn-sm btn-success icon-space'>查看车次列表
               </button>
-            </Link>
-            <Link to={createNew}>
-              <button className='btn btn-sm btn-default col-sm-offset-2'>{`继续新增车次`}</button>
             </Link>
           </div>
         </div>

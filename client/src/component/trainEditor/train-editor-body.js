@@ -19,7 +19,6 @@ class TrainEditorBody extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      trainIdError: '',
       startTimeError: '',
       endPlaceError: '',
       endTimeError: '',
@@ -71,8 +70,12 @@ class TrainEditorBody extends Component {
   }
 
   judgeStartTime() {
-    if (this.state.startTime.year == -1 || this.state.startTime.month == -1 || this.state.startTime.day == -1 || this.state.startTime.hour == -1 || this.state.startTime.minute == -1) {
-      this.setState({startTimeError: '发车时间不能为空'})
+    if (this.startMinute.value == '' || this.startHour.value == '') {
+      this.setState({startTimeError: '发车时间不能为空'});
+    } else {
+      if (isNaN(this.startHour.value) || isNaN(this.startMinute.value)) {
+        this.setState({startTimeError: '发车时间输入错误，请从新输入'});
+      }
     }
   }
 
@@ -83,10 +86,12 @@ class TrainEditorBody extends Component {
   }
 
   judgeEndTime() {
-    if (this.state.endTime.year == -1 || this.state.endTime.month == -1 || this.state.endTime.day == -1 || this.state.endTime.hour == -1 || this.state.endTime.minute == -1) {
-      this.setState({
-        endTimeError: '到达时间不能为空'
-      });
+    if (this.endMinute.value == '' || this.endHour.value == '') {
+      this.setState({endTimeError: '到达时间不能为空'});
+    } else {
+      if (isNaN(this.endHour.value) || isNaN(this.endMinute.value)) {
+        this.setState({endTimeError: '到达时间输入错误，请从新输入'});
+      } 
     }
   }
 
@@ -130,22 +135,6 @@ class TrainEditorBody extends Component {
     this.trainId.value = '';
     this.startPlace.value = '';
     this.endPlace.value = '';
-    this.setState({
-      startTime: {
-        year: -1,
-        month: -1,
-        day: -1,
-        hour: -1,
-        minute: -1
-      },
-      endTime: {
-        year: -1,
-        month: -1,
-        day: -1,
-        hour: -1,
-        minute: -1
-      }
-    });
   }
 
   openDeleteTrain() {
@@ -197,7 +186,6 @@ class TrainEditorBody extends Component {
                  }}/>
         </div>
       </div>
-      <ErrorTip error={this.state.trainIdError}/>
 
       <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 起点站 </label>
@@ -245,7 +233,7 @@ class TrainEditorBody extends Component {
 
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 到达时间 </label>
-        <div onBlur={this.judgeStartTime.bind(this)}
+        <div onBlur={this.judgeEndTime.bind(this)}
              onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width'

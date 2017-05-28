@@ -15,7 +15,7 @@ class TrainController {
 
   getOne(req, res, next) {
     const trainId = req.params.trainId;
-    Train.findById(trainId, (err, result)=> {
+    Train.findOne({trainId}, (err, result)=> {
       if (err) {
         return next(err);
       }

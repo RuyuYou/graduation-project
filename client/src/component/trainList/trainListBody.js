@@ -91,7 +91,7 @@ export default class TrainListBody extends Component {
   render() {
     const trainList = this.state.trainList || [];
     const listHTML = trainList.map((item, index)=> {
-      const updatePath = window.location.pathname + `/${item._id}/edit`;
+      const updatePath = window.location.pathname + `/${item.trainId}/edit`;
       const startTime = `${item.startTime.hour}时${item.startTime.minute}分`;
       const endTime = `${item.endTime.hour}时${item.endTime.minute}分`;
       const lastedTime = `${item.lastedTime.hour}时${item.lastedTime.minute}分钟`;

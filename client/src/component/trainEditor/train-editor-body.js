@@ -22,6 +22,7 @@ class TrainEditorBody extends Component {
       startTimeError: '',
       endPlaceError: '',
       endTimeError: '',
+      lastedError: '',
       showSuccess: false,
       trainInformation: {},
       showDeleteTrainModal: false
@@ -54,6 +55,8 @@ class TrainEditorBody extends Component {
     this.endHour.value = trainInformation.endTime.hour;
     this.endMinute.value = trainInformation.endTime.minute;
     this.type.value = trainInformation.type;
+    this.lastedHour.value = trainInformation.lastedTime.hour;
+    this.lastedMinute.value = trainInformation.lastedTime.minute;
   }
 
   judgeStartPlace() {
@@ -91,7 +94,17 @@ class TrainEditorBody extends Component {
     } else {
       if (isNaN(this.endHour.value) || isNaN(this.endMinute.value)) {
         this.setState({endTimeError: '到达时间输入错误，请从新输入'});
-      } 
+      }
+    }
+  }
+
+  judgeLastedTime() {
+    if (this.lastedHour.value == '' || this.lastedMinute.value == '') {
+      this.setState({lastedError: '运行时间不能为空'});
+    } else {
+      if (isNaN(this.lastedMinute.value) || isNaN(this.lastedHour.value)) {
+        this.setState({lastedError: '运行时间输入错误，请从新输入'});
+      }
     }
   }
 
@@ -170,7 +183,7 @@ class TrainEditorBody extends Component {
   render() {
     const list = `/train`;
     return (<div>
-      <div className='form-group row no-margin-form'>
+      <div className='form-group row margin-bottom'>
         <label className='col-sm-4 control-label'> 列车号 </label>
         <div className='col-sm-1 no-padding-right'>
           <input type='text' className='form-control' disabled={true}
@@ -250,6 +263,26 @@ class TrainEditorBody extends Component {
         </div>
       </div>
       <ErrorTip error={this.state.endTimeError}/>
+
+      <div className='form-group row no-margin-form'>
+        <label className='col-sm-4 control-label'> 运行时间 </label>
+        <div onBlur={this.judgeLastedTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'lastedError')}>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width'
+                   ref={(ref) => {
+                     this.lastedHour = ref;
+                   }}/>时
+          </div>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width'
+                   ref={(ref) => {
+                     this.lastedMinute = ref;
+                   }}/>分
+          </div>
+        </div>
+      </div>
+      <ErrorTip error={this.state.lastedError}/>
 
 
       <div className="split-border"></div>

@@ -109,39 +109,39 @@ class TrainEditorBody extends Component {
   }
 
   submit() {
-    let startTime = this.state.startTime.month * 100000 + this.state.startTime.day * 1000
-      + this.state.startTime.hour * 10 + this.state.startTime.minute;
-    let endTime = this.state.endTime.month * 100000 + this.state.endTime.day * 1000
-      + this.state.endTime.hour * 10 + this.state.endTime.minute;
-    const timer = endTime - startTime;
-    if (timer <= 0) {
-      this.setState({
-        endTimeError: '到达时间不能低于发车时间'
+    const info = {
+      trainId: this.trainId.value,
+      type: this.type.value,
+      startPlace: this.startPlace.value,
+      startTime: {
+        hour: this.startHour.value,
+        minute: this.startMinute.value
+      },
+      endPlace: this.endPlace.value,
+      endTime: {
+        hour: this.endHour.value,
+        minute: this.endMinute.value,
+        days: this.state.trainInformation.endTime.days
+      },
+      lastedTime: {
+        hour: this.startHour.value,
+        minute: this.lastedMinute.value
+      }
+    };
+    superagent
+      .put(`/trains/${this.state.trainInformation._id}`)
+      .send(info)
+      .use(noCache)
+      .end((err, res)=> {
+        if (err) {
+          throw err;
+        }
+        if (res.status === 204) {
+          this.setState({showSuccess: true}, ()=> {
+            this.initInformation();
+          });
+        }
       });
-    } else {
-      const info = {
-        trainId: this.trainId.value,
-        startPlace: this.startPlace.value,
-        startTime: this.state.startTime,
-        endPlace: this.endPlace.value,
-        endTime: this.state.endTime
-      };
-
-      superagent
-        .put(`/trains/${this.state.trainInformation._id}`)
-        .send(info)
-        .use(noCache)
-        .end((err, res)=> {
-          if (err) {
-            throw err;
-          }
-          if (res.status === 204) {
-            this.setState({showSuccess: true}, ()=> {
-              this.initInformation();
-            });
-          }
-        });
-    }
   }
 
   initInformation() {

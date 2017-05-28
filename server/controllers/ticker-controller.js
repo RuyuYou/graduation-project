@@ -13,6 +13,19 @@ class TickerController {
     });
   }
 
+  getOneTicker(req, res, next) {
+    const trainId = req.params.trainId;
+    Tickers.findOne({trainId}, (err, result)=> {
+      if (err) {
+        return next(err);
+      }
+      if (!result) {
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
+      }
+      return res.status(constant.httpCode.OK).send(result);
+    });
+  }
+
   createTickers(req, res, next) {
     Tickers.findOne({trainId: req.body.trainId}, (err, result)=> {
       if (result) {

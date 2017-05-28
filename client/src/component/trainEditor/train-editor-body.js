@@ -40,7 +40,15 @@ class TrainEditorBody extends Component {
           throw err;
         }
         this.getEditorValue(res.body);
-      })
+        superagent.get(`/tickers/${pathNameArray[2]}`)
+          .use(noCache)
+          .end((err, res)=> {
+            if (err) {
+              throw err;
+            }
+            console.log(res.body);
+          });
+      });
   }
 
   getEditorValue(trainInformation) {

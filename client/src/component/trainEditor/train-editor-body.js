@@ -58,6 +58,7 @@ class TrainEditorBody extends Component {
     this.type.value = trainInformation.type;
     this.lastedHour.value = trainInformation.lastedTime.hour;
     this.lastedMinute.value = trainInformation.lastedTime.minute;
+    this.mile.value = trainInformation.mile;
     this.setState({
       endDays: trainInformation.endTime.days
     });
@@ -126,12 +127,13 @@ class TrainEditorBody extends Component {
       endTime: {
         hour: this.endHour.value,
         minute: this.endMinute.value,
-        days: this.state.trainInformation.endTime.days
+        days: this.state.endDays
       },
       lastedTime: {
         hour: this.startHour.value,
         minute: this.lastedMinute.value
-      }
+      },
+      mile: this.mile.value
     };
     superagent
       .put(`/trains/${this.state.trainInformation._id}`)
@@ -305,6 +307,15 @@ class TrainEditorBody extends Component {
       </div>
       <ErrorTip error={this.state.lastedError}/>
 
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 里程 </label>
+        <div className='col-sm-6'>
+          <input type='text' className='form-control width' placeholder=''
+                 ref={(ref) => {
+                   this.mile = ref;
+                 }}/> 公里
+        </div>
+      </div>
 
       <div className="split-border"></div>
 

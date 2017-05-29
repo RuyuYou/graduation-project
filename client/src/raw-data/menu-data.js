@@ -25,7 +25,7 @@ export default [
     id: 4,
     parent: 1,
     level: 2,
-    text: '站点管理',
+    text: '途经站管理',
     uri: '/station',
     icon: 'cog'
   },

@@ -20,7 +20,7 @@ class TrainController {
         return next(err);
       }
       if (!result) {
-        return res.sendStatus(constant.httpCode.NOT_FOUND);
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
       }
       return res.status(constant.httpCode.OK).send(result);
     });

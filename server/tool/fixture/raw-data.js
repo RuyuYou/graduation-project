@@ -2,7 +2,7 @@ module.exports = {
   Train: [
     {
       "_id": "591686df707c543076c0eec6",
-      "trainId": "K88",
+      "trainId": "K84",
       "type": "新空快速",
       "startPlace": "西安",
       "endPlace": "广州",

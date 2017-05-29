@@ -13,8 +13,8 @@ class StationController {
   }
 
   getOneStation(req, res, next) {
-    const stationId = req.params.stationId;
-    Station.findById(stationId, (err, result)=> {
+    const trainId = req.params.trainId;
+    Station.findOne({trainId}, (err, result)=> {
       if (err) {
         return next(err);
       }

@@ -96,6 +96,7 @@ export default class StationList extends Component {
   }
 
   render() {
+    console.log(this.props.trainId);
     const stationsHTML = this.state.stationList.map((item, index)=> {
       const stationHTML = this.getStations(item.stations);
       const href = `/station/${item._id}/edit`;

@@ -28,7 +28,8 @@ class Station extends Component {
     super(props);
     this.state = {
       trainInformation: [],
-      showTable: false
+      showTable: false,
+      trainId: ''
     };
   }
 
@@ -52,7 +53,8 @@ class Station extends Component {
           array.push(res.body);
           this.setState({
             trainInformation: array,
-            showTable: true
+            showTable: true,
+            trainId: this.trainId.value
           }, ()=> {
             this.trainId.value = '';
           });
@@ -126,15 +128,15 @@ class Station extends Component {
             {listHTML}
             </tbody>
           </table>
-        </div>
 
-        <div className="row text-center margin">
-          <button className="btn btn-primary height">
-            添加途经站点
-          </button>
-        </div>
+          <div className="row text-center margin">
+            <button className="btn btn-primary height">
+              添加途经站点
+            </button>
+          </div>
 
-        <StationList/>
+          <StationList trainId={this.state.trainId}/>
+        </div>
       </div>
     </div>);
   }

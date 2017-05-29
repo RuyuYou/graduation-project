@@ -97,36 +97,45 @@ class Station extends Component {
         站点管理
       </div>
 
-      <div className="station-title">
-        <span className="fontSize">列车信息查询:</span>
-        <div className="split-border"></div>
-        <div className="form-group row">
-          <label className='col-sm-1 control-label height'> 车次 </label>
-          <div className='col-sm-2'>
-            <input type='text' className='form-control width height'
-                   ref={(ref) => {
-                     this.trainId = ref;
-                   }}/>
+      <div className="background">
+        <div className="station-title">
+          <span className="fontSize">列车信息查询:</span>
+          <div className="split-border"></div>
+          <div className="form-group row">
+            <label className='col-sm-1 control-label height'> 车次 </label>
+            <div className='col-sm-2'>
+              <input type='text' className='form-control width height'
+                     ref={(ref) => {
+                       this.trainId = ref;
+                     }}/>
+            </div>
+            <button className='btn btn-default height'
+                    onClick={this.findTrain.bind(this)}>
+              <span className='text'>查询 </span>
+            </button>
           </div>
-          <button className='btn btn-default height'
-                  onClick={this.findTrain.bind(this)}>
-            <span className='text'>查询 </span>
+
+        </div>
+
+        <div className={this.state.showTable ? '' : 'hidden'}>
+          <table className="table table-striped table-bordered table-hover">
+            <thead>
+            <ListHeader/>
+            </thead>
+            <tbody>
+            {listHTML}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="row text-center margin">
+          <button className="btn btn-primary height">
+            添加途经站点
           </button>
         </div>
 
+        <StationList/>
       </div>
-
-      <div className={this.state.showTable ? '' : 'hidden'}>
-        <table className="table table-striped table-bordered table-hover">
-          <thead>
-          <ListHeader/>
-          </thead>
-          <tbody>
-          {listHTML}
-          </tbody>
-        </table>
-      </div>
-      <StationList/>
     </div>);
   }
 }

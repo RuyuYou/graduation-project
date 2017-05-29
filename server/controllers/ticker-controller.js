@@ -55,7 +55,7 @@ class TickerController {
   }
 
   updateTickers(req, res, next) {
-    Tickers.findByIdAndUpdate(req.params.tickerId, req.body, (err, result)=> {
+    Tickers.findOneAndUpdate(req.params.tickerId, req.body, (err, result)=> {
       if (err) {
         return next(err);
       }

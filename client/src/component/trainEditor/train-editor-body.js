@@ -46,19 +46,20 @@ class TrainEditorBody extends Component {
         if (err) {
           throw err;
         }
-        this.getEditorValue(res.body);
+        this.getTrainValue(res.body);
         superagent.get(`/tickers/${pathNameArray[2]}`)
           .use(noCache)
           .end((err, res)=> {
             if (err) {
               throw err;
             }
+            this.getTickerValue(res.body);
             console.log(res.body);
           });
       });
   }
 
-  getEditorValue(trainInformation) {
+  getTrainValue(trainInformation) {
     this.trainId.value = trainInformation.trainId;
     this.startPlace.value = trainInformation.startPlace;
     this.endPlace.value = trainInformation.endPlace;
@@ -73,6 +74,15 @@ class TrainEditorBody extends Component {
     this.setState({
       endDays: trainInformation.endTime.days
     });
+  }
+
+  getTickerValue(ticker) {
+    this.seat.value = ticker.seat.toFixed(1);
+    this.hardUp.value = ticker.hard.up.toFixed(1);
+    this.hardMiddle.value = ticker.hard.middle.toFixed(1);
+    this.hardDown.value = ticker.hard.down.toFixed(1);
+    this.softUp.value = ticker.soft.up.toFixed(1);
+    this.softDown.value = ticker.soft.down.toFixed(1);
   }
 
   judgeStartPlace() {
@@ -182,7 +192,7 @@ class TrainEditorBody extends Component {
 
 
   submit() {
-    const info = {
+    const trainInfo = {
       trainId: this.trainId.value,
       type: this.type.value,
       startPlace: this.startPlace.value,
@@ -202,18 +212,45 @@ class TrainEditorBody extends Component {
       },
       mile: this.mile.value
     };
+    /*this.seat.value = ticker.seat.toFixed(1);
+     this.hardUp.value = ticker.hard.up.toFixed(1);
+     this.hardMiddle.value = ticker.hard.middle.toFixed(1);
+     this.hardDown.value = ticker.hard.down.toFixed(1);
+     this.softUp.value = ticker.soft.up.toFixed(1);
+     this.softDown.value = ticker.soft.down.toFixed(1);*/
+    const tickerInfo = {
+      trainId: this.trainId.value,
+      seat: this.seat.value,
+      hard: {
+        up: this.hardUp.value,
+        middle: this.hardMiddle.value,
+        down: this.hardDown.value
+      },
+      soft: {
+        up: this.softUp.value,
+        down: this.softDown.value
+      }
+    };
     superagent
       .put(`/trains/${this.trainId.value}`)
-      .send(info)
+      .send(trainInfo)
       .use(noCache)
       .end((err, res)=> {
         if (err) {
           throw err;
         }
         if (res.status === 204) {
-          this.setState({showSuccess: true}, ()=> {
-            this.initInformation();
-          });
+          superagent
+            .put(`/tickers/${this.trainId.value}`)
+            .send(tickerInfo)
+            .use(noCache)
+            .end((err, res)=> {
+              if (res.status === 200) {
+                this.setState({showSuccess: true}, ()=> {
+                  this.initInformation();
+                });
+              }
+            });
         }
       });
   }
@@ -230,6 +267,12 @@ class TrainEditorBody extends Component {
     this.lastedHour.value = '';
     this.lastedMinute.value = '';
     this.mile.value = '';
+    this.seat.value = '';
+    this.hardUp.value = '';
+    this.hardMiddle.value = '';
+    this.hardDown.value = '';
+    this.softUp.value = '';
+    this.softDown.value = '';
     this.setState({
       endDays: ''
     });

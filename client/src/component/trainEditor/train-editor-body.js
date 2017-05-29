@@ -159,6 +159,17 @@ class TrainEditorBody extends Component {
     this.trainId.value = '';
     this.startPlace.value = '';
     this.endPlace.value = '';
+    this.startHour.value = '';
+    this.startMinute.value = '';
+    this.endHour.value = '';
+    this.endMinute.value = '';
+    this.type.value = '';
+    this.lastedHour.value = '';
+    this.lastedMinute.value = '';
+    this.mile.value = '';
+    this.setState({
+      endDays: ''
+    });
   }
 
   openDeleteTrain() {

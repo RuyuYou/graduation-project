@@ -54,7 +54,6 @@ class TrainEditorBody extends Component {
               throw err;
             }
             this.getTickerValue(res.body);
-            console.log(res.body);
           });
       });
   }
@@ -212,12 +211,6 @@ class TrainEditorBody extends Component {
       },
       mile: this.mile.value
     };
-    /*this.seat.value = ticker.seat.toFixed(1);
-     this.hardUp.value = ticker.hard.up.toFixed(1);
-     this.hardMiddle.value = ticker.hard.middle.toFixed(1);
-     this.hardDown.value = ticker.hard.down.toFixed(1);
-     this.softUp.value = ticker.soft.up.toFixed(1);
-     this.softDown.value = ticker.soft.down.toFixed(1);*/
     const tickerInfo = {
       trainId: this.trainId.value,
       seat: this.seat.value,

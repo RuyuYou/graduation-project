@@ -51,9 +51,30 @@ module.exports = {
             "hour": "0",
             "minute": "39"
           },
-          "mile":56
+          "mile": 56
         }
       ]
+    }
+  ],
+  K84: [
+    {
+      "number": 1,
+      "name": "渭南",
+      "endTime": {
+        "hour": "10",
+        "minute": "43"
+      },
+      "leaveTime": {
+        "hour": "10",
+        "minute": "46",
+        "days": "0"
+      },
+      "parkTime": "3",
+      "lastedTime": {
+        "hour": "0",
+        "minute": "39"
+      },
+      "mile": 56
     }
   ]
 };

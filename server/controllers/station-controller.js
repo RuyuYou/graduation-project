@@ -14,7 +14,8 @@ class StationController {
 
   getOneStation(req, res, next) {
     const trainId = req.params.trainId;
-    Station.findOne({trainId}, (err, result)=> {
+    const TrainId = require(`../models/${req.params.trainId}`);
+    TrainId.find({}, (err, result)=> {
       if (err) {
         return next(err);
       }

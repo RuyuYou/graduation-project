@@ -5,7 +5,7 @@ import {Modal, Button} from 'react-bootstrap';
 import {Link} from 'react-router';
 
 
-const header = ['列车号', '途经站点', '创建人', '操作'];
+const header = ['站序', '站名', '到达时间', '发车时间', '停车时间', '运行时间', '里程', '创建人', '操作'];
 
 class ListHeader extends Component {
   render() {
@@ -14,7 +14,6 @@ class ListHeader extends Component {
     });
     return (
       <tr>
-        <th><input type="checkbox"/></th>
         {title}
       </tr>
     )
@@ -34,7 +33,7 @@ export default class StationList extends Component {
 
   getStationList() {
     superagent
-      .get('/stations')
+      .get(`/stations/${this.props.trainId}`)
       .use(noCache)
       .end((err, res)=> {
         if (err) {
@@ -42,24 +41,14 @@ export default class StationList extends Component {
         }
         this.setState({
           stationList: res.body
+        }, ()=> {
+          console.log(this.state.stationList);
         });
       });
   }
 
   componentDidMount() {
     this.getStationList();
-  }
-
-  getStations(stations) {
-    let stationsHTML = '';
-    stations.map((item, index)=> {
-      if (index == 0) {
-        stationsHTML += item.station;
-      } else {
-        stationsHTML += `,${item.station}`;
-      }
-    });
-    return stationsHTML;
   }
 
   openDeleteStation(id) {
@@ -96,15 +85,12 @@ export default class StationList extends Component {
   }
 
   render() {
-    console.log(this.props.trainId);
     const stationsHTML = this.state.stationList.map((item, index)=> {
-      const stationHTML = this.getStations(item.stations);
-      const href = `/station/${item._id}/edit`;
+      const href = `/station/${item.trainId}/edit`;
       return (
         <tr key={index}>
-          <td><input type="checkbox"/></td>
-          <td>{item.trainId}</td>
-          <td>{stationHTML}</td>
+          <td>{item.number}</td>
+          <td></td>
           <td>{item.createPeople}</td>
           <td>
             <div>

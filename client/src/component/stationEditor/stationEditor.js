@@ -56,6 +56,18 @@ class StationEditor extends Component {
   getTrainValue(station) {
     console.log(station);
     this.number.value = station.number;
+    this.name.value = station.name;
+    this.lastedHour.value = station.lastedTime.hour;
+    this.lastedMinute.value = station.lastedTime.minute;
+    this.endHour.value = station.endTime.hour;
+    this.endMinute.value = station.endTime.minute;
+    this.leaveHour.value = station.leaveTime.hour;
+    this.leaveMinute.value = station.leaveTime.minute;
+    this.parkTime.value = station.parkTime;
+    this.mile.value = station.mile;
+    this.setState({
+      days: station.days
+    });
   }
 
   getTickerValue(ticker) {
@@ -254,10 +266,10 @@ class StationEditor extends Component {
     });
   }
 
-  handleChangeEndDays(event) {
+  handleChangeDays(event) {
     const value = event.target.value;
     this.setState({
-      endDays: value
+      days: value
     });
   }
 
@@ -343,13 +355,13 @@ class StationEditor extends Component {
         <label className='col-sm-4 control-label'> 发车时间 </label>
         <div>
           <div className="form-group col-sm-2 no-margin-form">
-            <input type='text' className='form-control margin-right width' disabled={true}
+            <input type='text' className='form-control margin-right width'
                    ref={(ref) => {
                      this.leaveHour = ref;
                    }}/>时
           </div>
           <div className="form-group col-sm-2 no-margin-form">
-            <input type='text' className='form-control margin-right width' disabled={true}
+            <input type='text' className='form-control margin-right width'
                    ref={(ref) => {
                      this.leaveMinute = ref;
                    }}/>分
@@ -372,9 +384,10 @@ class StationEditor extends Component {
 
       <div className='form-group row margin-bottom'>
         <label className='col-sm-4 control-label'> 日期 </label>
-        <div className='form-group col-sm-2'
-             value={this.state.days}>
-          <select className="form-control width province" name="year">
+        <div className='form-group col-sm-2'>
+          <select className="form-control width province" name="year"
+                  value={this.state.days}
+                  onChange={this.handleChangeDays.bind(this)}>
             <option value="-1">请选择</option>
             <option value="0">当天</option>
             <option value="1">+1天</option>

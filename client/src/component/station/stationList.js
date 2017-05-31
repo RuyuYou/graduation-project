@@ -31,9 +31,9 @@ export default class StationList extends Component {
     };
   }
 
-  getStationList() {
+  getStationList(next) {
     superagent
-      .get(`/stations/${this.props.trainId}`)
+      .get(`/stations/${next.trainId}`)
       .use(noCache)
       .end((err, res)=> {
         if (err) {
@@ -47,8 +47,9 @@ export default class StationList extends Component {
       });
   }
 
-  componentDidMount() {
-    this.getStationList();
+  componentWillReceiveProps(next) {
+    console.log(next);
+    this.getStationList(next);
   }
 
   openDeleteStation(id) {

@@ -39,7 +39,6 @@ class StationController {
       if (!result) {
         return res.sendStatus(constant.httpCode.NO_CONTENT);
       }
-      console.log(result);
       return res.status(constant.httpCode.OK).send(result);
     });
   }
@@ -69,8 +68,10 @@ class StationController {
   }
 
   updateStation(req, res, next) {
-    const stationId = req.params.stationId;
-    Station.findByIdAndUpdate(stationId, req.body, (err, result)=> {
+    const trainId = req.params.trainId;
+    const number = req.params.number;
+    const TrainId = require(`../models/${req.params.trainId}`);
+    TrainId.findOneAndUpdate({number}, req.body, (err, result)=> {
       if (err) {
         return next(err);
       }

@@ -94,9 +94,7 @@ export default class StationList extends Component {
 
   render() {
     const stationList = this.state.stationList || [];
-    console.log(this.state.stationList);
     const stationsHTML = stationList.map((item, index)=> {
-      console.log(item);
       const href = `/station/${this.state.trainId}/edit/${item.number}`;
       const endTime = `${item.endTime.hour}时${item.endTime.minute}分`;
       const leaveTime = `${item.leaveTime.hour}时${item.leaveTime.minute}分`;

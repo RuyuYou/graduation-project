@@ -2,7 +2,6 @@ import {Component} from 'react';
 import {Link, withRouter} from 'react-router';
 import superagent from 'superagent';
 import noCache from 'superagent-no-cache';
-import {Modal, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 class ErrorTip extends Component {
@@ -33,30 +32,34 @@ class StationEditor extends Component {
       hardMiddleError: '',
       hardDownError: '',
       softUpError: '',
-      softDownError: ''
+      softDownError: '',
+      editOrNew: 0
     };
   }
 
   componentDidMount() {
     const cookieArray = document.cookie.split('trainId=');
     const pathArray = window.location.pathname.split('/edit/');
-    console.log(pathArray);
+    const pathNameArray = window.location.pathname.split('/');
     this.trainId.value = cookieArray[1];
-    superagent
-      .get(`/stations/${cookieArray[1]}/${pathArray[1]}`)
-      .use(noCache)
-      .end((err, res)=> {
-        if (err) {
-          throw err;
-        }
-        console.log(res.body);
-        this.getTrainValue(res.body);
-        this.getTickerValue(res.body);
-      });
+    if (pathNameArray[pathNameArray.length - 2] === 'edit') {
+      superagent
+        .get(`/stations/${cookieArray[1]}/${pathArray[1]}`)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          this.getTrainValue(res.body);
+          this.getTickerValue(res.body);
+          this.setState({
+            editOrNew: 1
+          });
+        });
+    }
   }
 
   getTrainValue(station) {
-    console.log(station);
     this.number.value = station.number;
     this.name.value = station.name;
     this.lastedHour.value = station.lastedTime.hour;
@@ -188,28 +191,24 @@ class StationEditor extends Component {
 
 
   submit() {
-    const trainInfo = {
-      trainId: this.trainId.value,
-      type: this.type.value,
-      startPlace: this.startPlace.value,
-      startTime: {
-        hour: this.startHour.value,
-        minute: this.startMinute.value
-      },
-      endPlace: this.endPlace.value,
-      endTime: {
-        hour: this.endHour.value,
-        minute: this.endMinute.value,
-        days: this.state.endDays
-      },
+    const stationInfo = {
+      number: this.number.value,
+      name: this.name.value,
       lastedTime: {
-        hour: this.startHour.value,
+        hour: this.lastedHour.value,
         minute: this.lastedMinute.value
       },
-      mile: this.mile.value
-    };
-    const tickerInfo = {
-      trainId: this.trainId.value,
+      endTime: {
+        hour: this.endHour.value,
+        minute: this.endMinute.value
+      },
+      leaveTime: {
+        hour: this.leaveHour.value,
+        minute: this.leaveMinute.value
+      },
+      parkTime: this.parkTime.value,
+      days: this.state.days,
+      mile: this.mile.value,
       seat: this.seat.value,
       hard: {
         up: this.hardUp.value,
@@ -221,28 +220,20 @@ class StationEditor extends Component {
         down: this.softDown.value
       }
     };
-    superagent
-      .put(`/trains/${this.trainId.value}`)
-      .send(trainInfo)
-      .use(noCache)
-      .end((err, res)=> {
-        if (err) {
-          throw err;
-        }
-        if (res.status === 204) {
-          superagent
-            .put(`/tickers/${this.trainId.value}`)
-            .send(tickerInfo)
-            .use(noCache)
-            .end((err, res)=> {
-              if (res.status === 200) {
-                this.setState({showSuccess: true}, ()=> {
-                  this.initInformation();
-                });
-              }
-            });
-        }
-      });
+    if (this.state.editOrNew == 1) {
+      superagent
+        .put(`/stations/${this.trainId.value}/${this.number.value}`)
+        .send(stationInfo)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status === 200) {
+            alert('修改成功');
+          }
+        });
+    }
   }
 
   initInformation() {

@@ -78,9 +78,9 @@ module.exports = {
       },
       "leaveTime": {
         "hour": "10",
-        "minute": "46",
-        "days": "0"
+        "minute": "46"
       },
+      "days": "0",
       "parkTime": "3",
       "lastedTime": {
         "hour": "0",
@@ -94,7 +94,8 @@ module.exports = {
       "number": 1,
       "name": "张桥",
       "endTime": {"hour": "12", "minute": "25"},
-      "leaveTime": {"hour": "12", "minute": "29", "days": 0},
+      "leaveTime": {"hour": "12", "minute": "29"},
+      "days": "0",
       "parkTime": "4",
       "lastedTime": {"hour": "0", "minute": "52"},
       "mile": 76

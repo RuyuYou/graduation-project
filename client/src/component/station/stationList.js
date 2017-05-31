@@ -97,7 +97,7 @@ export default class StationList extends Component {
     console.log(this.state.stationList);
     const stationsHTML = stationList.map((item, index)=> {
       console.log(item);
-      const href = `/station/${this.state.trainId}/edit`;
+      const href = `/station/${this.state.train}/edit`;
       const endTime = `${item.endTime.hour}时${item.endTime.minute}分`;
       const leaveTime = `${item.leaveTime.hour}时${item.leaveTime.minute}分`;
       const lastedTime = `${item.lastedTime.hour}时${item.lastedTime.minute}分`;
@@ -110,7 +110,7 @@ export default class StationList extends Component {
           <td>{item.parkTime}</td>
           <td>{lastedTime}</td>
           <td>{item.mile}</td>
-          <td>{this.judgeDays(item.leaveTime.days)}</td>
+          <td>{this.judgeDays(item.days)}</td>
           <td>
             <div>
               <Link to={href} className='margin-right'>站点详情

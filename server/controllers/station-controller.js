@@ -19,6 +19,8 @@ class StationController {
       if (err) {
         return next(err);
       }
+      res.clearCookie('trainId', trainId);
+      res.cookie('trainId', trainId);
       if (!result) {
         return res.sendStatus(constant.httpCode.NO_CONTENT);
       }

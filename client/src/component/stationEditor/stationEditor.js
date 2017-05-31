@@ -38,41 +38,20 @@ class StationEditor extends Component {
   }
 
   componentDidMount() {
-    const pathNameArray = window.location.pathname.split('/');
+    const cookieArray = document.cookie.split('trainId=');
+    this.trainId.value = cookieArray[1];
     superagent
-      .get(`/trains/${pathNameArray[2]}`)
+      .get(`/stations/${cookieArray[1]}`)
       .use(noCache)
       .end((err, res)=> {
         if (err) {
           throw err;
         }
         this.getTrainValue(res.body);
-        superagent.get(`/tickers/${pathNameArray[2]}`)
-          .use(noCache)
-          .end((err, res)=> {
-            if (err) {
-              throw err;
-            }
-            this.getTickerValue(res.body);
-          });
       });
   }
 
   getTrainValue(trainInformation) {
-    this.trainId.value = trainInformation.trainId;
-    this.startPlace.value = trainInformation.startPlace;
-    this.endPlace.value = trainInformation.endPlace;
-    this.startHour.value = trainInformation.startTime.hour;
-    this.startMinute.value = trainInformation.startTime.minute;
-    this.endHour.value = trainInformation.endTime.hour;
-    this.endMinute.value = trainInformation.endTime.minute;
-    this.type.value = trainInformation.type;
-    this.lastedHour.value = trainInformation.lastedTime.hour;
-    this.lastedMinute.value = trainInformation.lastedTime.minute;
-    this.mile.value = trainInformation.mile;
-    this.setState({
-      endDays: trainInformation.endTime.days
-    });
   }
 
   getTickerValue(ticker) {
@@ -308,7 +287,7 @@ class StationEditor extends Component {
         <div className='col-sm-6'>
           <input type='text' className='form-control width' placeholder='请输入终点站'
                  ref={(ref) => {
-                   this.endPlace = ref;
+                   this.name = ref;
                  }} onBlur={this.judgeEndPlace.bind(this)}
                  onFocus={this.hiddenErrorMessage.bind(this, 'endPlaceError')}/>
         </div>
@@ -322,13 +301,13 @@ class StationEditor extends Component {
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width'
                    ref={(ref) => {
-                     this.startHour = ref;
+                     this.lastedHour = ref;
                    }}/>时
           </div>
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width'
                    ref={(ref) => {
-                     this.startMinute = ref;
+                     this.lastedMinute = ref;
                    }}/>分
           </div>
         </div>

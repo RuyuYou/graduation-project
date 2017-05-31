@@ -10,9 +10,9 @@ const K214Schema = new Schema({
   },
   leaveTime: {
     hour: String,
-    minute: String,
-    days: String
+    minute: String
   },
+  days: String,
   parkTime: String,
   lastedTime: {
     hour: String,

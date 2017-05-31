@@ -28,6 +28,21 @@ class StationController {
     });
   }
 
+  getStationNumber(req, res, next) {
+    const trainId = req.params.trainId;
+    const number = req.params.number;
+    const TrainId = require(`../models/${req.params.trainId}`);
+    TrainId.findOne({number: number}, (err, result)=> {
+      if (err) {
+        return next(err);
+      }
+      if (!result) {
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
+      }
+      return res.status(constant.httpCode.OK).send(result);
+    });
+  }
+
   createStation(req, res, next) {
     const trainId = req.params.trainId;
     const TrainId = require(`../models/${req.params.trainId}`);

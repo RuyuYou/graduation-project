@@ -87,6 +87,25 @@ module.exports = {
         "minute": "39"
       },
       "mile": 56
+    },
+    {
+      "number": 2,
+      "name": "潼关",
+      "endTime": {
+        "hour": "11",
+        "minute": "46"
+      },
+      "leaveTime": {
+        "hour": "11",
+        "minute": "59"
+      },
+      "days": "0",
+      "parkTime": "3",
+      "lastedTime": {
+        "hour": "1",
+        "minute": "52"
+      },
+      "mile": 135
     }
   ],
   K214: [

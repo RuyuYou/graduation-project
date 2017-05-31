@@ -27,7 +27,7 @@ class StationEditor extends Component {
       showSuccess: false,
       trainInformation: {},
       showDeleteTrainModal: false,
-      endDays: -1,
+      days: -1,
       seatError: '',
       hardUpError: '',
       hardMiddleError: '',
@@ -39,9 +39,11 @@ class StationEditor extends Component {
 
   componentDidMount() {
     const cookieArray = document.cookie.split('trainId=');
+    const pathArray = window.location.pathname.split('/edit/');
+    console.log(pathArray);
     this.trainId.value = cookieArray[1];
     superagent
-      .get(`/stations/${cookieArray[1]}`)
+      .get(`/stations/${cookieArray[1]}/${pathArray[1]}`)
       .use(noCache)
       .end((err, res)=> {
         if (err) {
@@ -51,7 +53,9 @@ class StationEditor extends Component {
       });
   }
 
-  getTrainValue(trainInformation) {
+  getTrainValue(station) {
+    console.log(station);
+    this.number.value = station.number;
   }
 
   getTickerValue(ticker) {
@@ -63,9 +67,9 @@ class StationEditor extends Component {
     this.softDown.value = ticker.soft.down.toFixed(1);
   }
 
-  judgeStartPlace() {
-    if (this.startPlace.value == '') {
-      this.setState({startPlaceError: '起点站不能为空'});
+  judgeNumber() {
+    if (this.number.value == '') {
+      this.setState({numberError: '站序不能为空'});
     }
   }
 
@@ -276,8 +280,8 @@ class StationEditor extends Component {
           <input type='text' className='form-control width'
                  ref={(ref) => {
                    this.number = ref;
-                 }} onBlur={this.judgeStartPlace.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'startPlaceError')}/>
+                 }} onBlur={this.judgeNumber.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'numberError')}/>
         </div>
       </div>
       <ErrorTip error={this.state.startPlaceError}/>
@@ -330,16 +334,7 @@ class StationEditor extends Component {
                      this.endMinute = ref;
                    }}/>分
           </div>
-          <div className='form-group col-sm-2'>
-            <select className="form-control width province" name="year"
-                    value={this.state.endDays}
-                    onChange={this.handleChangeEndDays.bind(this)}>
-              <option value="-1">请选择</option>
-              <option value="0">当天</option>
-              <option value="1">+1天</option>
-              <option value="2">+2天</option>
-            </select>
-          </div>
+
         </div>
       </div>
       <ErrorTip error={this.state.endTimeError}/>
@@ -350,18 +345,43 @@ class StationEditor extends Component {
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width' disabled={true}
                    ref={(ref) => {
-                     this.lastedHour = ref;
+                     this.leaveHour = ref;
                    }}/>时
           </div>
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width' disabled={true}
                    ref={(ref) => {
-                     this.lastedMinute = ref;
+                     this.leaveMinute = ref;
                    }}/>分
           </div>
         </div>
       </div>
       <ErrorTip error={this.state.lastedError}/>
+
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 停车时间 </label>
+        <div className="form-group col-sm-2 no-margin-form">
+          <input type='text' className='form-control margin-right width'
+                 ref={(ref) => {
+                   this.parkTime = ref;
+                 }}/>分
+        </div>
+      </div>
+      <ErrorTip error={this.state.lastedError}/>
+
+
+      <div className='form-group row margin-bottom'>
+        <label className='col-sm-4 control-label'> 日期 </label>
+        <div className='form-group col-sm-2'
+             value={this.state.days}>
+          <select className="form-control width province" name="year">
+            <option value="-1">请选择</option>
+            <option value="0">当天</option>
+            <option value="1">+1天</option>
+            <option value="2">+2天</option>
+          </select>
+        </div>
+      </div>
 
       <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 里程 </label>

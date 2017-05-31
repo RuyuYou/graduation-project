@@ -275,6 +275,13 @@ class StationEditor extends Component {
     });
   }
 
+
+  returnList() {
+    const pathName = window.location.pathname;
+    const pathArray = pathName.split('/K84');
+    this.props.router.push(pathArray[0]);
+  }
+
   render() {
     const list = `/train`;
     return (<div>
@@ -298,7 +305,7 @@ class StationEditor extends Component {
                  onFocus={this.hiddenErrorMessage.bind(this, 'numberError')}/>
         </div>
       </div>
-      <ErrorTip error={this.state.startPlaceError}/>
+      <ErrorTip error={this.state.numberError}/>
 
       <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 站点名称 </label>
@@ -487,9 +494,17 @@ class StationEditor extends Component {
       <ErrorTip error={this.state.softDownError}/>
 
       <div className="row margin-top text-center">
-        <button className='btn btn-primary btn-save' onClick={this.submit.bind(this)}>
-          {'保存  '}
-        </button>
+        <div className='col-sm-3 width-left text-center'>
+          <button className='btn btn-primary btn-save' onClick={this.submit.bind(this)}>
+            {'保存  '}
+          </button>
+        </div>
+        <div className='col-sm-3 col-sm-offset-1 text-center'>
+          <button className='btn btn-primary btn-save'
+                  onClick={this.returnList.bind(this)}>
+            {'返回  '}
+          </button>
+        </div>
       </div>
 
     </div>);

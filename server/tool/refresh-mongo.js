@@ -12,7 +12,7 @@ const K214 = require('../models/K214');
 const modelMap = {
   Ticker,
   Train,
-  Station,
+  // Station,
   K84,
   K214,
   // Seat,

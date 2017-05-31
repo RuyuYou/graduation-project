@@ -5,7 +5,7 @@ import {Modal, Button} from 'react-bootstrap';
 import {Link} from 'react-router';
 
 
-const header = ['站序', '站名', '到达时间', '发车时间', '停车时间', '运行时间', '里程', '创建人', '操作'];
+const header = ['站序', '站名', '到达时间', '发车时间', '停车时间', '运行时间', '里程', '日期', '操作'];
 
 class ListHeader extends Component {
   render() {
@@ -41,14 +41,11 @@ export default class StationList extends Component {
         }
         this.setState({
           stationList: res.body
-        }, ()=> {
-          console.log(this.state.stationList);
         });
       });
   }
 
   componentWillReceiveProps(next) {
-    console.log(next);
     this.getStationList(next);
   }
 
@@ -85,14 +82,33 @@ export default class StationList extends Component {
     });
   }
 
+  judgeDays(days) {
+    if (days == 0) {
+      return '当天';
+    } else {
+      return `第${days}天`;
+    }
+  }
+
   render() {
-    const stationsHTML = this.state.stationList.map((item, index)=> {
+    const stationList = this.state.stationList || [];
+    console.log(this.state.stationList);
+    const stationsHTML = stationList.map((item, index)=> {
+      console.log(item);
       const href = `/station/${item.trainId}/edit`;
+      const endTime = `${item.endTime.hour}时${item.endTime.minute}分`;
+      const leaveTime = `${item.leaveTime.hour}时${item.leaveTime.minute}分`;
+      const lastedTime = `${item.lastedTime.hour}时${item.lastedTime.minute}分`;
       return (
         <tr key={index}>
           <td>{item.number}</td>
-          <td></td>
-          <td>{item.createPeople}</td>
+          <td>{item.name}</td>
+          <td>{endTime}</td>
+          <td>{leaveTime}</td>
+          <td>{item.parkTime}</td>
+          <td>{lastedTime}</td>
+          <td>{item.mile}</td>
+          <td>{this.judgeDays(item.leaveTime.days)}</td>
           <td>
             <div>
               <Link to={href} className='margin-right'>站点详情

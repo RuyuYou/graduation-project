@@ -55,8 +55,10 @@ class StationController {
   }
 
   deleteStation(req, res, next) {
-    const stationId = req.params.stationId;
-    Station.findByIdAndRemove(stationId, (err, result)=> {
+    const number = req.params.stationId;
+    const trainId = req.params.trainId;
+    const TrainId = require(`../models/${req.params.trainId}`);
+    TrainId.findOneAndRemove({number}, (err, result)=> {
       if (err) {
         return next(err);
       }

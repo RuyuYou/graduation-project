@@ -51,9 +51,9 @@ export default class StationList extends Component {
     this.getStationList(next);
   }
 
-  openDeleteStation(id) {
+  openDeleteStation(number) {
     const deleteStationId = [];
-    deleteStationId.push(id);
+    deleteStationId.push(number);
     this.setState({
       showDeleteModal: true,
       deleteStationId
@@ -70,15 +70,16 @@ export default class StationList extends Component {
     this.setState({
       showDeleteModal: false
     }, ()=> {
+      const trainIdArray = document.cookie.split('trainId=');
       this.state.deleteStationId.map((stationId)=> {
         superagent
-          .delete(`stations/${stationId}`)
+          .delete(`stations/${trainIdArray[1]}/${stationId}`)
           .use(noCache)
           .end((err, res)=> {
             if (err) {
               throw err;
             }
-            this.getStationList();
+            this.getStationList({trainId: trainIdArray[1]});
           });
       })
     });
@@ -105,7 +106,7 @@ export default class StationList extends Component {
           <td>{item.name}</td>
           <td>{endTime}</td>
           <td>{leaveTime}</td>
-          <td>{item.parkTime}</td>
+          <td>{item.parkTime}分钟</td>
           <td>{lastedTime}</td>
           <td>{item.mile}</td>
           <td>{this.judgeDays(item.days)}</td>
@@ -113,7 +114,7 @@ export default class StationList extends Component {
             <div>
               <Link to={href} className='margin-right'>站点详情
               </Link>
-              <Link onClick={this.openDeleteStation.bind(this, item._id)}>
+              <Link onClick={this.openDeleteStation.bind(this, item.number)}>
                 <a href="#">删除站点</a>
               </Link>
             </div>

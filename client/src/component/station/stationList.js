@@ -27,7 +27,8 @@ export default class StationList extends Component {
     this.state = {
       stationList: [],
       showDeleteModal: false,
-      deleteStationId: []
+      deleteStationId: [],
+      trainId: ''
     };
   }
 
@@ -40,7 +41,8 @@ export default class StationList extends Component {
           throw err;
         }
         this.setState({
-          stationList: res.body
+          stationList: res.body,
+          trainId: next.trainId
         });
       });
   }
@@ -95,7 +97,7 @@ export default class StationList extends Component {
     console.log(this.state.stationList);
     const stationsHTML = stationList.map((item, index)=> {
       console.log(item);
-      const href = `/station/${item.trainId}/edit`;
+      const href = `/station/${this.state.trainId}/edit`;
       const endTime = `${item.endTime.hour}时${item.endTime.minute}分`;
       const leaveTime = `${item.leaveTime.hour}时${item.leaveTime.minute}分`;
       const lastedTime = `${item.lastedTime.hour}时${item.lastedTime.minute}分`;

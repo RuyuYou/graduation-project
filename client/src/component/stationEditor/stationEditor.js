@@ -1,551 +1,483 @@
 import {Component} from 'react';
-import {Modal, Button} from 'react-bootstrap';
+import {Link, withRouter} from 'react-router';
 import superagent from 'superagent';
 import noCache from 'superagent-no-cache';
+import {Modal, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {Link, withRouter} from 'react-router';
 
-
-const stationPlace = [];
-
-const header = ['中间站点', '到达时间', '离开时间', '操作'];
-
-class ListHeader extends Component {
+class ErrorTip extends Component {
   render() {
-    const title = header.map((item, index)=> {
-      return (<th key={index}>{item}</th>)
-    });
     return (
-      <tr>
-        <th><input type="checkbox"/></th>
-        {title}
-      </tr>
-    )
+      <div className="row margin-err">
+        <span className='error-message'>{this.props.error}</span>
+      </div>
+    );
   }
 }
 
 class StationEditor extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      showAddModal: false,
-      stationPlaceError: '',
-      stationPlace: [],
-      arriveTime: {
-        year: -1,
-        month: -1,
-        day: -1,
-        hour: -1,
-        minute: -1
-      },
-      leaveTime: {
-        year: -1,
-        month: -1,
-        day: -1,
-        hour: -1,
-        minute: -1
-      },
-      activeIndex: -1,
-      leaveTimeError: '',
-      showStationPlace: false,
-      trainIdError: '',
-      showDeleteModal: false,
-      editOrNew: 0,
-      stationInformation: {}
+      startPlaceError: '',
+      startTimeError: '',
+      endPlaceError: '',
+      endTimeError: '',
+      lastedError: '',
+      showSuccess: false,
+      trainInformation: {},
+      showDeleteTrainModal: false,
+      endDays: -1,
+      seatError: '',
+      hardUpError: '',
+      hardMiddleError: '',
+      hardDownError: '',
+      softUpError: '',
+      softDownError: ''
     };
   }
-
 
   componentDidMount() {
     const pathNameArray = window.location.pathname.split('/');
-    if (pathNameArray[pathNameArray.length - 1] === 'edit') {
-      superagent
-        .get(`/stations/${pathNameArray[2]}`)
-        .use(noCache)
-        .end((err, res)=> {
-          if (err) {
-            throw err;
-          }
-          this.setState({
-            stationPlace: res.body.stations,
-            showStationPlace: true,
-            stationInformation: res.body,
-            editOrNew: 1,
-          }, ()=> {
-            this.trainId.value = this.state.stationInformation.trainId;
-            for (let i = 0; i < this.state.stationPlace.length; i++) {
-              stationPlace.push(this.state.stationPlace[i]);
+    superagent
+      .get(`/trains/${pathNameArray[2]}`)
+      .use(noCache)
+      .end((err, res)=> {
+        if (err) {
+          throw err;
+        }
+        this.getTrainValue(res.body);
+        superagent.get(`/tickers/${pathNameArray[2]}`)
+          .use(noCache)
+          .end((err, res)=> {
+            if (err) {
+              throw err;
             }
+            this.getTickerValue(res.body);
           });
-        });
-    } else {
-      this.setState({
-        stationPlace: [],
-        editOrNew: 0,
-        stationInformation: {}
-      }, ()=> {
-        this.trainId.value = '';
       });
-    }
   }
 
-  addStationPlace() {
+  getTrainValue(trainInformation) {
+    this.trainId.value = trainInformation.trainId;
+    this.startPlace.value = trainInformation.startPlace;
+    this.endPlace.value = trainInformation.endPlace;
+    this.startHour.value = trainInformation.startTime.hour;
+    this.startMinute.value = trainInformation.startTime.minute;
+    this.endHour.value = trainInformation.endTime.hour;
+    this.endMinute.value = trainInformation.endTime.minute;
+    this.type.value = trainInformation.type;
+    this.lastedHour.value = trainInformation.lastedTime.hour;
+    this.lastedMinute.value = trainInformation.lastedTime.minute;
+    this.mile.value = trainInformation.mile;
     this.setState({
-      showAddModal: true,
-      arriveTime: {
-        year: -1,
-        month: -1,
-        day: -1,
-        hour: -1,
-        minute: -1
-      },
-      leaveTime: {
-        year: -1,
-        month: -1,
-        day: -1,
-        hour: -1,
-        minute: -1
-      },
-      activeIndex: -1
+      endDays: trainInformation.endTime.days
     });
   }
 
-  cancelButton() {
-    this.setState({
-      showAddModal: false,
-      stationPlaceError: ''
-    }, ()=> {
-      this.station.value = '';
-    });
+  getTickerValue(ticker) {
+    this.seat.value = ticker.seat.toFixed(1);
+    this.hardUp.value = ticker.hard.up.toFixed(1);
+    this.hardMiddle.value = ticker.hard.middle.toFixed(1);
+    this.hardDown.value = ticker.hard.down.toFixed(1);
+    this.softUp.value = ticker.soft.up.toFixed(1);
+    this.softDown.value = ticker.soft.down.toFixed(1);
   }
 
-  makeSureAdd() {
-    let arriveTime = this.state.arriveTime.month * 100000 + this.state.arriveTime.day * 1000
-      + this.state.arriveTime.hour * 10 + this.state.arriveTime.minute;
-    let leaveTime = this.state.leaveTime.month * 100000 + this.state.leaveTime.day * 1000
-      + this.state.leaveTime.hour * 10 + this.state.leaveTime.minute;
-    const timer = leaveTime - arriveTime;
-
-    if (this.state.activeIndex === -1) {
-      if (timer <= 0) {
-        this.setState({
-          leaveTimeError: '离开时间不能低于到达时间'
-        });
-      } else if (this.station.value != '') {
-        const value = {
-          station: this.station.value,
-          leaveTime: this.state.leaveTime,
-          arriveTime: this.state.arriveTime
-        };
-        stationPlace.push(value);
-        this.setState({
-          showAddModal: false,
-          stationPlace: stationPlace,
-          showStationPlace: true,
-          leaveTimeError: ''
-        }, ()=> {
-          this.station.value = '';
-        });
-      } else {
-        this.setState({
-          stationPlaceError: '中间站不能为空'
-        });
-      }
-    } else {
-      if (timer <= 0) {
-        this.setState({
-          leaveTimeError: '离开时间不能低于到达时间'
-        });
-      } else if (this.station.value != '') {
-        const value = {
-          station: this.station.value,
-          leaveTime: this.state.leaveTime,
-          arriveTime: this.state.arriveTime
-        };
-        stationPlace.splice(this.state.activeIndex, 1, value);
-        this.setState({
-          showAddModal: false,
-          stationPlace: stationPlace,
-          showStationPlace: true,
-          activeIndex: -1
-        }, ()=> {
-          this.station.value = '';
-        });
-      } else {
-        this.setState({
-          stationPlaceError: '中间站点不能为空'
-        });
-      }
+  judgeStartPlace() {
+    if (this.startPlace.value == '') {
+      this.setState({startPlaceError: '起点站不能为空'});
     }
   }
 
-  hiddenErrorMessage(err) {
+  hiddenErrorMessage(err1, err2) {
     var errObj = {};
-    errObj[err] = '';
+    errObj[err1] = '';
+    errObj[err2] = '';
     this.setState(errObj);
   }
 
-  getOptionMonth() {
-    const nowDate = new Date();
-    const month = nowDate.getMonth();
-    const optionMonth = [];
-    for (let i = month; i < 12; i++) {
-      optionMonth.push(<option key={i} value={i + 1}>{i + 1}</option>)
-    }
-    return optionMonth;
-  }
-
-  getOptionDay() {
-    const nowDate = new Date();
-    const month = nowDate.getMonth() + 1;
-    const optionDay = [];
-    if (this.state.arriveTime.month == month) {
-      const date = nowDate.getDate();
-      for (let i = date + 1; i <= 31; i++) {
-        optionDay.push(<option key={i} value={i}>{i}</option>)
-      }
-    } else if (this.state.arriveTime.month == 6 || this.state.arriveTime.month == 9 || this.state.arriveTime.month == 11) {
-      for (let i = 0; i < 30; i++) {
-        optionDay.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
-      }
+  judgeStartTime() {
+    if (this.startMinute.value == '' || this.startHour.value == '') {
+      this.setState({startTimeError: '发车时间不能为空'});
     } else {
-      for (let i = 0; i < 31; i++) {
-        optionDay.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
+      if (isNaN(this.startHour.value) || isNaN(this.startMinute.value)) {
+        this.setState({startTimeError: '发车时间输入错误，请从新输入'});
       }
     }
-    return optionDay;
   }
 
-  getOptionHour() {
-    const optionHour = [];
-    for (let i = 0; i <= 24; i++) {
-      optionHour.push(<option key={i} value={i}>{i}</option>)
-    }
-    return optionHour;
-  }
-
-  getOptionMinute() {
-    const optionMinute = [];
-    for (let i = -1; i < 60; i++) {
-      optionMinute.push(<option key={i + 1} value={i + 1}>{i + 1}</option>)
-    }
-    return optionMinute;
-  }
-
-  handleChangeArriveTime(i, event) {
-    const value = event.target.value;
-    const valueObj = this.state.arriveTime;
-    valueObj[i] = value;
-    this.setState({
-      arriveTime: valueObj
-    });
-  }
-
-  handleChangeLeaveTime(i, event) {
-    const value = event.target.value;
-    const valueObj = this.state.leaveTime;
-    valueObj[i] = value;
-    this.setState({
-      leaveTime: valueObj
-    });
-  }
-
-  judgeTrainId() {
-    if (this.trainId.value == '') {
-      this.setState({
-        trainIdError: '列车号不能为空'
-      });
+  judgeEndPlace() {
+    if (this.endPlace.value == '') {
+      this.setState({endPlaceError: '终点站不能为空'});
     }
   }
 
-  openEditModal(item, index) {
-    this.setState({
-      showAddModal: true,
-      activeIndex: index,
-      arriveTime: item.arriveTime,
-      leaveTime: item.leaveTime
-    }, ()=> {
-      this.station.value = item.station
-    });
+  judgeEndTime() {
+    if (this.endMinute.value == '' || this.endHour.value == '') {
+      this.setState({endTimeError: '到达时间不能为空'});
+    } else {
+      if (isNaN(this.endHour.value) || isNaN(this.endMinute.value)) {
+        this.setState({endTimeError: '到达时间只能为数字'});
+      } else {
+        const startTime = parseInt(this.startHour.value) * 60 + parseInt(this.startMinute.value);
+        const endTime = (parseInt(this.state.endDays) * 24 + parseInt(this.endHour.value)) * 60 + parseInt(this.endMinute.value);
+        const lastedTime = endTime - startTime;
+        this.lastedHour.value = parseInt(lastedTime / 60);
+        this.lastedMinute.value = parseInt(lastedTime % 60);
+      }
+    }
   }
 
-  openDeleteModal(index) {
-    this.setState({
-      showDeleteModal: true,
-      activeIndex: index
-    });
+  judgeSeat() {
+    if (this.seat.value == '') {
+      this.setState({seatError: '硬座价格不能为空'});
+    } else {
+      if (isNaN(this.seat.value)) {
+        this.setState({seatError: '硬座价格只能为数字'})
+      }
+    }
   }
 
-  cancelStationButton() {
-    this.setState({
-      showDeleteModal: false,
-      activeIndex: -1
-    });
+  judgeHardUp() {
+    if (this.hardUp.value == '') {
+      this.setState({hardUpError: '硬卧上铺价格不能为空'});
+    } else {
+      if (isNaN(this.hardUp.value)) {
+        this.setState({hardUpError: '硬卧上铺价格只能为数字'})
+      }
+    }
   }
 
-  deleteStationPlace() {
-    const newStationPlace = this.state.stationPlace;
-    newStationPlace.splice(this.state.activeIndex, 1);
-    this.setState({
-      stationPlace: newStationPlace,
-      activeIndex: -1,
-      showDeleteModal: false
-    });
+  judgeHardMiddle() {
+    if (this.hardMiddle.value == '') {
+      this.setState({hardMiddleError: '硬卧中铺价格不能为空'});
+    } else {
+      if (isNaN(this.hardMiddle.value)) {
+        this.setState({hardMiddleError: '硬卧中铺价格只能为数字'})
+      }
+    }
   }
 
-  saveStations() {
-    const info = {
+  judgeHardDown() {
+    if (this.hardDown.value == '') {
+      this.setState({hardDownError: '硬卧下铺价格不能为空'});
+    } else {
+      if (isNaN(this.hardDown.value)) {
+        this.setState({hardDownError: '硬卧下铺价格只能为数字'})
+      }
+    }
+  }
+
+  judgeSoftUp() {
+    if (this.softUp.value == '') {
+      this.setState({softUpError: '软卧上铺价格不能为空'});
+    } else {
+      if (isNaN(this.softUp.value)) {
+        this.setState({softUpError: '软卧上铺价格只能为数字'})
+      }
+    }
+  }
+
+  judgeSoftDown() {
+    if (this.softDown.value == '') {
+      this.setState({softDownError: '软卧下铺价格不能为空'});
+    } else {
+      if (isNaN(this.softDown.value)) {
+        this.setState({softDownError: '软卧下铺价格只能为数字'})
+      }
+    }
+  }
+
+
+  submit() {
+    const trainInfo = {
       trainId: this.trainId.value,
-      stations: this.state.stationPlace
+      type: this.type.value,
+      startPlace: this.startPlace.value,
+      startTime: {
+        hour: this.startHour.value,
+        minute: this.startMinute.value
+      },
+      endPlace: this.endPlace.value,
+      endTime: {
+        hour: this.endHour.value,
+        minute: this.endMinute.value,
+        days: this.state.endDays
+      },
+      lastedTime: {
+        hour: this.startHour.value,
+        minute: this.lastedMinute.value
+      },
+      mile: this.mile.value
     };
-    console.log(info);
-    if (this.state.editOrNew == 0) {
-      superagent
-        .post('/stations')
-        .send(info)
-        .use(noCache)
-        .end((err, res)=> {
-          if (err) {
-            throw err;
-          }
-          if (res.status == 201) {
-            this.props.router.push('/station');
-            this.setState({
-              stationInformation: {},
-              stationPlace: []
+    const tickerInfo = {
+      trainId: this.trainId.value,
+      seat: this.seat.value,
+      hard: {
+        up: this.hardUp.value,
+        middle: this.hardMiddle.value,
+        down: this.hardDown.value
+      },
+      soft: {
+        up: this.softUp.value,
+        down: this.softDown.value
+      }
+    };
+    superagent
+      .put(`/trains/${this.trainId.value}`)
+      .send(trainInfo)
+      .use(noCache)
+      .end((err, res)=> {
+        if (err) {
+          throw err;
+        }
+        if (res.status === 204) {
+          superagent
+            .put(`/tickers/${this.trainId.value}`)
+            .send(tickerInfo)
+            .use(noCache)
+            .end((err, res)=> {
+              if (res.status === 200) {
+                this.setState({showSuccess: true}, ()=> {
+                  this.initInformation();
+                });
+              }
             });
-          }
-        });
-    } else {
-      superagent
-        .put(`/stations/${this.state.stationInformation._id}`)
-        .send(info)
-        .use(noCache)
-        .end((err, res)=> {
-          if (err) {
-            throw err;
-          }
-          if (res.status == 200) {
-            this.props.router.push('/station');
-            this.setState({
-              stationInformation: {},
-              stationPlace: []
-            });
-          }
-        });
-    }
+        }
+      });
+  }
+
+  initInformation() {
+    this.trainId.value = '';
+    this.startPlace.value = '';
+    this.endPlace.value = '';
+    this.startHour.value = '';
+    this.startMinute.value = '';
+    this.endHour.value = '';
+    this.endMinute.value = '';
+    this.type.value = '';
+    this.lastedHour.value = '';
+    this.lastedMinute.value = '';
+    this.mile.value = '';
+    this.seat.value = '';
+    this.hardUp.value = '';
+    this.hardMiddle.value = '';
+    this.hardDown.value = '';
+    this.softUp.value = '';
+    this.softDown.value = '';
+    this.setState({
+      endDays: ''
+    });
+  }
+
+  handleChangeEndDays(event) {
+    const value = event.target.value;
+    this.setState({
+      endDays: value
+    });
   }
 
   render() {
-    const stationPlaceHTML = this.state.stationPlace.map((item, index)=> {
-      const leaveTime = `${item.leaveTime.year}年${item.leaveTime.month}月${item.leaveTime.day}日
-${item.leaveTime.hour}时${item.leaveTime.minute}分`;
-      const arriveTime = `${item.arriveTime.year}年${item.arriveTime.month}月${item.arriveTime.day}日
-${item.arriveTime.hour}时${item.arriveTime.minute}分`;
-      return (
-        <tr key={index}>
-          <td><input type="checkbox"/></td>
-          <td>{item.station}</td>
-          <td>{arriveTime}</td>
-          <td>{leaveTime}</td>
-          <td>
-            <Link className="margin-right" onClick={this.openEditModal.bind(this, item, index)}>
-              修改站点
-            </Link>
-            <Link onClick={this.openDeleteModal.bind(this, index)}>删除站点</Link>
-          </td>
-        </tr>
-      )
-    });
-
+    const list = `/train`;
     return (<div>
-      <div className='form-group row no-margin-form'>
-        <label className='col-sm-2 control-label'> 列车号 </label>
-        <div className='col-sm-4'>
-          <input type='text' className='form-control' placeholder='请输入列车号'
+      <div className='form-group row margin-bottom'>
+        <label className='col-sm-4 control-label'> 列车号 </label>
+        <div className='col-sm-1 no-padding-right'>
+          <input type='text' className='form-control' disabled={true}
                  ref={(ref) => {
                    this.trainId = ref;
-                 }} onBlur={this.judgeTrainId.bind(this)} onFocus={this.hiddenErrorMessage.bind(this, 'trainIdError')}/>
+                 }}/>
         </div>
       </div>
-      <span className="error-tip1 col-sm-offset-2">{this.state.trainIdError}</span>
 
-
-      <div className={this.state.showStationPlace ? '' : 'hidden'}>
-        <table className="table table-striped table-bordered table-hover">
-          <thead>
-          <ListHeader />
-          </thead>
-          <tbody>
-          {stationPlaceHTML}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="btn-center margin-top">
-
-      </div>
-
-      <div className="row margin-top">
-        <div className=' col-sm-3 width-left text-center'>
-          <button className="btn btn-primary btn-save"
-                  onClick={this.addStationPlace.bind(this)}>
-            点击添加中间站点
-          </button>
-        </div>
-        <div className='col-sm-3 col-sm-offset-1 text-center'>
-          <button className='btn btn-primary btn-save'
-                  onClick={this.saveStations.bind(this)}>
-            {'保存  '}
-          </button>
-        </div>
-
-      </div>
-
-      <div className={this.state.showAddModal ? '' : 'hidden'}>
-        <div className='static-modal'>
-          <Modal.Dialog>
-            <Modal.Header>
-              <Modal.Title>添加中间站</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <div className="form-group margin-modal no-margin-bottom">
-                <input type="text" className="form-control" placeholder="请输入中间点站"
-                       ref={(ref)=> {
-                         this.station = ref;
-                       }} onFocus={this.hiddenErrorMessage.bind(this, 'stationPlaceError')}/>
-                <span className="error-tip1">{this.state.stationPlaceError}</span>
-              </div>
-
-              <div onFocus={this.hiddenErrorMessage.bind(this, 'leaveTimeError')}>
-                <div className='form-group row no-margin-form'>
-                  <label className='col-xs-2 control-label'> 到达时间 </label>
-                  <div>
-                    <div className='form-group col-xs-3'>
-                      <select className="form-control city" name="year"
-                              value={this.state.arriveTime.year}
-                              onChange={this.handleChangeArriveTime.bind(this, 'year')}>
-                        <option value="-1">请选择</option>
-                        <option value="2017">2017</option>
-                      </select>年
-                    </div>
-                    <div className="form-group col-xs-3">
-                      <select className="form-control city" name="month"
-                              value={this.state.arriveTime.month}
-                              onChange={this.handleChangeArriveTime.bind(this, 'month')}>
-                        <option value="-1">请选择</option>
-                        {this.getOptionMonth()}
-                      </select>月
-                    </div>
-                    <div className="form-group col-xs-3">
-                      <select className="form-control city" name="day"
-                              value={this.state.arriveTime.day}
-                              onChange={this.handleChangeArriveTime.bind(this, 'day')}>
-                        <option value="-1">请选择</option>
-                        {this.getOptionDay()}
-                      </select>日
-                    </div>
-                    <div className="form-group col-xs-offset-2 col-xs-3">
-                      <select className="form-control city" name="hour"
-                              value={this.state.arriveTime.hour}
-                              onChange={this.handleChangeArriveTime.bind(this, 'hour')}>
-                        <option value="-1">请选择</option>
-                        {this.getOptionHour()}
-                      </select>时
-                    </div>
-                    <div className="form-group col-xs-3">
-                      <select className="form-control city" name="minute"
-                              value={this.state.arriveTime.minute}
-                              onChange={this.handleChangeArriveTime.bind(this, 'minute')}>
-                        <option value="-1">请选择</option>
-                        {this.getOptionMinute()}
-                      </select>分
-                    </div>
-                  </div>
-                </div>
-                <div className='form-group row no-margin-form'>
-                  <label className='col-xs-2 control-label'> 离开时间 </label>
-                  <div>
-                    <div className='form-group col-xs-3'>
-                      <select className="form-control city" name="year"
-                              value={this.state.leaveTime.year}
-                              onChange={this.handleChangeLeaveTime.bind(this, 'year')}>
-                        <option value="-1">请选择</option>
-                        <option value="2017">2017</option>
-                      </select>年
-                    </div>
-                    <div className="form-group col-xs-3">
-                      <select className="form-control city" name="month"
-                              value={this.state.leaveTime.month}
-                              onChange={this.handleChangeLeaveTime.bind(this, 'month')}>
-                        <option value="-1">请选择</option>
-                        {this.getOptionMonth()}
-                      </select>月
-                    </div>
-                    <div className="form-group col-xs-3">
-                      <select className="form-control city" name="day"
-                              value={this.state.leaveTime.day}
-                              onChange={this.handleChangeLeaveTime.bind(this, 'day')}>
-                        <option value="-1">请选择</option>
-                        {this.getOptionDay()}
-                      </select>日
-                    </div>
-                    <div className="form-group col-xs-offset-2 col-xs-3 no-margin-form">
-                      <select className="form-control city" name="hour"
-                              value={this.state.leaveTime.hour}
-                              onChange={this.handleChangeLeaveTime.bind(this, 'hour')}>
-                        <option value="-1">请选择</option>
-                        {this.getOptionHour()}
-                      </select>时
-                    </div>
-                    <div className="form-group col-xs-3 no-margin-form">
-                      <select className="form-control city" name="minute"
-                              value={this.state.leaveTime.minute}
-                              onChange={this.handleChangeLeaveTime.bind(this, 'minute')}>
-                        <option value="-1">请选择</option>
-                        {this.getOptionMinute()}
-                      </select>分
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <span className="col-xs-offset-2 error-tip2 text-center">{this.state.leaveTimeError}</span>
-
-
-            </Modal.Body>
-
-            <Modal.Footer>
-              <Button onClick={this.cancelButton.bind(this)}>取消</Button>
-              <Button bsStyle='primary' onClick={this.makeSureAdd.bind(this)}>确定</Button>
-            </Modal.Footer>
-
-          </Modal.Dialog>
-        </div>
-
-      </div>
-
-      <div className={this.state.showDeleteModal ? '' : 'hidden'}>
-        <div className='static-modal'>
-
-          <Modal.Dialog>
-            <Modal.Header>
-              <Modal.Title>删除提示</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              您确定要删除该中间站点吗？
-            </Modal.Body>
-
-            <Modal.Footer>
-              <Button onClick={this.cancelStationButton.bind(this)}>取消</Button>
-              <Button bsStyle='primary' onClick={this.deleteStationPlace.bind(this)}>确定</Button>
-            </Modal.Footer>
-
-          </Modal.Dialog>
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 站序 </label>
+        <div className='col-sm-6'>
+          <input type='text' className='form-control width'
+                 ref={(ref) => {
+                   this.number = ref;
+                 }} onBlur={this.judgeStartPlace.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'startPlaceError')}/>
         </div>
       </div>
+      <ErrorTip error={this.state.startPlaceError}/>
+
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 站点名称 </label>
+        <div className='col-sm-6'>
+          <input type='text' className='form-control width' placeholder='请输入终点站'
+                 ref={(ref) => {
+                   this.endPlace = ref;
+                 }} onBlur={this.judgeEndPlace.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'endPlaceError')}/>
+        </div>
+      </div>
+      <ErrorTip error={this.state.endPlaceError}/>
+
+      <div className='form-group row no-margin-form'>
+        <label className='col-sm-4 control-label'> 运行时间 </label>
+        <div onBlur={this.judgeStartTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width'
+                   ref={(ref) => {
+                     this.startHour = ref;
+                   }}/>时
+          </div>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width'
+                   ref={(ref) => {
+                     this.startMinute = ref;
+                   }}/>分
+          </div>
+        </div>
+      </div>
+      <ErrorTip error={this.state.startTimeError}/>
+
+      <div className='form-group row no-margin-form'>
+        <label className='col-sm-4 control-label'> 到达时间 </label>
+        <div onBlur={this.judgeEndTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width'
+                   ref={(ref) => {
+                     this.endHour = ref;
+                   }}/>时
+          </div>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width'
+                   ref={(ref) => {
+                     this.endMinute = ref;
+                   }}/>分
+          </div>
+          <div className='form-group col-sm-2'>
+            <select className="form-control width province" name="year"
+                    value={this.state.endDays}
+                    onChange={this.handleChangeEndDays.bind(this)}>
+              <option value="-1">请选择</option>
+              <option value="0">当天</option>
+              <option value="1">+1天</option>
+              <option value="2">+2天</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <ErrorTip error={this.state.endTimeError}/>
+
+      <div className='form-group row no-margin-form'>
+        <label className='col-sm-4 control-label'> 发车时间 </label>
+        <div>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width' disabled={true}
+                   ref={(ref) => {
+                     this.lastedHour = ref;
+                   }}/>时
+          </div>
+          <div className="form-group col-sm-2 no-margin-form">
+            <input type='text' className='form-control margin-right width' disabled={true}
+                   ref={(ref) => {
+                     this.lastedMinute = ref;
+                   }}/>分
+          </div>
+        </div>
+      </div>
+      <ErrorTip error={this.state.lastedError}/>
+
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 里程 </label>
+        <div className='col-sm-6'>
+          <input type='text' className='form-control width' placeholder=''
+                 ref={(ref) => {
+                   this.mile = ref;
+                 }}/> 公里
+        </div>
+      </div>
+
+      <div className="split-border"></div>
+
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 硬座票价 </label>
+        <div className='col-sm-6'>
+          <input type='text' className='form-control width'
+                 ref={(ref) => {
+                   this.seat = ref;
+                 }} onBlur={this.judgeSeat.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'seatError')}/>
+        </div>
+      </div>
+      <ErrorTip error={this.state.seatError}/>
+
+
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 硬卧上铺 </label>
+        <div className='col-sm-6'>
+          <input type='text' className='form-control width'
+                 ref={(ref) => {
+                   this.hardUp = ref;
+                 }} onBlur={this.judgeHardUp.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'hardUpError')}/>
+        </div>
+      </div>
+      <ErrorTip error={this.state.hardUpError}/>
+
+
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 硬卧中铺 </label>
+        <div className='col-sm-6'>
+          <input type='text' className='form-control width'
+                 ref={(ref) => {
+                   this.hardMiddle = ref;
+                 }} onBlur={this.judgeHardMiddle.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'hardMiddleError')}/>
+        </div>
+      </div>
+      <ErrorTip error={this.state.hardMiddleError}/>
+
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 硬卧下铺 </label>
+        <div className='col-sm-6'>
+          <input type='text' className='form-control width'
+                 ref={(ref) => {
+                   this.hardDown = ref;
+                 }} onBlur={this.judgeHardDown.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'hardDownError')}/>
+        </div>
+      </div>
+      <ErrorTip error={this.state.hardDownError}/>
+
+
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 软卧上铺 </label>
+        <div className='col-sm-6'>
+          <input type='text' className='form-control width'
+                 ref={(ref) => {
+                   this.softUp = ref;
+                 }} onBlur={this.judgeSoftUp.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'softUpError')}/>
+        </div>
+      </div>
+      <ErrorTip error={this.state.softUpError}/>
+
+
+      <div className="form-group row no-margin-form">
+        <label className='col-sm-4 control-label'> 软卧下铺 </label>
+        <div className='col-sm-6'>
+          <input type='text' className='form-control width'
+                 ref={(ref) => {
+                   this.softDown = ref;
+                 }} onBlur={this.judgeSoftDown.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'softDownError')}/>
+        </div>
+      </div>
+      <ErrorTip error={this.state.softDownError}/>
+
+      <div className="row margin-top text-center">
+        <button className='btn btn-primary btn-save' onClick={this.submit.bind(this)}>
+          {'保存  '}
+        </button>
+      </div>
+
     </div>);
   }
 }

@@ -86,7 +86,18 @@ module.exports = {
         "hour": "0",
         "minute": "39"
       },
-      "mile": 56
+      "mile": 56,
+      "seat": 11,
+      "soft": {
+        "up": 61,
+        "middle": 66,
+        "down": 71
+      },
+      "hard": {
+        "up": 87,
+        "middle": 92,
+        "down": 97
+      }
     },
     {
       "number": 2,
@@ -105,7 +116,18 @@ module.exports = {
         "hour": "1",
         "minute": "52"
       },
-      "mile": 135
+      "mile": 135,
+      "seat": 21.5,
+      "soft": {
+        "up": 70,
+        "middle": 78,
+        "down": 86
+      },
+      "hard": {
+        "up": 101,
+        "middle": 109,
+        "down": 117
+      }
     }
   ],
   K214: [

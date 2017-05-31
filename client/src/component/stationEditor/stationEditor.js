@@ -49,7 +49,9 @@ class StationEditor extends Component {
         if (err) {
           throw err;
         }
+        console.log(res.body);
         this.getTrainValue(res.body);
+        this.getTickerValue(res.body);
       });
   }
 

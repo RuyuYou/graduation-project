@@ -39,6 +39,7 @@ class StationController {
       if (!result) {
         return res.sendStatus(constant.httpCode.NO_CONTENT);
       }
+      console.log(result);
       return res.status(constant.httpCode.OK).send(result);
     });
   }

@@ -18,7 +18,18 @@ const K84Schema = new Schema({
     hour: String,
     minute: String
   },
-  mile: Number
+  mile: Number,
+  seat: Number,
+  soft: {
+    up: Number,
+    middle: Number,
+    down: Number
+  },
+  hard: {
+    up: Number,
+    middle: Number,
+    down: Number
+  }
 });
 
 const K84 = mongoose.model('K84', K84Schema);

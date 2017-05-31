@@ -27,7 +27,7 @@ export default class StationEditor extends Component {
   render() {
     return (<div id="station-editor">
       <div className='station-header'>
-        {`${this.state.title}中间站点`}
+        {`${this.state.title}途经站点`}
       </div>
       <div className='station-body'>
         <StationEditorBody/>

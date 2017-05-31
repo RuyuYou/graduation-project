@@ -27,8 +27,9 @@ class StationController {
   }
 
   createStation(req, res, next) {
-    const stationInformation = Object.assign(req.body, {createPeople: req.cookies.userName});
-    Station.create(stationInformation, (err, result)=> {
+    const trainId = req.params.trainId;
+    const TrainId = require(`../models/${req.params.trainId}`);
+    TrainId.create(req.body, (err, result)=> {
       if (err) {
         return next(err);
       }

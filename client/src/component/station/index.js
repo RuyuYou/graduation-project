@@ -130,7 +130,7 @@ class Station extends Component {
           </table>
 
           <div className="row text-center margin">
-            <button className="btn btn-primary height">
+            <button className="btn btn-primary height" onClick={this.addStation.bind(this)}>
               添加途经站点
             </button>
           </div>

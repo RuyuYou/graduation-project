@@ -37,7 +37,7 @@ class Main extends Component {
           <IndexRoute component={Home}/>
           <Route path='index' component={Home}/>
           <Route path='userCenter' component={UserCenter}/>
-          <Route path='ticker' component={TickersManagement}/>
+          <Route path='position' component={TickersManagement}/>
           <Route path='train'>
             <IndexRoute component={TrainList}/>
             <Router path='new' component={TrainNew}/>

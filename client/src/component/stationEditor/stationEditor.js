@@ -230,7 +230,7 @@ class StationEditor extends Component {
             throw err;
           }
           if (res.status === 200) {
-            alert('修改成功');
+            this.initInformation();
           }
         });
     }
@@ -238,13 +238,12 @@ class StationEditor extends Component {
 
   initInformation() {
     this.trainId.value = '';
-    this.startPlace.value = '';
-    this.endPlace.value = '';
-    this.startHour.value = '';
-    this.startMinute.value = '';
+    this.number.value = '';
+    this.name.value = '';
+    this.leaveHour.value = '';
+    this.leaveMinute.value = '';
     this.endHour.value = '';
     this.endMinute.value = '';
-    this.type.value = '';
     this.lastedHour.value = '';
     this.lastedMinute.value = '';
     this.mile.value = '';
@@ -255,7 +254,8 @@ class StationEditor extends Component {
     this.softUp.value = '';
     this.softDown.value = '';
     this.setState({
-      endDays: ''
+      days: '',
+      showSuccess: true
     });
   }
 
@@ -274,7 +274,8 @@ class StationEditor extends Component {
   }
 
   render() {
-    const list = `/train`;
+    const messageSuccess = this.state.editOrNew == 0 ? `新建` : `修改`;
+    const list = `/station`;
     return (<div>
       <div className='form-group row margin-bottom'>
         <label className='col-sm-4 control-label'> 列车号 </label>
@@ -496,7 +497,21 @@ class StationEditor extends Component {
             {'返回  '}
           </button>
         </div>
+
+        <div className={this.state.showSuccess ? '' : 'hidden'}>
+          <div className='alert alert-block alert-success col-sm-6 col-sm-offset-3 no-margin-bottom text-center'>
+            <p className='message-hint'>
+              <i className='ace-icon fa fa-check-circle icon-space'> </i>
+              {`途经站点${messageSuccess}成功,请返回`}
+            </p>
+            <Link to={list}>
+              <button className='btn btn-sm btn-success icon-space'>查看车次列表
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
+
 
     </div>);
   }

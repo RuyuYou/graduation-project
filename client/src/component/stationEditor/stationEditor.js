@@ -233,6 +233,18 @@ class StationEditor extends Component {
             this.initInformation();
           }
         });
+    } else {
+      superagent
+        .post(`stations/${this.trainId.value}`)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status === 201) {
+            this.initInformation();
+          }
+        });
     }
   }
 

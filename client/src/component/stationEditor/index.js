@@ -13,7 +13,7 @@ export default class StationEditor extends Component {
 
   componentDidMount() {
     const pathNameArray = window.location.pathname.split('/');
-    if (pathNameArray[pathNameArray.length - 1] === 'edit') {
+    if (pathNameArray[pathNameArray.length - 2] === 'edit') {
       this.setState({
         title: '修改',
       });

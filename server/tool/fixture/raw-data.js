@@ -128,7 +128,39 @@ module.exports = {
         "middle": 109,
         "down": 117
       }
-    }
+    },
+    {
+      "number": 3,
+      "name": "渑池",
+      "days": "0",
+      "parkTime": "3",
+      "mile": 318,
+      "seat": 45,
+      "__v": 0,
+      "hard": {
+        "up": 92,
+        "middle": 100,
+        "down": 108
+      },
+      "soft": {
+        "up": 149,
+        "middle": 157,
+        "down": 165
+      },
+      "lastedTime": {
+        "hour": "0",
+        "minute": "39"
+      },
+      "leaveTime": {
+        "hour": "14",
+        "minute": "28"
+      },
+      "endTime": {
+        "hour": "14",
+        "minute": "25"
+      }
+    },
+
   ],
   K214: [
     {

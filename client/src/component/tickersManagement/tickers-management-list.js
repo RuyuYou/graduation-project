@@ -41,6 +41,7 @@ class TickersManagementList extends Component {
             <th>车厢总数</th>
             <th>卧铺个数</th>
             <th>硬座个数</th>
+
           </tr>
           </thead>
           {TickerList}

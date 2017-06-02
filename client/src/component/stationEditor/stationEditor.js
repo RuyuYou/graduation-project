@@ -84,12 +84,6 @@ class StationEditor extends Component {
     this.softDown.value = ticker.soft.down.toFixed(1);
   }
 
-  judgeNumber() {
-    if (this.number.value == '') {
-      this.setState({numberError: '站序不能为空'});
-    }
-  }
-
   hiddenErrorMessage(err1, err2) {
     var errObj = {};
     errObj[err1] = '';
@@ -97,35 +91,19 @@ class StationEditor extends Component {
     this.setState(errObj);
   }
 
-  judgeStartTime() {
-    if (this.startMinute.value == '' || this.startHour.value == '') {
-      this.setState({startTimeError: '发车时间不能为空'});
+  judgeNumber() {
+    if (this.number.value == '') {
+      this.setState({numberError: '站序不能为空'});
     } else {
-      if (isNaN(this.startHour.value) || isNaN(this.startMinute.value)) {
-        this.setState({startTimeError: '发车时间输入错误，请从新输入'});
+      if (isNaN(this.number.value)) {
+        this.setState({numberError: '站序只能为数字'});
       }
     }
   }
 
-  judgeEndPlace() {
-    if (this.endPlace.value == '') {
-      this.setState({endPlaceError: '终点站不能为空'});
-    }
-  }
-
-  judgeEndTime() {
-    if (this.endMinute.value == '' || this.endHour.value == '') {
-      this.setState({endTimeError: '到达时间不能为空'});
-    } else {
-      if (isNaN(this.endHour.value) || isNaN(this.endMinute.value)) {
-        this.setState({endTimeError: '到达时间只能为数字'});
-      } else {
-        const startTime = parseInt(this.startHour.value) * 60 + parseInt(this.startMinute.value);
-        const endTime = (parseInt(this.state.endDays) * 24 + parseInt(this.endHour.value)) * 60 + parseInt(this.endMinute.value);
-        const lastedTime = endTime - startTime;
-        this.lastedHour.value = parseInt(lastedTime / 60);
-        this.lastedMinute.value = parseInt(lastedTime % 60);
-      }
+  judgeName() {
+    if (this.name.value == '') {
+      this.setState({nameError: '站点名称不能为空'});
     }
   }
 
@@ -191,6 +169,8 @@ class StationEditor extends Component {
 
 
   submit() {
+    this.judgeNumber();
+    this.judgeName();
     const stationInfo = {
       number: this.number.value,
       name: this.name.value,
@@ -305,8 +285,7 @@ class StationEditor extends Component {
           <input type='text' className='form-control width'
                  ref={(ref) => {
                    this.number = ref;
-                 }} onBlur={this.judgeNumber.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'numberError')}/>
+                 }} onFocus={this.hiddenErrorMessage.bind(this, 'numberError')}/>
         </div>
       </div>
       <ErrorTip error={this.state.numberError}/>
@@ -317,16 +296,14 @@ class StationEditor extends Component {
           <input type='text' className='form-control width' placeholder='请输入终点站'
                  ref={(ref) => {
                    this.name = ref;
-                 }} onBlur={this.judgeEndPlace.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'endPlaceError')}/>
+                 }} onFocus={this.hiddenErrorMessage.bind(this, 'endPlaceError')}/>
         </div>
       </div>
       <ErrorTip error={this.state.endPlaceError}/>
 
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 运行时间 </label>
-        <div onBlur={this.judgeStartTime.bind(this)}
-             onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
+        <div onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width'
                    ref={(ref) => {
@@ -345,8 +322,7 @@ class StationEditor extends Component {
 
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 到达时间 </label>
-        <div onBlur={this.judgeEndTime.bind(this)}
-             onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
+        <div onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width'
                    ref={(ref) => {
@@ -359,7 +335,6 @@ class StationEditor extends Component {
                      this.endMinute = ref;
                    }}/>分
           </div>
-
         </div>
       </div>
       <ErrorTip error={this.state.endTimeError}/>

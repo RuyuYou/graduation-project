@@ -3,10 +3,17 @@ const Station = require('../models/station');
 const constant = require('../../config/constant');
 
 class StationController {
-  getAllStation(req, res, next) {
-    Station.find({}, (err, result)=> {
+  findNumber(req, res, next) {
+    const trainId = req.cookies.trainId;
+    const number = req.params.number;
+    const TrainId = require(`../models/${trainId}`);
+    TrainId.findOne({number}, (err, result)=> {
       if (err) {
         return next(err);
+      }
+
+      if (!result) {
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
       }
       return res.status(constant.httpCode.OK).send(result);
     });

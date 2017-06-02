@@ -106,7 +106,7 @@ export default class TrainListBody extends Component {
             {endTime}
             <label className="red">{this.judgeDays(item.endTime.days)}</label>
           </td>
-          <td>{item.mile}</td>
+          <td>{item.mile}公里</td>
           <td>{lastedTime}</td>
           <td>{item.createPeople}</td>
           <td>

@@ -5,7 +5,7 @@ const StationController = require('../../controllers/station-controller');
 const router = Router();
 const stationCtrl = new StationController();
 
-router.get('/', stationCtrl.getAllStation);
+router.get('/:trainId/:number', stationCtrl.findNumber);
 router.get('/:trainId', stationCtrl.getOneStation);
 router.get('/:trainId/:number', stationCtrl.getStationNumber);
 router.post('/:trainId', stationCtrl.createStation);

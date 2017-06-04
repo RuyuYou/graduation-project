@@ -40,24 +40,28 @@ module.exports = {
       "tickers": [
         {
           "number": -1,
+          "name": "广州",
           "seat": 399,
           "soft": {"up": 688, "down": 728},
           "hard": {"up": 226, "middle": 236, "down": 246}
         },
         {
           "number": 1,
+          "name": "渭南",
           "seat": 11,
           "soft": {"up": 61, "down": 71},
           "hard": {"up": 87, "middle": 92, "down": 97}
         },
         {
           "number": 2,
+          "name": "潼关",
           "seat": 21.5,
           "soft": {"up": 70, "down": 86},
           "hard": {"up": 101, "middle": 109, "down": 117}
         },
         {
           "number": 3,
+          "name": "渑池",
           "seat": 45,
           "soft": {"up": 149, "down": 165},
           "hard": {"up": 92, "middle": 100, "down": 108}
@@ -66,9 +70,9 @@ module.exports = {
     },
     {
       "trainId": "3028",
-      "tickers":[
+      "tickers": [
         {
-          "number":-1,
+          "number": -1,
           "seat": 399,
           "soft": {"up": 688, "down": 728},
           "hard": {"up": 226, "middle": 236, "down": 246}

@@ -6,15 +6,11 @@ const User = require('../models/user');
 const Station = require('../models/station');
 const Seat = require('../models/seat');
 const Sleeper = require('../models/sleeper');
-const K84 = require('../models/K84');
-const K214 = require('../models/K214');
 
 const modelMap = {
   Ticker,
   Train,
-  // Station,
-  K84,
-  K214,
+  Station,
   // Seat,
   // Sleeper,
   User

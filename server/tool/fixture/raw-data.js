@@ -64,109 +64,64 @@ module.exports = {
       }
     }
   ],
-  K84: [
+  Station: [
     {
-      "number": 1,
-      "name": "渭南",
-      "endTime": {
-        "hour": "10",
-        "minute": "43"
-      },
-      "leaveTime": {
-        "hour": "10",
-        "minute": "46"
-      },
-      "days": "0",
-      "parkTime": "3",
-      "lastedTime": {
-        "hour": "0",
-        "minute": "39"
-      },
-      "mile": 56,
-      "seat": 11,
-      "soft": {
-        "up": 61,
-        "middle": 66,
-        "down": 71
-      },
-      "hard": {
-        "up": 87,
-        "middle": 92,
-        "down": 97
-      }
+      "trainId": "K84",
+      "stations": [
+        {
+          "number": 1,
+          "name": "渭南",
+          "endTime": {"hour": "10", "minute": "43"},
+          "leaveTime": {"hour": "10", "minute": "46"},
+          "days": "0",
+          "parkTime": "3",
+          "lastedTime": {"hour": "0", "minute": "39"},
+          "mile": 56,
+          "seat": 11,
+          "soft": {"up": 61, "middle": 66, "down": 71},
+          "hard": {"up": 87, "middle": 92, "down": 97}
+        }, {
+          "number": 2,
+          "name": "潼关",
+          "endTime": {"hour": "11", "minute": "46"},
+          "leaveTime": {"hour": "11", "minute": "59"},
+          "days": "0",
+          "parkTime": "3",
+          "lastedTime": {"hour": "1", "minute": "52"},
+          "mile": 135,
+          "seat": 21.5,
+          "soft": {"up": 70, "middle": 78, "down": 86},
+          "hard": {"up": 101, "middle": 109, "down": 117}
+        },
+        {
+          "number": 3,
+          "name": "渑池",
+          "days": "0",
+          "parkTime": "3",
+          "mile": 318,
+          "seat": 45,
+          "hard": {"up": 92, "middle": 100, "down": 108},
+          "soft": {"up": 149, "middle": 157, "down": 165},
+          "lastedTime": {"hour": "0", "minute": "39"},
+          "leaveTime": {"hour": "14", "minute": "28"},
+          "endTime": {"hour": "14", "minute": "25"}
+        },
+      ]
     },
     {
-      "number": 2,
-      "name": "潼关",
-      "endTime": {
-        "hour": "11",
-        "minute": "46"
-      },
-      "leaveTime": {
-        "hour": "11",
-        "minute": "59"
-      },
-      "days": "0",
-      "parkTime": "3",
-      "lastedTime": {
-        "hour": "1",
-        "minute": "52"
-      },
-      "mile": 135,
-      "seat": 21.5,
-      "soft": {
-        "up": 70,
-        "middle": 78,
-        "down": 86
-      },
-      "hard": {
-        "up": 101,
-        "middle": 109,
-        "down": 117
-      }
-    },
-    {
-      "number": 3,
-      "name": "渑池",
-      "days": "0",
-      "parkTime": "3",
-      "mile": 318,
-      "seat": 45,
-      "hard": {
-        "up": 92,
-        "middle": 100,
-        "down": 108
-      },
-      "soft": {
-        "up": 149,
-        "middle": 157,
-        "down": 165
-      },
-      "lastedTime": {
-        "hour": "0",
-        "minute": "39"
-      },
-      "leaveTime": {
-        "hour": "14",
-        "minute": "28"
-      },
-      "endTime": {
-        "hour": "14",
-        "minute": "25"
-      }
-    },
-
-  ],
-  K214: [
-    {
-      "number": 1,
-      "name": "张桥",
-      "endTime": {"hour": "12", "minute": "25"},
-      "leaveTime": {"hour": "12", "minute": "29"},
-      "days": "0",
-      "parkTime": "4",
-      "lastedTime": {"hour": "0", "minute": "52"},
-      "mile": 76
+      "trainId": "K214",
+      "stations": [
+        {
+          "number": 1,
+          "name": "张桥",
+          "endTime": {"hour": "12", "minute": "25"},
+          "leaveTime": {"hour": "12", "minute": "29"},
+          "days": "0",
+          "parkTime": "4",
+          "lastedTime": {"hour": "0", "minute": "52"},
+          "mile": 76
+        }
+      ]
     }
   ]
 };

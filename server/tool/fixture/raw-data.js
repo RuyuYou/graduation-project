@@ -2,7 +2,7 @@ module.exports = {
   Train: [
     {
       "trainId": "K84",
-      "type": "新空快速",
+      "type": "快速",
       "startPlace": "西安",
       "endPlace": "广州",
       "startTime": {"hour": "10", "minute": "04"},
@@ -13,7 +13,7 @@ module.exports = {
     },
     {
       "trainId": "K214",
-      "type": "新空快速",
+      "type": "快速",
       "startPlace": "西安",
       "endPlace": "天津",
       "startTime": {"hour": "11", "minute": "33"},
@@ -37,6 +37,20 @@ module.exports = {
   Ticker: [
     {
       "trainId": "K84",
+      "seat": 399,
+      "soft": {
+        "up": 688,
+        "middle": 708,
+        "down": 728
+      },
+      "hard": {
+        "up": 226,
+        "middle": 236,
+        "down": 246
+      }
+    },
+    {
+      "trainId": "3028",
       "seat": 399,
       "soft": {
         "up": 688,
@@ -118,7 +132,6 @@ module.exports = {
       "parkTime": "3",
       "mile": 318,
       "seat": 45,
-      "__v": 0,
       "hard": {
         "up": 92,
         "middle": 100,

@@ -5,6 +5,17 @@ import noCache from 'superagent-no-cache';
 import {Modal, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
+const trainTye = [
+  {number: 'G', value: '高速动车'},
+  {number: 'C', value: '城际动车'},
+  {number: 'D', value: '动车'},
+  {number: 'Z', value: '直达特快'},
+  {number: 'T', value: '特快'},
+  {number: 'K', value: '快速'},
+  {number: 'L', value: '临时'},
+  {number: 'Y', value: '旅游'}
+];
+
 class ErrorTip extends Component {
   render() {
     return (
@@ -109,6 +120,23 @@ class TrainEditorBody extends Component {
     } else {
       if (isNaN(this.startHour.value) || isNaN(this.startMinute.value)) {
         this.setState({startTimeError: '发车时间输入错误，请从新输入'});
+      }
+    }
+  }
+
+  judgeType() {
+    if (this.trainId.value == '') {
+      this.setState({trainIdError: '列车号不能为空'});
+    } else {
+      const trainIdArray = this.trainId.value.split('');
+      if (!isNaN(trainIdArray[0])) {
+        this.type.value = '普通';
+      } else {
+        trainTye.map((item, index)=> {
+          if (trainIdArray[0] == item.number) {
+            this.type.value = item.value;
+          }
+        });
       }
     }
   }
@@ -230,28 +258,56 @@ class TrainEditorBody extends Component {
         down: this.softDown.value
       }
     };
-    superagent
-      .put(`/trains/${this.trainId.value}`)
-      .send(trainInfo)
-      .use(noCache)
-      .end((err, res)=> {
-        if (err) {
-          throw err;
-        }
-        if (res.status === 204) {
-          superagent
-            .put(`/tickers/${this.trainId.value}`)
-            .send(tickerInfo)
-            .use(noCache)
-            .end((err, res)=> {
-              if (res.status === 200) {
-                this.setState({showSuccess: true}, ()=> {
-                  this.initInformation();
-                });
-              }
-            });
-        }
-      });
+    if (this.state.editOrNew === true) {
+      superagent
+        .put(`/trains/${this.trainId.value}`)
+        .send(trainInfo)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status === 204) {
+            superagent
+              .put(`/tickers/${this.trainId.value}`)
+              .send(tickerInfo)
+              .use(noCache)
+              .end((err, res)=> {
+                if (res.status === 200) {
+                  this.setState({showSuccess: true}, ()=> {
+                    this.initInformation();
+                  });
+                }
+              });
+          }
+        });
+    } else {
+      superagent
+        .post(`/trains`)
+        .send(trainInfo)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          if (res.status === 201) {
+            superagent
+              .post(`/tickers`)
+              .send(tickerInfo)
+              .use(noCache)
+              .end((err, res)=> {
+                if (err) {
+                  throw err;
+                }
+                if (res.status === 201) {
+                  this.setState({showSuccess: true}, ()=> {
+                    this.initInformation();
+                  });
+                }
+              })
+          }
+        })
+    }
   }
 
   initInformation() {
@@ -323,11 +379,11 @@ class TrainEditorBody extends Component {
           <input type='text' className='form-control' disabled={this.state.editOrNew}
                  ref={(ref) => {
                    this.trainId = ref;
-                 }}/>
+                 }} onBlur={this.judgeType.bind(this)}/>
         </div>
         <label className='col-lg-1 control-label'> 列车类型 </label>
         <div className='col-sm-1 no-padding-left'>
-          <input type='text' className='form-control' disabled={this.state.editOrNew}
+          <input type='text' className='form-control' disabled={true}
                  ref={(ref) => {
                    this.type = ref;
                  }}/>

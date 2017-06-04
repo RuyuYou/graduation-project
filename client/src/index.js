@@ -20,6 +20,7 @@ import Sleeper from './component/sleeper';
 import UserManagement from './component/usersManagement';
 import StationEditor from './component/stationEditor/index';
 import ReportAll from './component/reports';
+import TickerEditor from './component/tickerEditor';
 
 const store = createStore(
   rootReducer,
@@ -36,7 +37,11 @@ class Main extends Component {
           <IndexRoute component={Home}/>
           <Route path='index' component={Home}/>
           <Route path='userCenter' component={UserCenter}/>
-          <Route path='position' component={TickersManagement}/>
+          <Route path='ticker'>
+            <IndexRoute component={TickersManagement}/>
+            <Router path="new" component={TickerEditor}/>
+            <Router path=":id/edit/:number" component={TickerEditor}/>
+          </Route>
           <Route path='train'>
             <IndexRoute component={TrainList}/>
             <Router path='new' component={TrainEditor}/>

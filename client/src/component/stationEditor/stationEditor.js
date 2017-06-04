@@ -18,11 +18,6 @@ class StationEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startPlaceError: '',
-      startTimeError: '',
-      endPlaceError: '',
-      endTimeError: '',
-      lastedError: '',
       showSuccess: false,
       trainInformation: {},
       showDeleteTrainModal: false,
@@ -107,6 +102,41 @@ class StationEditor extends Component {
     }
   }
 
+  judgeLastedTime() {
+    if (this.lastedMinute.value == '' || this.lastedHour.value == '') {
+      this.setState({lastedError: '运行时间不能为空'});
+    } else {
+      if (isNaN(this.lastedHour.value) || isNaN(this.lastedMinute.value)) {
+        this.setState({lastedError: '运行时间只能为数字'});
+      }
+    }
+  }
+
+  judgeEndTime() {
+    if (this.endMinute.value == '' || this.endHour.value == '') {
+      this.setState({endError: '到达时间不能为空'});
+    } else {
+      if (isNaN(this.endHour.value) || isNaN(this.endMinute.value)) {
+        this.setState({endError: '到达时间只能为数字'});
+      }
+    }
+  }
+
+  judgeLeaveTime() {
+    if (this.leaveMinute.value == '' || this.leaveHour.value == '') {
+      this.setState({leaveError: '离开时间不能为空'});
+    } else {
+      if (isNaN(this.leaveHour.value) || isNaN(this.leaveMinute.value)) {
+        this.setState({leaveError: '离开时间只能为数字'});
+      } else {
+        const endTime = parseInt(this.endHour.value) * 60 + parseInt(this.endMinute.value);
+        const leaveTime = parseInt(this.leaveHour.value) * 60 + parseInt(this.leaveMinute.value);
+        const parkTime = leaveTime - endTime;
+        this.parkTime.value = parkTime;
+      }
+    }
+  }
+
   judgeSeat() {
     if (this.seat.value == '') {
       this.setState({seatError: '硬座价格不能为空'});
@@ -169,8 +199,6 @@ class StationEditor extends Component {
 
 
   submit() {
-    this.judgeNumber();
-    this.judgeName();
     const stationInfo = {
       number: this.number.value,
       name: this.name.value,
@@ -285,7 +313,8 @@ class StationEditor extends Component {
           <input type='text' className='form-control width'
                  ref={(ref) => {
                    this.number = ref;
-                 }} onFocus={this.hiddenErrorMessage.bind(this, 'numberError')}/>
+                 }} onBlur={this.judgeNumber.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'numberError')}/>
         </div>
       </div>
       <ErrorTip error={this.state.numberError}/>
@@ -296,14 +325,16 @@ class StationEditor extends Component {
           <input type='text' className='form-control width' placeholder='请输入终点站'
                  ref={(ref) => {
                    this.name = ref;
-                 }} onFocus={this.hiddenErrorMessage.bind(this, 'endPlaceError')}/>
+                 }} onBlur={this.judgeName.bind(this)}
+                 onFocus={this.hiddenErrorMessage.bind(this, 'nameError')}/>
         </div>
       </div>
-      <ErrorTip error={this.state.endPlaceError}/>
+      <ErrorTip error={this.state.nameError}/>
 
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 运行时间 </label>
-        <div onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
+        <div onBlur={this.judgeLastedTime.bind()}
+             onFocus={this.hiddenErrorMessage.bind(this, 'lastedRrror')}>
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width'
                    ref={(ref) => {
@@ -318,11 +349,12 @@ class StationEditor extends Component {
           </div>
         </div>
       </div>
-      <ErrorTip error={this.state.startTimeError}/>
+      <ErrorTip error={this.state.lastedError}/>
 
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 到达时间 </label>
-        <div onFocus={this.hiddenErrorMessage.bind(this, 'startTimeError', 'endTimeError')}>
+        <div onBlur={this.judgeEndTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'endError')}>
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width'
                    ref={(ref) => {
@@ -337,11 +369,12 @@ class StationEditor extends Component {
           </div>
         </div>
       </div>
-      <ErrorTip error={this.state.endTimeError}/>
+      <ErrorTip error={this.state.endError}/>
 
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 发车时间 </label>
-        <div>
+        <div onBlur={this.judgeLeaveTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'leaveError')}>
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width'
                    ref={(ref) => {
@@ -356,12 +389,12 @@ class StationEditor extends Component {
           </div>
         </div>
       </div>
-      <ErrorTip error={this.state.lastedError}/>
+      <ErrorTip error={this.state.leaveError}/>
 
       <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 停车时间 </label>
         <div className="form-group col-sm-2 no-margin-form">
-          <input type='text' className='form-control margin-right width'
+          <input type='text' className='form-control margin-right width' disabled={true}
                  ref={(ref) => {
                    this.parkTime = ref;
                  }}/>分

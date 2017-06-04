@@ -242,9 +242,11 @@ class StationEditor extends Component {
           }
         });
     } else {
+      console.log(this.trainId.value);
       superagent
-        .post(`stations/${this.trainId.value}`)
+        .post(`/stations/${this.trainId.value}`)
         .use(noCache)
+        .send(stationInfo)
         .end((err, res)=> {
           if (err) {
             throw err;
@@ -333,8 +335,8 @@ class StationEditor extends Component {
 
       <div className='form-group row no-margin-form'>
         <label className='col-sm-4 control-label'> 运行时间 </label>
-        <div onBlur={this.judgeLastedTime.bind()}
-             onFocus={this.hiddenErrorMessage.bind(this, 'lastedRrror')}>
+        <div onBlur={this.judgeLastedTime.bind(this)}
+             onFocus={this.hiddenErrorMessage.bind(this, 'lastedError')}>
           <div className="form-group col-sm-2 no-margin-form">
             <input type='text' className='form-control margin-right width'
                    ref={(ref) => {

@@ -19,7 +19,6 @@ class StationController {
   }
 
   getOneStation(req, res, next) {
-    let flag = 0;
     const trainId = req.cookies.trainId;
     const number = req.params.number;
     Station.findOne({trainId}, (err, result)=> {
@@ -29,13 +28,12 @@ class StationController {
       if (!result) {
         return res.sendStatus(constant.httpCode.NO_CONTENT);
       }
-      result.stations.map((item, index)=> {
-        if (item.number == number) {
-          flag = 1;
-          return res.status(constant.httpCode.OK).send(item);
-        }
+      const station = result.stations.find((item, index)=> {
+        return item.number == number
       });
-      if (flag = 0) {
+      if (station) {
+        return res.status(constant.httpCode.OK).send(station);
+      } else {
         return res.sendStatus(constant.httpCode.NO_CONTENT);
       }
     });
@@ -43,6 +41,7 @@ class StationController {
 
   createStation(req, res, next) {
     const trainId = req.params.trainId;
+    console.log('trainId');
     Station.findOne({trainId}, (err, result)=> {
       if (err) {
         return next(err);

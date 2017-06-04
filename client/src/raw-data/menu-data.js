@@ -33,7 +33,7 @@ export default [
     id: 4,
     parent: 1,
     level: 2,
-    text: '位置管理',
+    text: '车票管理',
     uri: '/position',
     icon: 'tachometer'
   }, {

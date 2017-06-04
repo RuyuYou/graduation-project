@@ -61,7 +61,8 @@ class TrainController {
 
   update(req, res, next) {
     const trainId = req.params.trainId;
-    Train.findOneAndUpdate({trainId}, req.body, (err, result)=> {
+    const trainInformation = Object.assign(req.body, {createPeople: req.cookies.userName});
+    Train.findOneAndUpdate({trainId}, trainInformation, (err, result)=> {
       if (err) {
         return next(err);
       }

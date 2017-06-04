@@ -33,29 +33,35 @@ class TrainEditorBody extends Component {
       hardMiddleError: '',
       hardDownError: '',
       softUpError: '',
-      softDownError: ''
+      softDownError: '',
+      editOrNew: false
     };
   }
 
   componentDidMount() {
     const pathNameArray = window.location.pathname.split('/');
-    superagent
-      .get(`/trains/${pathNameArray[2]}`)
-      .use(noCache)
-      .end((err, res)=> {
-        if (err) {
-          throw err;
-        }
-        this.getTrainValue(res.body);
-        superagent.get(`/tickers/${pathNameArray[2]}`)
-          .use(noCache)
-          .end((err, res)=> {
-            if (err) {
-              throw err;
-            }
-            this.getTickerValue(res.body);
-          });
-      });
+    if (pathNameArray[pathNameArray.length - 1] == 'edit') {
+      superagent
+        .get(`/trains/${pathNameArray[2]}`)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          this.getTrainValue(res.body);
+          superagent.get(`/tickers/${pathNameArray[2]}`)
+            .use(noCache)
+            .end((err, res)=> {
+              if (err) {
+                throw err;
+              }
+              this.getTickerValue(res.body);
+              this.setState({editOrNew: true});
+            });
+        });
+    } else {
+      this.setState({editOrNew: false});
+    }
   }
 
   getTrainValue(trainInformation) {
@@ -314,14 +320,14 @@ class TrainEditorBody extends Component {
       <div className='form-group row margin-bottom'>
         <label className='col-sm-4 control-label'> 列车号 </label>
         <div className='col-sm-1 no-padding-right'>
-          <input type='text' className='form-control' disabled={true}
+          <input type='text' className='form-control' disabled={this.state.editOrNew}
                  ref={(ref) => {
                    this.trainId = ref;
                  }}/>
         </div>
         <label className='col-lg-1 control-label'> 列车类型 </label>
         <div className='col-sm-1 no-padding-left'>
-          <input type='text' className='form-control' disabled={true}
+          <input type='text' className='form-control' disabled={this.state.editOrNew}
                  ref={(ref) => {
                    this.type = ref;
                  }}/>
@@ -516,7 +522,7 @@ class TrainEditorBody extends Component {
           </button>
         </div>
         <div className='col-sm-3 col-sm-offset-1 text-center'>
-          <button className='btn btn-primary btn-save'
+          <button className='btn btn-primary btn-save' disabled={!this.state.editOrNew}
                   onClick={this.openDeleteTrain.bind(this)}>
             {'删除  '}
           </button>

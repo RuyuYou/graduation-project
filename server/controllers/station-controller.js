@@ -41,7 +41,6 @@ class StationController {
 
   createStation(req, res, next) {
     const trainId = req.params.trainId;
-    console.log('trainId');
     Station.findOne({trainId}, (err, result)=> {
       if (err) {
         return next(err);

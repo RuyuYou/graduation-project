@@ -4,15 +4,11 @@ const Ticker = require('../models/ticker');
 const Train = require('../models/train');
 const User = require('../models/user');
 const Station = require('../models/station');
-const Seat = require('../models/seat');
-const Sleeper = require('../models/sleeper');
 
 const modelMap = {
   Ticker,
   Train,
   Station,
-  // Seat,
-  // Sleeper,
   User
 };
 

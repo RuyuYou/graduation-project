@@ -37,31 +37,43 @@ module.exports = {
   Ticker: [
     {
       "trainId": "K84",
-      "seat": 399,
-      "soft": {
-        "up": 688,
-        "middle": 708,
-        "down": 728
-      },
-      "hard": {
-        "up": 226,
-        "middle": 236,
-        "down": 246
-      }
+      "tickers": [
+        {
+          "number": -1,
+          "seat": 399,
+          "soft": {"up": 688, "down": 728},
+          "hard": {"up": 226, "middle": 236, "down": 246}
+        },
+        {
+          "number": 1,
+          "seat": 11,
+          "soft": {"up": 61, "down": 71},
+          "hard": {"up": 87, "middle": 92, "down": 97}
+        },
+        {
+          "number": 2,
+          "seat": 21.5,
+          "soft": {"up": 70, "down": 86},
+          "hard": {"up": 101, "middle": 109, "down": 117}
+        },
+        {
+          "number": 3,
+          "seat": 45,
+          "soft": {"up": 149, "down": 165},
+          "hard": {"up": 92, "middle": 100, "down": 108}
+        }
+      ]
     },
     {
       "trainId": "3028",
-      "seat": 399,
-      "soft": {
-        "up": 688,
-        "middle": 708,
-        "down": 728
-      },
-      "hard": {
-        "up": 226,
-        "middle": 236,
-        "down": 246
-      }
+      "tickers":[
+        {
+          "number":-1,
+          "seat": 399,
+          "soft": {"up": 688, "down": 728},
+          "hard": {"up": 226, "middle": 236, "down": 246}
+        }
+      ]
     }
   ],
   Station: [
@@ -76,10 +88,7 @@ module.exports = {
           "days": "0",
           "parkTime": "3",
           "lastedTime": {"hour": "0", "minute": "39"},
-          "mile": 56,
-          "seat": 11,
-          "soft": {"up": 61, "middle": 66, "down": 71},
-          "hard": {"up": 87, "middle": 92, "down": 97}
+          "mile": 56
         }, {
           "number": 2,
           "name": "潼关",
@@ -88,10 +97,7 @@ module.exports = {
           "days": "0",
           "parkTime": "3",
           "lastedTime": {"hour": "1", "minute": "52"},
-          "mile": 135,
-          "seat": 21.5,
-          "soft": {"up": 70, "middle": 78, "down": 86},
-          "hard": {"up": 101, "middle": 109, "down": 117}
+          "mile": 135
         },
         {
           "number": 3,
@@ -99,12 +105,9 @@ module.exports = {
           "days": "0",
           "parkTime": "3",
           "mile": 318,
-          "seat": 45,
-          "hard": {"up": 92, "middle": 100, "down": 108},
-          "soft": {"up": 149, "middle": 157, "down": 165},
-          "lastedTime": {"hour": "0", "minute": "39"},
           "leaveTime": {"hour": "14", "minute": "28"},
-          "endTime": {"hour": "14", "minute": "25"}
+          "endTime": {"hour": "14", "minute": "25"},
+          "lastedTime": {"hour": "0", "minute": "39"}
         },
       ]
     },

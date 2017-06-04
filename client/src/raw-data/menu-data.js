@@ -36,22 +36,8 @@ export default [
     text: '位置管理',
     uri: '/position',
     icon: 'tachometer'
-  },{
-    id: 5,
-    parent: 1,
-    level: 2,
-    text: '卧铺管理',
-    uri: '/sleeper',
-    icon: 'flask'
-  },{
-    id: 6,
-    parent: 1,
-    level: 2,
-    text: '硬座管理',
-    uri: '/seat',
-    icon: 'fire'
   }, {
-    id: 7,
+    id: 5,
     parent: 1,
     level: 2,
     text: '生成报表',
@@ -59,7 +45,7 @@ export default [
     icon: 'share'
   },
   {
-    id: 8,
+    id: 6,
     parent: 1,
     level: 2,
     text: '员工管理',

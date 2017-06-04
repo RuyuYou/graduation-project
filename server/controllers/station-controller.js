@@ -19,6 +19,7 @@ class StationController {
   }
 
   getOneStation(req, res, next) {
+    let flag = 0;
     const trainId = req.cookies.trainId;
     const number = req.params.number;
     Station.findOne({trainId}, (err, result)=> {
@@ -30,9 +31,13 @@ class StationController {
       }
       result.stations.map((item, index)=> {
         if (item.number == number) {
+          flag = 1;
           return res.status(constant.httpCode.OK).send(item);
         }
       });
+      if (flag = 0) {
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
+      }
     });
   }
 
@@ -45,10 +50,8 @@ class StationController {
       if (!result) {
         return res.sendStatus(constant.httpCode.NO_CONTENT);
       }
-      console.log(req.body);
       const stations = result.stations;
       stations.push(req.body);
-      console.log(stations);
       const object = Object.assign({trainId: result.trainId}, {stations: stations});
       Station.findOneAndUpdate({trainId}, object, (err, result)=> {
         if (err) {
@@ -56,6 +59,57 @@ class StationController {
         }
         return res.sendStatus(constant.httpCode.CREATED);
       });
+    });
+  }
+
+  deleteOneStation(req, res, next) {
+    const trainId = req.params.trainId;
+    Station.findOne({trainId}, (err, result)=> {
+      if (err) {
+        return next(err);
+      }
+      if (!result) {
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
+      }
+      const stations = result.stations;
+      stations.map((item, index)=> {
+        if (item.number == req.params.number) {
+          stations.splice(index, 1);
+        }
+      });
+      const object = Object.assign({trainId: result.trainId}, {stations: stations});
+      Station.findOneAndUpdate({trainId}, object, (err, result)=> {
+        if (err) {
+          return next(err);
+        }
+        return res.sendStatus(constant.httpCode.OK);
+      });
+    });
+  }
+
+  updateOneStation(req, res, next) {
+    const trainId = req.params.trainId;
+    Station.findOne({trainId}, (err, result)=> {
+      if (err) {
+        return next(err);
+      }
+      if (!result) {
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
+      }
+      const stations = result.stations;
+      stations.map((item, index)=> {
+        if (item.number == req.params.number) {
+          stations.splice(index, 1, req.body);
+        }
+      });
+      const object = Object.assign({trainId: result.trainId}, {stations: stations});
+      Station.findOneAndUpdate({trainId}, object, (err, result)=> {
+        if (err) {
+          return next(err);
+        }
+        return res.sendStatus(constant.httpCode.OK);
+      });
+
     });
   }
 }

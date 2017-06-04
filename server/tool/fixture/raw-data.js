@@ -1,7 +1,6 @@
 module.exports = {
   Train: [
     {
-      "_id": "591686df707c543076c0eec6",
       "trainId": "K84",
       "type": "新空快速",
       "startPlace": "西安",
@@ -13,7 +12,6 @@ module.exports = {
       "createPeople": "赵思"
     },
     {
-      "_id": "591686df707c543076f0eec6",
       "trainId": "K214",
       "type": "新空快速",
       "startPlace": "西安",
@@ -23,11 +21,21 @@ module.exports = {
       "lastedTime": {"hour": "20", "minute": "0"},
       "mile": 1283,
       "createPeople": "赵思"
+    },
+    {
+      "trainId": "3028",
+      "type": "普快",
+      "startPlace": "乌鲁木齐南",
+      "endPlace": "郑州",
+      "mile": 2936,
+      "createPeople": "赵思",
+      "lastedTime": {"hour": "15", "minute": "25"},
+      "endTime": {"hour": "20", "minute": "50", "days": "2"},
+      "startTime": {"hour": "15", "minute": "25"},
     }
   ],
   Ticker: [
     {
-      "_id": "5928949ff981700d878017b4",
       "trainId": "K84",
       "seat": 399,
       "soft": {
@@ -42,32 +50,6 @@ module.exports = {
       }
     }
   ],
-  // Station: [
-  //   {
-  //     "trainId": "K84",
-  //     "stations": [
-  //       {
-  //         "number": 1,
-  //         "name": "渭南",
-  //         "endTime": {
-  //           "hour": "10",
-  //           "minute": "43"
-  //         },
-  //         "leaveTime": {
-  //           "hour": "10",
-  //           "minute": "46",
-  //           "days": "0"
-  //         },
-  //         "parkTime": "3",
-  //         "lastedTime": {
-  //           "hour": "0",
-  //           "minute": "39"
-  //         },
-  //         "mile": 56
-  //       }
-  //     ]
-  //   }
-  // ],
   K84: [
     {
       "number": 1,

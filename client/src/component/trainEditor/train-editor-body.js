@@ -130,7 +130,7 @@ class TrainEditorBody extends Component {
     } else {
       const trainIdArray = this.trainId.value.split('');
       if (!isNaN(trainIdArray[0])) {
-        this.type.value = '普通';
+        this.type.value = '普快';
       } else {
         trainTye.map((item, index)=> {
           if (trainIdArray[0] == item.number) {

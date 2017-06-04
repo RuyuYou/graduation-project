@@ -1,9 +1,8 @@
 @base-color: #555;
 
-#tickers-management {
+#ticker {
   padding: 10px 15px;
-
-  .tickers-management-header {
+  .ticker-header {
     background-color: #438EB9;
     color: #FFF;
     font-size: 14px;
@@ -13,125 +12,124 @@
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 
-  .tickers-management-body {
-    background-color: #f5f9fc;
-    margin: 0px 0px;
+  .ticker-title {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #EFF3F8;
+    height: 57px;
+
+    .btn {
+      margin-left: 16px;
+      margin-right: 20px;
+    }
+
+    .button-list {
+      margin-left: 8px;
+    }
+
+    .text {
+      font-size: 13px;
+      margin-left: 4px;
+      margin-right: 2px;
+      line-height: 20px;
+    }
+
+    .bigger {
+      font-size: 110%;
+    }
+
+    .blue {
+      color: #478FCA;
+    }
+    .red {
+      color: #DD5A43;
+    }
+
   }
 
-  .tickers-management-list {
-    padding: 0;
-    margin-top: 10px;
-    .table-striped {
-      tbody {
-        tr:nth-of-type(even) {
-          background-color: #E9F1F6;
-        }
-        td {
-          border: 1px solid #DDDDDD;
-          padding: 8px;
-        }
+  .table-striped {
+    tbody {
+      tr:nth-of-type(even) {
+        background-color: #E9F1F6;
       }
-      thead {
-        tr {
-          color: #707070;
-          background: #F2F2F2
-        }
-        th {
-          text-align: left;
-        }
-      }
     }
-    .table-bordered {
-      margin-bottom: 0;
+    thead {
+      color: #707070;
+      background-color: #F2F2F2;
     }
   }
 
-  .tickers-management-editor {
-    color: @base-color;
-    .tickers-management-form {
-      margin-top: 20px;
-      padding-bottom: 30px;
-    }
-
-    .margin-bottom {
-      margin-bottom: 10px;
-    }
-
-    .error-tip {
-      padding-left: 5px;
-      color: red;
-    }
-
-    .user-tickers {
-      width: 20px;
-      height: 20px;
-      appearance: none;
-    }
-
-    .btn-size {
-      width: 15em;
-      height: 2.6em;
-      margin: 20px;
-    }
+  .table-bordered {
+    margin-bottom: 0;
   }
-  .tab-ul {
 
-    padding-top: 10px;
-    .tab-padding {
-      padding-right: 15px;
-    }
-    .stack-editor {
-      margin: 15px;
-      padding: 15px;
-      .form-control {
-        margin-top: -6px;
+  thead {
+    tr {
+      th + th::after {
+        border-bottom-width: 2px;
+        float: right;
+        font-family: FontAwesome;
+        font-size: 13px;
+        font-weight: 400;
+        color: #555;
       }
     }
   }
+
+  tbody {
+    tr {
+      th {
+        padding: 8px;
+        height: 38px;
+        vertical-align: top;
+        border: 1px solid #ddd;
+      }
+    }
+  }
+
+  .margin-right {
+    margin-right: 15px;
+  }
+
+  .ticker-title {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #EFF3F8;
+    height: 100px;
+  }
+
+  .control-label {
+    line-height: 36px;
+    text-align: right;
+    color: #555;
+  }
+
+  .height {
+    line-hight: 30px;
+    height: 30px;
+  }
+
+  .fontSize {
+    font-size: 17px;
+    color: #555555;
+    margin-left: 5px;
+  }
+
+  .split-border {
+    border: 0.5px solid #CCC;
+    margin: 10px 0;
+  }
+
+  .redDays {
+    color: #DD5A43;
+    margin-left: 10px;
+  }
+
+  .margin {
+    margin: 15px 0;
+  }
 }
 
-.no-margin {
-  margin-left: 0;
-  margin-right: 0;
+.background {
+  background-color: #EFF3F8;
 }
-
-.label {
-  cursor: default;
-  margin-right: 10px;
-  margin-bottom: 5px;
-  display: inline-block;
-}
-
-.label-default {
-  background-color: #f4f4f5;
-  color: #707070
-}
-
-.user-tickers-tab {
-  cursor: pointer;
-}
-
-.margin-border {
-  margin-top: -3px;
-  margin-bottom: 3px;
-}
-
-select {
-  margin-right: 14px;
-}
-
-.no-padding-left {
-  padding-left: 0;
-}
-
-.no-padding-right {
-  padding-right: 0;
-}
-
-.error-tip {
-  padding-left: 13px;
-  color: red;
-}
-
-
-

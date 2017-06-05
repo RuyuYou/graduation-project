@@ -6,8 +6,8 @@ const tickerCtrl = new TickerController();
 
 router.get('/:trainId', tickerCtrl.getOneTrain);
 router.get('/:trainId/:number', tickerCtrl.getOneStation);
-// router.put('/:tickerId', tickerCtrl.updateTickers);
-// router.post('/', tickerCtrl.createTickers);
+router.put('/:trainId/:number', tickerCtrl.updateOneTicker);
+router.post('/:trainId', tickerCtrl.createOneTicker);
 // router.delete('/:tickerId', tickerCtrl.deleteTickers);
 
 module.exports = router;

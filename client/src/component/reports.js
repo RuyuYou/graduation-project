@@ -74,13 +74,11 @@ class Reports extends Component {
   }
 
   render() {
-    const trainHref = `/report/train`;
-    const tickerHref = `/report/ticker`;
     const trainIdList = this.state.trainIdList || [];
     const trainIdListHTML1 = trainIdList.map((item, index)=> {
       return (
         <tr key={index}>
-          <td><a href={trainHref}>{item}</a>
+          <td><a href={`/report/train/${item}`}>{item}</a>
           </td>
         </tr>
       )
@@ -88,7 +86,7 @@ class Reports extends Component {
     const trainIdListHTML2 = trainIdList.map((item, index)=> {
       return (
         <tr key={index}>
-          <td><a href={tickerHref}>{item}</a>
+          <td><a href={`/report/ticker/${item}`}>{item}</a>
           </td>
         </tr>
       )

@@ -1,31 +1,54 @@
 const Train = require('../models/train');
 const Ticker = require('../models/ticker');
+const Station = require('../models/station');
 const constant = require('../../config/constant');
+
+function judgeDays(days) {
+  if (days == 0) {
+    return '当日';
+  } else {
+    return `${days + 1}日`
+  }
+}
 
 class ReportController {
   getTrain(req, res, next) {
     let content = '';
-    Train.find({}, (err, doc)=> {
+    content += '站名,日期,到达时间,开车时间,停车时间,里程\n';
+    const trainId = req.params.trainId;
+    Train.findOne({trainId}, (err, doc)=> {
       if (err) {
         return next(err);
       }
-      content += '列车号,起点站,发车时间,终点站,到达时间\n';
-      for (var i = 0; i < doc.length; i++) {
-        const startTime = `${doc[i].startTime.year}年${doc[i].startTime.month}月${doc[i].startTime.day}日${doc[i].startTime.hour}时${doc[i].startTime.minute}分`;
-        const endTime = `${doc[i].endTime.year}年${doc[i].endTime.month}月${doc[i].endTime.day}日${doc[i].endTime.hour}时${doc[i].endTime.minute}分`;
-        let middleText = '';
-        content += doc[i].trainId + ',';
-        content += doc[i].startPlace + ',';
-        content += startTime + ',';
-        content += doc[i].endPlace + ',';
-        content += endTime + '\n';
-      }
-      var filename = 'train.csv';
+      const startTime = `${doc.startTime.hour}时${doc.startTime.minute}分`;
+      content += doc.startPlace + ',当日,' + '-,' + startTime + ',-,0\n';
+      Station.findOne({trainId}, (err, result)=> {
+        if (err) {
+          return next(err);
+        }
+        const stations = result.stations;
+        for (let i = 0; i < stations.length; i++) {
+          const endTime = `${stations[i].endTime.hour}时${stations[i].endTime.minute}分`;
+          const leaveTime = `${stations[i].leaveTime.hour}时${stations[i].leaveTime.minute}分`;
+          content += stations[i].name + ',';
+          content += judgeDays(stations[i].days) + ',';
+          content += endTime + ',';
+          content += leaveTime + ',';
+          content += stations[i].parkTime + ',';
+          content += stations[i].mile + '\n';
+        }
 
-      res.setHeader('Content-disposition', 'attachment; filename=' + filename + '');
-      res.setHeader('Content-Type', 'train/csv');
+        const endTimes = `${doc.endTime.hour}时${doc.startTime.minute}分`
+        content += doc.endPlace + ',' + judgeDays(doc.endTime.days) + ',' + endTimes + ',-,-,' + doc.mile + '\n';
 
-      res.send(content);
+        var filename = `${trainId}.csv`;
+        res.setHeader('Content-disposition', 'attachment; filename=' + filename + '');
+        res.setHeader('Content-Type', 'train/csv');
+
+        res.send(content);
+      });
+
+
     });
   }
 

@@ -32,6 +32,35 @@ class TickerEditor extends Component {
     };
   }
 
+  componentDidMount() {
+    const pathName = window.location.pathname.split('/');
+    console.log(pathName);
+    this.trainId.value = pathName[2];
+    if (pathName[pathName.length - 2] == 'edit') {
+      superagent
+        .get(`/tickers/${pathName[2]}/${pathName[pathName.length - 1]}`)
+        .use(noCache)
+        .end((err, res)=> {
+          if (err) {
+            throw err;
+          }
+          console.log(res.body);
+          this.getTickerValue(res.body);
+        });
+    }
+  }
+
+  getTickerValue(ticker) {
+    this.number.value = ticker.number;
+    this.name.value = ticker.name;
+    this.seat.value = ticker.seat.toFixed(1);
+    this.hardUp.value = ticker.hard.up.toFixed(1);
+    this.hardMiddle.value = ticker.hard.middle.toFixed(1);
+    this.hardDown.value = ticker.hard.down.toFixed(1);
+    this.softUp.value = ticker.soft.up.toFixed(1);
+    this.softDown.value = ticker.soft.down.toFixed(1);
+  }
+
   hiddenErrorMessage(err1, err2) {
     var errObj = {};
     errObj[err1] = '';

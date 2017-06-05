@@ -83,6 +83,33 @@ class TickerController {
           return next(err);
         }
         return res.sendStatus(constant.httpCode.CREATED);
+      });
+    });
+  }
+
+  deleteTicker(req, res, next) {
+    const trainId = req.params.trainId;
+    const number = req.params.number;
+    Tickers.findOne({trainId}, (err, result)=> {
+      if (err) {
+        return next(err);
+      }
+      if (!result) {
+        return res.sendStatus(constant.httpCode.NO_CONTENT);
+      }
+
+      const tickers = result.tickers;
+      tickers.map((item, index)=> {
+        if (item.number == number) {
+          tickers.splice(index, 1);
+        }
+      });
+      const newTickers = Object.assign({trainId}, {tickers});
+      Tickers.findOneAndUpdate({trainId}, newTickers, (err, doc)=> {
+        if (err) {
+          return next(err);
+        }
+        return res.sendStatus(constant.httpCode.OK);
       })
     })
   }

@@ -8,6 +8,6 @@ router.get('/:trainId', tickerCtrl.getOneTrain);
 router.get('/:trainId/:number', tickerCtrl.getOneStation);
 router.put('/:trainId/:number', tickerCtrl.updateOneTicker);
 router.post('/:trainId', tickerCtrl.createOneTicker);
-// router.delete('/:tickerId', tickerCtrl.deleteTickers);
+router.delete('/:trainId/:number', tickerCtrl.deleteTicker);
 
 module.exports = router;

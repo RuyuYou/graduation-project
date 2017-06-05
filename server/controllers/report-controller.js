@@ -41,7 +41,7 @@ class ReportController {
         const endTimes = `${doc.endTime.hour}时${doc.startTime.minute}分`;
         content += doc.endPlace + ',' + judgeDays(doc.endTime.days) + ',' + endTimes + ',-,-,' + doc.mile + '\n';
 
-        var filename = `${trainId}.csv`;
+        var filename = `${trainId}-train.csv`;
         res.setHeader('Content-disposition', 'attachment; filename=' + filename + '');
         res.setHeader('Content-Type', 'train/csv');
 
@@ -60,7 +60,6 @@ class ReportController {
       if (err) {
         return next(err);
       }
-      console.log(doc);
       const tickers = doc.tickers;
       for (var i = 0; i < tickers.length; i++) {
         content += tickers[i].name + ',';
@@ -73,7 +72,7 @@ class ReportController {
       }
 
 
-      var filename = `${trainId}.csv`;
+      var filename = `${trainId}-ticker.csv`;
 
       res.setHeader('Content-disposition', 'attachment; filename=' + filename + '');
       res.setHeader('Content-Type', 'tickers/csv');

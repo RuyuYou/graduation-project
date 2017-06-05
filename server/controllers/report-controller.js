@@ -38,7 +38,7 @@ class ReportController {
           content += stations[i].mile + '\n';
         }
 
-        const endTimes = `${doc.endTime.hour}时${doc.startTime.minute}分`
+        const endTimes = `${doc.endTime.hour}时${doc.startTime.minute}分`;
         content += doc.endPlace + ',' + judgeDays(doc.endTime.days) + ',' + endTimes + ',-,-,' + doc.mile + '\n';
 
         var filename = `${trainId}.csv`;
@@ -53,19 +53,27 @@ class ReportController {
   }
 
   getTickers(req, res, next) {
+    const trainId = req.params.trainId;
     let content = '';
-    Ticker.find({}, (err, doc)=> {
+    content += '站名,硬座票价,硬卧上铺票价,硬卧中铺票价,硬卧下铺票价,软卧上铺票价,软卧下铺票价\n';
+    Ticker.findOne({trainId}, (err, doc)=> {
       if (err) {
         return next(err);
       }
-      content += '列车号,车厢个数,卧铺个数,硬座个数\n';
-      for (var i = 0; i < doc.length; i++) {
-        content += doc[i].trainId + ',';
-        content += doc[i].cabinNumber + ',';
-        content += doc[i].sleeperNumber + ',';
-        content += doc[i].seatNumber + '\n';
+      console.log(doc);
+      const tickers = doc.tickers;
+      for (var i = 0; i < tickers.length; i++) {
+        content += tickers[i].name + ',';
+        content += tickers[i].seat + ',';
+        content += tickers[i].hard.up + ',';
+        content += tickers[i].hard.middle + ',';
+        content += tickers[i].hard.down + ',';
+        content += tickers[i].soft.up + ',';
+        content += tickers[i].soft.down + '\n';
       }
-      var filename = 'tickers.csv';
+
+
+      var filename = `${trainId}.csv`;
 
       res.setHeader('Content-disposition', 'attachment; filename=' + filename + '');
       res.setHeader('Content-Type', 'tickers/csv');

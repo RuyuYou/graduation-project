@@ -1,4 +1,5 @@
 const Station = require('../models/station');
+const Train = require('../models/train');
 
 const constant = require('../../config/constant');
 
@@ -41,23 +42,43 @@ class StationController {
 
   createStation(req, res, next) {
     const trainId = req.params.trainId;
-    Station.findOne({trainId}, (err, result)=> {
+    Train.findOne({trainId}, (err, doc)=> {
       if (err) {
         return next(err);
       }
-      if (!result) {
+      if (!doc) {
         return res.sendStatus(constant.httpCode.NO_CONTENT);
       }
-      const stations = result.stations;
-      stations.push(req.body);
-      const object = Object.assign({trainId: result.trainId}, {stations: stations});
-      Station.findOneAndUpdate({trainId}, object, (err, result)=> {
-        if (err) {
-          return next(err);
-        }
-        return res.sendStatus(constant.httpCode.CREATED);
-      });
-    });
+      if (doc) {
+        Station.findOne({trainId}, (err, result)=> {
+          if (err) {
+            return next(err);
+          }
+          if (!result) {
+            const stations = [];
+            stations.push(req.body);
+            const object = Object.assign({trainId}, {stations: stations});
+            Station.create(object, (err, result)=> {
+              if (err) {
+                return next(err);
+              }
+              return res.sendStatus(constant.httpCode.CREATED);
+            });
+          }
+          if (result) {
+            const stations = result.stations;
+            stations.push(req.body);
+            const object = Object.assign({trainId}, {stations: stations});
+            Station.findOneAndUpdate({trainId}, object, (err, result)=> {
+              if (err) {
+                return next(err);
+              }
+              return res.sendStatus(constant.httpCode.CREATED);
+            });
+          }
+        });
+      }
+    })
   }
 
   deleteOneStation(req, res, next) {

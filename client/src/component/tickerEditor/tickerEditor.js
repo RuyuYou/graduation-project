@@ -21,14 +21,13 @@ class TickerEditor extends Component {
       showSuccess: false,
       trainInformation: {},
       showDeleteTrainModal: false,
-      days: -1,
       seatError: '',
       hardUpError: '',
       hardMiddleError: '',
       hardDownError: '',
       softUpError: '',
       softDownError: '',
-      editOrNew: 0
+      editOrNew: false
     };
   }
 
@@ -46,6 +45,7 @@ class TickerEditor extends Component {
           }
           console.log(res.body);
           this.getTickerValue(res.body);
+          this.setState({editOrNew: true});
         });
     }
   }
@@ -149,21 +149,6 @@ class TickerEditor extends Component {
     const stationInfo = {
       number: this.number.value,
       name: this.name.value,
-      lastedTime: {
-        hour: this.lastedHour.value,
-        minute: this.lastedMinute.value
-      },
-      endTime: {
-        hour: this.endHour.value,
-        minute: this.endMinute.value
-      },
-      leaveTime: {
-        hour: this.leaveHour.value,
-        minute: this.leaveMinute.value
-      },
-      parkTime: this.parkTime.value,
-      days: this.state.days,
-      mile: this.mile.value,
       seat: this.seat.value,
       hard: {
         up: this.hardUp.value,
@@ -177,7 +162,7 @@ class TickerEditor extends Component {
     };
     if (this.state.editOrNew == 1) {
       superagent
-        .put(`/stations/${this.trainId.value}/${this.number.value}`)
+        .put(`/tickers/${this.trainId.value}/${this.number.value}`)
         .send(stationInfo)
         .use(noCache)
         .end((err, res)=> {
@@ -191,7 +176,7 @@ class TickerEditor extends Component {
     } else {
       console.log(this.trainId.value);
       superagent
-        .post(`/stations/${this.trainId.value}`)
+        .post(`/tickers/${this.trainId.value}`)
         .use(noCache)
         .send(stationInfo)
         .end((err, res)=> {
@@ -209,13 +194,6 @@ class TickerEditor extends Component {
     this.trainId.value = '';
     this.number.value = '';
     this.name.value = '';
-    this.leaveHour.value = '';
-    this.leaveMinute.value = '';
-    this.endHour.value = '';
-    this.endMinute.value = '';
-    this.lastedHour.value = '';
-    this.lastedMinute.value = '';
-    this.mile.value = '';
     this.seat.value = '';
     this.hardUp.value = '';
     this.hardMiddle.value = '';
@@ -223,7 +201,6 @@ class TickerEditor extends Component {
     this.softUp.value = '';
     this.softDown.value = '';
     this.setState({
-      days: '',
       showSuccess: true
     });
   }
@@ -236,6 +213,8 @@ class TickerEditor extends Component {
   }
 
   render() {
+    const messageSuccess = this.state.editOrNew == 0 ? `新建` : `修改`;
+    const list = `/ticker`;
     return (<div>
       <div className='form-group row margin-bottom'>
         <label className='col-sm-4 control-label'> 列车号 </label>
@@ -250,7 +229,7 @@ class TickerEditor extends Component {
       <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 站序 </label>
         <div className='col-sm-6'>
-          <input type='text' className='form-control width' disabled={true}
+          <input type='text' className='form-control width' disabled={this.state.editOrNew}
                  ref={(ref) => {
                    this.number = ref;
                  }} onBlur={this.judgeNumber.bind(this)}
@@ -262,7 +241,7 @@ class TickerEditor extends Component {
       <div className="form-group row no-margin-form">
         <label className='col-sm-4 control-label'> 站点名称 </label>
         <div className='col-sm-6'>
-          <input type='text' className='form-control width' disabled={true}
+          <input type='text' className='form-control width' disabled={this.state.editOrNew}
                  ref={(ref) => {
                    this.name = ref;
                  }} onBlur={this.judgeName.bind(this)}
@@ -364,9 +343,9 @@ class TickerEditor extends Component {
           <div className='alert alert-block alert-success col-sm-6 col-sm-offset-3 no-margin-bottom text-center'>
             <p className='message-hint'>
               <i className='ace-icon fa fa-check-circle icon-space'> </i>
-              {`途经站点功,请返回`}
+              {`途经站点票价${messageSuccess}成功,请返回`}
             </p>
-            <Link>
+            <Link to={list}>
               <button className='btn btn-sm btn-success icon-space'>查看车次列表
               </button>
             </Link>

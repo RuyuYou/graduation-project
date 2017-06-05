@@ -22,6 +22,8 @@ class TrainController {
       if (!result) {
         return res.sendStatus(constant.httpCode.NO_CONTENT);
       }
+      res.clearCookie('trainId');
+      res.cookie('trainId', trainId);
       return res.status(constant.httpCode.OK).send(result);
     });
   }

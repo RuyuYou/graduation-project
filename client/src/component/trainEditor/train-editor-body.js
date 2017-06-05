@@ -39,12 +39,6 @@ class TrainEditorBody extends Component {
       trainInformation: {},
       showDeleteTrainModal: false,
       endDays: -1,
-      seatError: '',
-      hardUpError: '',
-      hardMiddleError: '',
-      hardDownError: '',
-      softUpError: '',
-      softDownError: '',
       editOrNew: false
     };
   }
@@ -66,7 +60,6 @@ class TrainEditorBody extends Component {
               if (err) {
                 throw err;
               }
-              this.getTickerValue(res.body);
               this.setState({editOrNew: true});
             });
         });
@@ -92,14 +85,6 @@ class TrainEditorBody extends Component {
     });
   }
 
-  getTickerValue(ticker) {
-    this.seat.value = ticker.seat.toFixed(1);
-    this.hardUp.value = ticker.hard.up.toFixed(1);
-    this.hardMiddle.value = ticker.hard.middle.toFixed(1);
-    this.hardDown.value = ticker.hard.down.toFixed(1);
-    this.softUp.value = ticker.soft.up.toFixed(1);
-    this.softDown.value = ticker.soft.down.toFixed(1);
-  }
 
   judgeStartPlace() {
     if (this.startPlace.value == '') {
@@ -163,67 +148,6 @@ class TrainEditorBody extends Component {
     }
   }
 
-  judgeSeat() {
-    if (this.seat.value == '') {
-      this.setState({seatError: '硬座价格不能为空'});
-    } else {
-      if (isNaN(this.seat.value)) {
-        this.setState({seatError: '硬座价格只能为数字'})
-      }
-    }
-  }
-
-  judgeHardUp() {
-    if (this.hardUp.value == '') {
-      this.setState({hardUpError: '硬卧上铺价格不能为空'});
-    } else {
-      if (isNaN(this.hardUp.value)) {
-        this.setState({hardUpError: '硬卧上铺价格只能为数字'})
-      }
-    }
-  }
-
-  judgeHardMiddle() {
-    if (this.hardMiddle.value == '') {
-      this.setState({hardMiddleError: '硬卧中铺价格不能为空'});
-    } else {
-      if (isNaN(this.hardMiddle.value)) {
-        this.setState({hardMiddleError: '硬卧中铺价格只能为数字'})
-      }
-    }
-  }
-
-  judgeHardDown() {
-    if (this.hardDown.value == '') {
-      this.setState({hardDownError: '硬卧下铺价格不能为空'});
-    } else {
-      if (isNaN(this.hardDown.value)) {
-        this.setState({hardDownError: '硬卧下铺价格只能为数字'})
-      }
-    }
-  }
-
-  judgeSoftUp() {
-    if (this.softUp.value == '') {
-      this.setState({softUpError: '软卧上铺价格不能为空'});
-    } else {
-      if (isNaN(this.softUp.value)) {
-        this.setState({softUpError: '软卧上铺价格只能为数字'})
-      }
-    }
-  }
-
-  judgeSoftDown() {
-    if (this.softDown.value == '') {
-      this.setState({softDownError: '软卧下铺价格不能为空'});
-    } else {
-      if (isNaN(this.softDown.value)) {
-        this.setState({softDownError: '软卧下铺价格只能为数字'})
-      }
-    }
-  }
-
-
   submit() {
     const trainInfo = {
       trainId: this.trainId.value,
@@ -245,19 +169,6 @@ class TrainEditorBody extends Component {
       },
       mile: this.mile.value
     };
-    const tickerInfo = {
-      trainId: this.trainId.value,
-      seat: this.seat.value,
-      hard: {
-        up: this.hardUp.value,
-        middle: this.hardMiddle.value,
-        down: this.hardDown.value
-      },
-      soft: {
-        up: this.softUp.value,
-        down: this.softDown.value
-      }
-    };
     if (this.state.editOrNew === true) {
       superagent
         .put(`/trains/${this.trainId.value}`)
@@ -268,17 +179,9 @@ class TrainEditorBody extends Component {
             throw err;
           }
           if (res.status === 204) {
-            superagent
-              .put(`/tickers/${this.trainId.value}`)
-              .send(tickerInfo)
-              .use(noCache)
-              .end((err, res)=> {
-                if (res.status === 200) {
-                  this.setState({showSuccess: true}, ()=> {
-                    this.initInformation();
-                  });
-                }
-              });
+            this.setState({showSuccess: true}, ()=> {
+              this.initInformation();
+            });
           }
         });
     } else {
@@ -291,22 +194,11 @@ class TrainEditorBody extends Component {
             throw err;
           }
           if (res.status === 201) {
-            superagent
-              .post(`/tickers`)
-              .send(tickerInfo)
-              .use(noCache)
-              .end((err, res)=> {
-                if (err) {
-                  throw err;
-                }
-                if (res.status === 201) {
-                  this.setState({showSuccess: true}, ()=> {
-                    this.initInformation();
-                  });
-                }
-              })
+            this.setState({showSuccess: true}, ()=> {
+              this.initInformation();
+            });
           }
-        })
+        });
     }
   }
 
@@ -322,12 +214,6 @@ class TrainEditorBody extends Component {
     this.lastedHour.value = '';
     this.lastedMinute.value = '';
     this.mile.value = '';
-    this.seat.value = '';
-    this.hardUp.value = '';
-    this.hardMiddle.value = '';
-    this.hardDown.value = '';
-    this.softUp.value = '';
-    this.softDown.value = '';
     this.setState({
       endDays: ''
     });
@@ -492,84 +378,6 @@ class TrainEditorBody extends Component {
                  }}/> 公里
         </div>
       </div>
-
-      <div className="split-border"></div>
-
-      <div className="form-group row no-margin-form">
-        <label className='col-sm-4 control-label'> 硬座票价 </label>
-        <div className='col-sm-6'>
-          <input type='text' className='form-control width'
-                 ref={(ref) => {
-                   this.seat = ref;
-                 }} onBlur={this.judgeSeat.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'seatError')}/>
-        </div>
-      </div>
-      <ErrorTip error={this.state.seatError}/>
-
-
-      <div className="form-group row no-margin-form">
-        <label className='col-sm-4 control-label'> 硬卧上铺 </label>
-        <div className='col-sm-6'>
-          <input type='text' className='form-control width'
-                 ref={(ref) => {
-                   this.hardUp = ref;
-                 }} onBlur={this.judgeHardUp.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'hardUpError')}/>
-        </div>
-      </div>
-      <ErrorTip error={this.state.hardUpError}/>
-
-
-      <div className="form-group row no-margin-form">
-        <label className='col-sm-4 control-label'> 硬卧中铺 </label>
-        <div className='col-sm-6'>
-          <input type='text' className='form-control width'
-                 ref={(ref) => {
-                   this.hardMiddle = ref;
-                 }} onBlur={this.judgeHardMiddle.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'hardMiddleError')}/>
-        </div>
-      </div>
-      <ErrorTip error={this.state.hardMiddleError}/>
-
-      <div className="form-group row no-margin-form">
-        <label className='col-sm-4 control-label'> 硬卧下铺 </label>
-        <div className='col-sm-6'>
-          <input type='text' className='form-control width'
-                 ref={(ref) => {
-                   this.hardDown = ref;
-                 }} onBlur={this.judgeHardDown.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'hardDownError')}/>
-        </div>
-      </div>
-      <ErrorTip error={this.state.hardDownError}/>
-
-
-      <div className="form-group row no-margin-form">
-        <label className='col-sm-4 control-label'> 软卧上铺 </label>
-        <div className='col-sm-6'>
-          <input type='text' className='form-control width'
-                 ref={(ref) => {
-                   this.softUp = ref;
-                 }} onBlur={this.judgeSoftUp.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'softUpError')}/>
-        </div>
-      </div>
-      <ErrorTip error={this.state.softUpError}/>
-
-
-      <div className="form-group row no-margin-form">
-        <label className='col-sm-4 control-label'> 软卧下铺 </label>
-        <div className='col-sm-6'>
-          <input type='text' className='form-control width'
-                 ref={(ref) => {
-                   this.softDown = ref;
-                 }} onBlur={this.judgeSoftDown.bind(this)}
-                 onFocus={this.hiddenErrorMessage.bind(this, 'softDownError')}/>
-        </div>
-      </div>
-      <ErrorTip error={this.state.softDownError}/>
 
       <div className="row margin-top">
         <div className='col-sm-3 width-left text-center'>
